@@ -1,0 +1,43 @@
+{
+  "luci": {
+    "urls": [
+    "Luci_REVF_Firmware_2016_09_23.px4",
+    "Luci_REVF_Firmware_2016_09_12.px4",
+    "Luci_REVF_Firmware_2016-08-25.px4",
+    "Luci_REVF_Firmware_2016-08-24.px4",
+    "Luci_REVE2_Firmware_2016_07_01.px4",
+    "Luci_REVE2_Firmware_2016_06_03_noMPU.px4",
+    "Luci_REVE2_Firmware_2016_06_02.px4",
+    "Luci_REVE2_Firmware_2016_05_31_noMPU.px4",
+    "Luci_REVE2_Firmware_2016_05_31.px4",
+    "Luci_REVD_Firmware_2016_04_04.px4",
+    "Luci_REVD_Firmware_2016_03_10_NOBARO.px4",
+    "Luci_REVD_Firmware_2016_03_10.px4"
+    ],
+    "display": "Luci FMU Firmware",
+    "desc": "When installing Luci's firmware, please ensure you are downloading the firmware for the proper hardware revision. For instance, Revision F users will select one of the 'Luci_REVF' files. If you're not sure which to download, choose the latest date from your board's revision. See our documentation for more information on finding locating your hardware revision."
+  },
+  "dslink": {
+    "urls": [
+      "dslink_alpha_5_2_x86.ipk",  
+      "dslink_alpha_5_1_x86.ipk",
+      "dslink_alpha_5_0_x86.ipk",
+      "dslink_alpha_4_2_x86.ipk",
+      "dslink_alpha_4_1_x86.ipk",
+      "dslink_alpha_3_2_x86.ipk",
+      "dslink_alpha_3_1_x86.ipk",
+      "dslink_alpha_3_0_x86.ipk"
+    ],
+    "display": "Dronesmith Link",
+    "desc": "Dronesmith Link connects your drone to the cloud. See our documentation for more information on DS Link, how to install it, and use it. If you're not sure which version to download, select the latest version number."
+  },
+  "tools": {
+    "urls": [
+      "px_uploader.py",
+      "luci_ql25_params",
+      "params"
+    ],
+    "display": "Preset params and utilities",
+    "desc": "PX Uploader is a python script that let's you upload the FMU firmware without the aid of Ground Control Station software. Our preset param files make it easier to quickly configure your drone."
+  }
+}

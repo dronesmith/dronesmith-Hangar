@@ -1,0 +1,69 @@
+#fullscreen {
+}
+#fullscreen #hud svg {
+  position: absolute;
+  /*z-index: 0;*/
+  width: 100%;
+  height: 100%;
+}
+
+#fullscreen #floghtheading {
+  position: fixed;
+  top: -15%;
+}
+
+#fullscreen #angleArrow {
+  width: 2% !important;
+  height: 2% !important;
+}
+
+#fullscreen #throttleArrow {
+  width: 2% !important;
+  height: 2% !important;
+}
+
+#fullscreen #groundspeedArrow {
+  width: 2% !important;
+  height: 2% !important;
+}
+
+#fullscreen #hud p {
+  position: absolute;
+  z-index: 10;
+  font-size: 10px;
+  color: #FFF;
+  font-family: monospace;
+}
+
+#fullscreen #timeline {
+  position: absolute;
+  z-index: 100;
+  bottom: 0%;
+  padding: 10px 10px 10px 10px;
+  background-color: #bbb;
+  width: 100% !important;
+}
+
+#fullscreen #timeline p {
+  color: #000;
+  font-size: 12px;
+  bottom: 6px;
+}
+
+#fullscreen .pilotBtns {
+  z-index: 10000 !important;
+}
+
+#fullscreen .cameraTxt {
+  right: 28%;
+}
+
+#fullscreen .map-canvas {
+  position: absolute;
+  z-index: 101;
+  height: 100%;
+  width: 100%;
+  left: 0;
+  top: 0;
+  border-radius: 0px;
+}

@@ -1,0 +1,13 @@
+{
+    "application": {
+        "name": "Dronesmith Engine",
+        "script": "./app.js",
+        "port": "4000",
+        "env": "development"
+    },
+    "log": {
+        "path": "log/",
+        "filename": "dss.log"
+    },
+    "adminKey": "ca93abe8-6f81-4bad-ab04-60a43d73e877"
+}

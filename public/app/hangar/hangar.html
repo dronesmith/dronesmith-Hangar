@@ -1,0 +1,137 @@
+<section id="hangar">
+    <div class="section">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="page-header">
+              <h1>Hangar
+                <small>{{drones.length}} Drones in Hangar</small>
+              </h1>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <uib-accordion close-others="true" ng-click="footerOpen=!footerOpen">
+
+      <uib-accordion-group ng-repeat="drone in drones track by $index" heading="">
+        <uib-accordion-heading>
+          <p class="text-right">
+            <span class="pull-left lead">{{drone.name || "drone-" + drone.firmwareId}}</span>
+            <span class="badge text-info">{{drone.missions.length}} Missions</span>
+            <span
+              class="label"
+              ng-class="{
+                'label-success': liveDroneData[drone._id].status == 'online',
+                'label-danger': liveDroneData[drone._id].status == 'offline',
+                'label-info': !liveDroneData[drone._id]
+                }">
+                {{liveDroneData[drone._id].status || "working..."}}
+            </span>
+          </p>
+        </uib-accordion-heading>
+        <div class="row">
+          <div class="col-sm-4">
+            <div class="well" ng-init="isCollapsed = true">
+              <h3>{{drone.name || "drone-" + drone.firmwareId}} <small>
+                  <a href="" ng-click="isCollapsed=!isCollapsed; updateDrone(isCollapsed, drone)">{{isCollapsed ? 'edit' : 'update'}}</a></small></h3>
+              <div uib-collapse="isCollapsed">
+                <form class="well-sm">
+                  <fieldset class="form-group">
+                    <label>Name</label>
+                    <input class="form-control" type="text" ng-model="drone.name">
+                  </fieldset>
+                  <fieldset class="form-group">
+                    <label>System Id</label>
+                    <input class="form-control" type="number" ng-model="drone.systemId" min="1" max="254">
+                  </fieldset>
+                </form>
+              </div>
+              <hgroup class="text-left">
+                <p class="pull-left"><span class="glyphicon glyphicon-flash"></span></p>
+                <uib-progressbar
+                  ng-hide="liveDroneData[drone._id].status != 'online'"
+                  type="info" max="100" value="mavStream[drone._id]['SYS_STATUS'].battery_remaining">
+                </uib-progressbar>
+                <p ng-show="liveDroneData[drone._id].status != 'online'">Offline.</p>
+              </hgroup>
+              <p>
+                <strong>Created On:</strong> {{drone.created | date:'medium'}} <br>
+                <strong>Hardware Id:</strong> {{drone.firmwareId}} <br>
+                <strong>Type:</strong> {{drone.type}} <br>
+                <strong>Manufacturer:</strong> {{drone.manufacturer || "Dronesmith Technologies"}} <br>
+                <strong>System Id: </strong> {{drone.systemId}} <br>
+              </p>
+            </div>
+          </div>
+          <div class="col-sm-4">
+            <img ng-show="liveDroneData[drone._id].status != 'online'" class="img-responsive" src="assets/img/lucismall.png">
+            <!-- <div ui-map="gpsMap" ng-show="liveDroneData[drone._id].status == 'online'" ui-options="mapOptions" style="width: 360px; height: 240px;"></div> -->
+            <renderer fullscreen="false" basealt="520" ng-show="liveDroneData[drone._id].status == 'online'" bind="mavStream[drone._id]"></renderer>
+          </div>
+          <div class="col-sm-4">
+            <div ng-hide="liveDroneData[drone._id].status == 'offline'" class="well well-sm">
+              <h4 class="text-center">Actions</h4>
+              <!-- <div ng-hide="previewMode"> -->
+                <!-- <a ng-hide="liveDroneData[drone._id].status == 'offline'" href="" class="btn btn-info btn-block" ui-sref="lucicam">View Application</a> -->
+                <a ng-hide="liveDroneData[drone._id].status == 'offline'" href="" target="_blank" class="btn btn-default btn-block" ui-sref="live({id: drone._id})">Launch GPS View</a>
+                <a ng-hide="liveDroneData[drone._id].status == 'offline'" href="" class="btn btn-default btn-block" ng-click="updateGCSBroadcast(drone._id);">
+                  {{!liveDroneData[drone._id].gcBroadcast ? "Enable GCS Broadcast" : "Disable GCS Broadcast"}}</a>
+              <!-- </div> -->
+              <a ng-hide="liveDroneData[drone._id].status == 'offline'" href="" class="btn btn-default btn-block" ng-click="updateRemoteTerminal(drone._id, liveDroneData[drone._id].terminalInfo);">Connect Remote Terminal</a>
+              <a ng-show="liveDroneData[drone._id].terminalInfo" href="" class="btn btn-default btn-block" ng-click="endRemoteTerminal(drone._id)">End Terminal Session</a>
+              <p ng-show="liveDroneData[drone._id].terminalInfo">Login Info: {{"ssh -p " + liveDroneData[drone._id].terminalInfo.port + " " + liveDroneData[drone._id].terminalInfo.uname + "@" + liveDroneData[drone._id].terminalInfo.url}}</p>
+              <p ng-show="liveDroneData[drone._id].terminalInfo">Your password is the same as your Edison.</p>
+              <!-- <p ng-show="liveDroneData[drone._id].terminalInfo">Password: {{liveDroneData[drone._id].terminalInfo.pass}}</p> -->
+              <!-- <p ng-show="liveDroneData[drone._id].terminalInfo"><a target="_blank" ng-href="http://cloud.dronesmith.io/#!/terminal/{{drone._id}}">Go to terminal</a></p> -->
+            </div>
+          </div>
+        </div>
+
+        <div ng-show="liveDroneData[drone._id].status == 'online'" class="row">
+          <div class="col-sm-4">
+            <p><strong>Roll:</strong> {{(mavStream[drone._id]['ATTITUDE'].roll * (180 / 3.14159)).toFixed(2)}}</p>
+            <p><strong>Pitch:</strong> {{(mavStream[drone._id]['ATTITUDE'].pitch * (180 / 3.14159)).toFixed(2)}}</p>
+            <p><strong>Yaw:</strong> {{(mavStream[drone._id]['ATTITUDE'].yaw * (180 / 3.14159)).toFixed(2)}}</p>
+            <p><strong>Throttle:</strong> {{mavStream[drone._id]['VFR_HUD'].throttle}}</p>
+          </div>
+          <div class="col-sm-4">
+            <p><strong>Altitude:</strong> {{(mavStream[drone._id]['VFR_HUD'].alt).toFixed(2)}}</p>
+            <p><strong>Climb:</strong> {{(mavStream[drone._id]['VFR_HUD'].climb).toFixed(2)}}</p>
+            <p><strong>Heading:</strong> {{mavStream[drone._id]['VFR_HUD'].heading}}</p>
+            <!-- <p><strong>Air Speed:</strong> {{mavStream[drone._id]['VFR_HUD'].airspeed}}</p> -->
+            <p><strong>Ground Speed:</strong> {{(mavStream[drone._id]['VFR_HUD'].groundspeed).toFixed(2)}}</p>
+          </div>
+          <div class="col-sm-4">
+            <p><strong>Status:</strong> {{mavStream[drone._id]['STATUSTEXT'].text}}</p>
+          </div>
+        </div>
+          <!-- <strong ng-hide="liveDroneData[drone._id].status != 'online'">Mission Progess</strong>
+          <uib-progressbar
+            ng-hide="liveDroneData[drone._id].status != 'online'"
+            type="info" min="180000" max="750000" value="mavStream[drone._id]['ATTITUDE'].time_boot_ms"></uib-progressbar> -->
+          <!-- <pre>{{mavStream[drone._id] | json}}</pre> -->
+        <div class="accordionFooter">
+          <hr>
+          <button class="pull-right btn btn-default" ng-click="deleteDrone(drone)">
+            <span class="glyphicon glyphicon-trash">
+          </button>
+        </div>
+      </uib-accordion-group>
+    </uib-accordion>
+</section>
+<!-- <script src="assets/gateone/gateone.js"></script>
+<div id="termdummy" style="width: 1px; height: 1px;"></div>
+<script type="text/ng-template" id="remoteTerminal.html">
+  <div class="modal-header">
+    <h3 class="modal-title">Remote Terminal: {{title}}</h3>
+  </div>
+  <div class="modal-body">
+    <p class="lead" ng-hide="loaded">Loading...</p>
+    <div id="term" style="height: 480px;"></div>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-primary" type="button" ng-click="end()">End Session</button>
+  </div>
+</script> -->

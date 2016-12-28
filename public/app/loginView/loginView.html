@@ -1,0 +1,29 @@
+<section id="loginView" style="
+    position: absolute;
+    width: 100%;
+    height: auto;
+    top: 0px;
+    left: 0px;
+    background: url('assets/img/iot.png') no-repeat center center fixed;
+    min-height: 100%;
+  ">
+  <div class="spacer"></div>
+  <article class="container">
+    <div class="row">
+      <div class="col-sm-3"></div>
+      <div class="col-sm-6">
+        <div class="panel panel-default" style="box-shadow: 0px 0px 20px #555;">
+          <div>
+              <hgroup class="text-center">
+                <img class="center-block img-responsive" width="60%" height="60%" src="assets/img/logo.png">
+                <h1>Dronesmith Hangar</h1>
+              </hgroup>
+          </div>
+          <div class="panel-body" ui-view>
+            <login-pane></login-pane>
+          </div>
+        </div>
+      </div>
+    </div>
+  </article>
+</section>

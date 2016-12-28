@@ -1,0 +1,10 @@
+<section id="downloads">
+  <div ng-repeat="(key, obj) in structure">
+    <h2>{{obj.display}}</h2>
+    <p>{{obj.desc}}</p>
+    <hr>
+    <ul>
+      <li ng-repeat="url in obj.urls"><a href="" ng-click="getDlRef(key, url)">{{url}}</a></li>
+    </ul>
+  </div>
+</section>

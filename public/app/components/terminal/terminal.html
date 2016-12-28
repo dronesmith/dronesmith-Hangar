@@ -1,0 +1,16 @@
+<section id="terminal">
+  <h1 class="lead" ng-hide="loaded">Loading Terminal...</h1>
+  <h2 class="text-center lead" ng-show="error">{{error}}</h2>
+
+  <!-- <h4 ng-show="loaded">Log In Address: {{loginInfo}}</h2>
+  <h4 ng-show="loaded">Password: {{pass}}</h2>
+  <button ng-show="loaded" class="btn btn-primary" ng-click="endSession()">End Session</button> -->
+  <hr ng-show="error">
+
+  <div ng-hide="error">
+    <div id="gateone"></div>
+    <div id="term"></div>
+  </div>
+
+  <script src="assets/gateone/gateone.js"></script>
+</section>

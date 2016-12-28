@@ -1,0 +1,47 @@
+<section id="appview">
+  <h1 class="lead">Apps</h1>
+  <hr>
+  <div class="row">
+    <div class="col-md-6" ng-repeat="app in apps.values">
+      <div class="panel panel-default">
+        <div class="panel-body">
+          <div class="row">
+            <div class="col-md-2">
+              <div class="row">
+              <img class="img-responsive" width="150" height="150" ng-src="{{app.links.avatar.href}}">
+            </div>
+            <div class="row">
+              <a class="center-block btn btn-primary btn-sm btn-disabled" href="lucicam">Run</a>
+            </div>
+            </div>
+            <div class="col-md-10">
+              <h2>{{app.name}} <span class="badge text-info">{{app.language}}</span></h2>
+              <h5><em>by {{app.owner.display_name}} on {{app.created_on | date}}</em></h5>
+              <small>Last updated {{app.updated_on | date}}. Size: {{(app.size / 1024).toFixed(2)}}kb.</small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script type="text/ng-template" id="droneSelectModal.html">
+    <div class="modal-header">
+      <h3 class="modal-title">Remote Terminal: {{title}}</h3>
+    </div>
+    <div class="modal-body">
+    <label for="drone">Select Drone</label>
+      <select
+        ng-show="uploaderControl.drone"
+        class="form-control"
+        ng-model="uploaderControl.drone"
+        ng-init="uploaderControl.drone=UserObject.drones[0]"
+        ng-options="drone as drone.systemId for drone in UserObject.drones track by drone._id">
+      </select>
+      <p class="text-danger" ng-show="!uploaderControl.drone">User has no drones associated with them.</p>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-primary" type="button" ng-click="run()">Install</button>
+      <button class="btn btn-primary" type="button" ng-click="cancel()">Cancel</button>
+    </div>
+  </script>
+</section>
