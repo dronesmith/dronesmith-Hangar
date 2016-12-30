@@ -18,6 +18,8 @@
       </div>
     </div>
 
+    <!-- <pre>{{drones | json}}</pre> -->
+
     <uib-accordion close-others="true" ng-click="footerOpen=!footerOpen">
 
       <uib-accordion-group ng-repeat="drone in drones track by $index" heading="">
@@ -28,11 +30,10 @@
             <span
               class="label"
               ng-class="{
-                'label-success': liveDroneData[drone._id].status == 'online',
-                'label-danger': liveDroneData[drone._id].status == 'offline',
-                'label-info': !liveDroneData[drone._id]
+                'label-success': drone.online,
+                'label-danger': !drone.online
                 }">
-                {{liveDroneData[drone._id].status || "working..."}}
+                {{drone.online ? "online" : "offline"}}
             </span>
           </p>
         </uib-accordion-heading>
@@ -47,26 +48,27 @@
                     <label>Name</label>
                     <input class="form-control" type="text" ng-model="drone.name">
                   </fieldset>
-                  <fieldset class="form-group">
+                  <!-- <fieldset class="form-group">
                     <label>System Id</label>
                     <input class="form-control" type="number" ng-model="drone.systemId" min="1" max="254">
-                  </fieldset>
+                  </fieldset> -->
                 </form>
               </div>
-              <hgroup class="text-left">
+              <!-- <hgroup class="text-left">
                 <p class="pull-left"><span class="glyphicon glyphicon-flash"></span></p>
                 <uib-progressbar
                   ng-hide="liveDroneData[drone._id].status != 'online'"
                   type="info" max="100" value="mavStream[drone._id]['SYS_STATUS'].battery_remaining">
                 </uib-progressbar>
                 <p ng-show="liveDroneData[drone._id].status != 'online'">Offline.</p>
-              </hgroup>
+              </hgroup> -->
               <p>
                 <strong>Created On:</strong> {{drone.created | date:'medium'}} <br>
-                <strong>Hardware Id:</strong> {{drone.firmwareId}} <br>
+                <strong>Last Update:</strong> {{drone.updated | date:'medium'}} <br>
+                <!-- <strong>Hardware Id:</strong> {{drone.firmwareId}} <br> -->
                 <strong>Type:</strong> {{drone.type}} <br>
-                <strong>Manufacturer:</strong> {{drone.manufacturer || "Dronesmith Technologies"}} <br>
-                <strong>System Id: </strong> {{drone.systemId}} <br>
+                <!-- <strong>Manufacturer:</strong> {{drone.manufacturer || "Dronesmith Technologies"}} <br> -->
+                <!-- <strong>System Id: </strong> {{drone.systemId}} <br> -->
               </p>
             </div>
           </div>
@@ -79,15 +81,15 @@
             <div ng-hide="liveDroneData[drone._id].status == 'offline'" class="well well-sm">
               <h4 class="text-center">Actions</h4>
               <!-- <div ng-hide="previewMode"> -->
-                <!-- <a ng-hide="liveDroneData[drone._id].status == 'offline'" href="" class="btn btn-info btn-block" ui-sref="lucicam">View Application</a> -->
-                <a ng-hide="liveDroneData[drone._id].status == 'offline'" href="" target="_blank" class="btn btn-default btn-block" ui-sref="live({id: drone._id})">Launch GPS View</a>
+                <a href="" class="btn btn-info btn-block" ng-click="initDrone(drone.online, drone.name)">{{drone.online ? "Stop Drone" : "Start Drone"}}</a>
+                <!-- <a ng-hide="liveDroneData[drone._id].status == 'offline'" href="" target="_blank" class="btn btn-default btn-block" ui-sref="live({id: drone._id})">Launch GPS View</a>
                 <a ng-hide="liveDroneData[drone._id].status == 'offline'" href="" class="btn btn-default btn-block" ng-click="updateGCSBroadcast(drone._id);">
-                  {{!liveDroneData[drone._id].gcBroadcast ? "Enable GCS Broadcast" : "Disable GCS Broadcast"}}</a>
+                  {{!liveDroneData[drone._id].gcBroadcast ? "Enable GCS Broadcast" : "Disable GCS Broadcast"}}</a> -->
               <!-- </div> -->
-              <a ng-hide="liveDroneData[drone._id].status == 'offline'" href="" class="btn btn-default btn-block" ng-click="updateRemoteTerminal(drone._id, liveDroneData[drone._id].terminalInfo);">Connect Remote Terminal</a>
+              <!-- <a ng-hide="liveDroneData[drone._id].status == 'offline'" href="" class="btn btn-default btn-block" ng-click="updateRemoteTerminal(drone._id, liveDroneData[drone._id].terminalInfo);">Connect Remote Terminal</a>
               <a ng-show="liveDroneData[drone._id].terminalInfo" href="" class="btn btn-default btn-block" ng-click="endRemoteTerminal(drone._id)">End Terminal Session</a>
               <p ng-show="liveDroneData[drone._id].terminalInfo">Login Info: {{"ssh -p " + liveDroneData[drone._id].terminalInfo.port + " " + liveDroneData[drone._id].terminalInfo.uname + "@" + liveDroneData[drone._id].terminalInfo.url}}</p>
-              <p ng-show="liveDroneData[drone._id].terminalInfo">Your password is the same as your Edison.</p>
+              <p ng-show="liveDroneData[drone._id].terminalInfo">Your password is the same as your Edison.</p> -->
               <!-- <p ng-show="liveDroneData[drone._id].terminalInfo">Password: {{liveDroneData[drone._id].terminalInfo.pass}}</p> -->
               <!-- <p ng-show="liveDroneData[drone._id].terminalInfo"><a target="_blank" ng-href="http://cloud.dronesmith.io/#!/terminal/{{drone._id}}">Go to terminal</a></p> -->
             </div>
@@ -119,7 +121,7 @@
           <!-- <pre>{{mavStream[drone._id] | json}}</pre> -->
         <div class="accordionFooter">
           <hr>
-          <button class="pull-right btn btn-default" ng-click="deleteDrone(drone)">
+          <button class="pull-right btn btn-default" ng-click="delDrone(drone.name)">
             <span class="glyphicon glyphicon-trash">
           </button>
         </div>
