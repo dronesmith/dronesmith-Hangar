@@ -25,11 +25,25 @@ angular
       //   $scope.user = response;
       // }, Error);
 
-      $http({
-        method: 'GET',
-        url: '/api/drone'
-      }).then(function successCallback(response) {
-        $scope.drones = response;
-      }, Error);
+      getDrones();
+
+      function getDrones() {
+        $http({
+          method: 'GET',
+          url: '/api/drone'
+        }).then(function successCallback(response) {
+          $scope.drones = response.data.data.drones;
+        }, Error);
+      }
+
+      $scope.newDrone = function() {
+        $http({
+          method: 'POST',
+          url: '/api/drone'
+        }).then(function successCallback(response) {
+          getDrones();
+        }, Error);
+
+      }
   })
 ;

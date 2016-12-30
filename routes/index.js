@@ -69,7 +69,7 @@ module.exports = function(app, route) {
         .get    ('/index/user',                   api.getUser)
 
         // API requests
-        // .post   ('/api/*',                        api.postHandler)
+        .post   ('/api/*',                        api.postHandler)
         // .put    ('/api/*',                        api.putHandler)
         // .delete ('/api/*',                        api.delHandler)
         .get    ('/api/*',                        api.getHandler)
