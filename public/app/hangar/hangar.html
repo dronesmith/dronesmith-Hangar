@@ -46,27 +46,12 @@
                     <label>Name</label>
                     <input class="form-control" type="text" ng-model="newname">
                   </fieldset>
-                  <!-- <fieldset class="form-group">
-                    <label>System Id</label>
-                    <input class="form-control" type="number" ng-model="drone.systemId" min="1" max="254">
-                  </fieldset> -->
                 </form>
               </div>
-              <!-- <hgroup class="text-left">
-                <p class="pull-left"><span class="glyphicon glyphicon-flash"></span></p>
-                <uib-progressbar
-                  ng-hide="liveDroneData[drone._id].status != 'online'"
-                  type="info" max="100" value="mavStream[drone._id]['SYS_STATUS'].battery_remaining">
-                </uib-progressbar>
-                <p ng-show="liveDroneData[drone._id].status != 'online'">Offline.</p>
-              </hgroup> -->
               <p>
                 <strong>Created On:</strong> {{drone.created | date:'medium'}} <br>
                 <strong>Last Update:</strong> {{drone.updated | date:'medium'}} <br>
-                <!-- <strong>Hardware Id:</strong> {{drone.firmwareId}} <br> -->
                 <strong>Virtual Drone:</strong> {{!!(drone.type == "Virtual Drone")}} <br>
-                <!-- <strong>Manufacturer:</strong> {{drone.manufacturer || "Dronesmith Technologies"}} <br> -->
-                <!-- <strong>System Id: </strong> {{drone.systemId}} <br> -->
 
                 <strong ng-show="telem[drone.name].info">Type:</strong> {{telem[drone.name].info.Type}} <br>
                 <strong ng-show="telem[drone.name].info">Firmware:</strong> {{telem[drone.name].info.Firmware}} <br>
@@ -91,27 +76,14 @@
               <strong>Local Position:</strong> ({{telem[drone.name].position.X | number:'2'}}, {{telem[drone.name].position.Y | number:'2'}}, {{telem[drone.name].position.Z | number: '2'}}) <br>
               <strong>Global Position:</strong> ({{telem[drone.name].position.Latitude}}, {{telem[drone.name].position.Longitude}}) <br>
             </p>
-            <!-- <div ui-map="gpsMap" ng-show="liveDroneData[drone._id].status == 'online'" ui-options="mapOptions" style="width: 360px; height: 240px;"></div> -->
-            <!-- <renderer fullscreen="false" basealt="520" ng-show="liveDroneData[drone._id].status == 'online'" bind="mavStream[drone._id]"></renderer> -->
           </div>
           <div class="col-sm-4">
             <div ng-hide="liveDroneData[drone._id].status == 'offline'" class="well well-sm">
               <h4 class="text-center">Actions</h4>
-              <!-- <div ng-hide="previewMode"> -->
                 <a href="" class="btn btn-info btn-block" ng-click="initDrone(telem[drone.name].online, drone.name)">{{telem[drone.name].online ? "Shut down drone" : "Start Drone"}}</a>
-                <a href="" class="btn btn-default btn-block" ng-click="">Open in Ground Control</a>
+                <a href="" class="btn btn-default btn-block" ui-sref="gcs">Open in Ground Control</a>
                 <a href="" class="btn btn-default btn-block" ng-click="">View Flights</a>
                 <a href="" class="btn btn-default btn-block" ng-click="">Console</a>
-                <!-- <a ng-hide="liveDroneData[drone._id].status == 'offline'" href="" target="_blank" class="btn btn-default btn-block" ui-sref="live({id: drone._id})">Launch GPS View</a>
-                <a ng-hide="liveDroneData[drone._id].status == 'offline'" href="" class="btn btn-default btn-block" ng-click="updateGCSBroadcast(drone._id);">
-                  {{!liveDroneData[drone._id].gcBroadcast ? "Enable GCS Broadcast" : "Disable GCS Broadcast"}}</a> -->
-              <!-- </div> -->
-              <!-- <a ng-hide="liveDroneData[drone._id].status == 'offline'" href="" class="btn btn-default btn-block" ng-click="updateRemoteTerminal(drone._id, liveDroneData[drone._id].terminalInfo);">Connect Remote Terminal</a>
-              <a ng-show="liveDroneData[drone._id].terminalInfo" href="" class="btn btn-default btn-block" ng-click="endRemoteTerminal(drone._id)">End Terminal Session</a>
-              <p ng-show="liveDroneData[drone._id].terminalInfo">Login Info: {{"ssh -p " + liveDroneData[drone._id].terminalInfo.port + " " + liveDroneData[drone._id].terminalInfo.uname + "@" + liveDroneData[drone._id].terminalInfo.url}}</p>
-              <p ng-show="liveDroneData[drone._id].terminalInfo">Your password is the same as your Edison.</p> -->
-              <!-- <p ng-show="liveDroneData[drone._id].terminalInfo">Password: {{liveDroneData[drone._id].terminalInfo.pass}}</p> -->
-              <!-- <p ng-show="liveDroneData[drone._id].terminalInfo"><a target="_blank" ng-href="http://cloud.dronesmith.io/#!/terminal/{{drone._id}}">Go to terminal</a></p> -->
             </div>
           </div>
         </div>
@@ -134,11 +106,6 @@
             <p><strong>Status:</strong> {{mavStream[drone._id]['STATUSTEXT'].text}}</p>
           </div>
         </div>
-          <!-- <strong ng-hide="liveDroneData[drone._id].status != 'online'">Mission Progess</strong>
-          <uib-progressbar
-            ng-hide="liveDroneData[drone._id].status != 'online'"
-            type="info" min="180000" max="750000" value="mavStream[drone._id]['ATTITUDE'].time_boot_ms"></uib-progressbar> -->
-          <!-- <pre>{{mavStream[drone._id] | json}}</pre> -->
         <div class="accordionFooter">
           <hr>
           <button class="pull-right btn btn-default" ng-click="delDrone(drone.name)">
@@ -148,17 +115,3 @@
       </uib-accordion-group>
     </uib-accordion>
 </section>
-<!-- <script src="assets/gateone/gateone.js"></script>
-<div id="termdummy" style="width: 1px; height: 1px;"></div>
-<script type="text/ng-template" id="remoteTerminal.html">
-  <div class="modal-header">
-    <h3 class="modal-title">Remote Terminal: {{title}}</h3>
-  </div>
-  <div class="modal-body">
-    <p class="lead" ng-hide="loaded">Loading...</p>
-    <div id="term" style="height: 480px;"></div>
-  </div>
-  <div class="modal-footer">
-    <button class="btn btn-primary" type="button" ng-click="end()">End Session</button>
-  </div>
-</script> -->

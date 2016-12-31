@@ -3,9 +3,17 @@
     width: 250px;
     height: 94vh;
     float: left;
-    background-color: #ddd;
+    background-color: #eee;
     ">
-    
+      <div class="container-fluid" style="margin-top: 10px;">
+        <div class="panel panel-default" ng-repeat="drone in drones track by $index">
+          <a href="" ng-click="">
+            <div class="panel-body">
+              <strong>{{drone.name}}</strong>
+            </div>
+          </a>
+        </div>
+      </div>
   </div>
   <leaflet id="groundcontrol" defaults="defaults" style="
     width: 100%;
