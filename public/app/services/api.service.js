@@ -131,7 +131,7 @@ angular
         updatesEnabled = false;
       }
 
-      getDrones();
+      // getDrones();
 
       return {
         getDrones:    getDrones,
