@@ -6,6 +6,25 @@ angular
     $uibModal, $state, $rootScope, API, leafletData) {
       API.enableUpdates();
 
+      $scope.showActionBar = true;
+      $scope.mapArrow = "glyphicon-menu-left";
+
+      $scope.mapOffset = {
+        "margin-left": "250px"
+      };
+
+      $scope.toggleActionBar = function() {
+        $scope.showActionBar = !$scope.showActionBar;
+
+        if ($scope.showActionBar) {
+          $scope.mapOffset["margin-left"] = "250px";
+          $scope.mapArrow = "glyphicon-menu-left";
+        } else {
+          $scope.mapOffset["margin-left"] = "0px";
+          $scope.mapArrow = "glyphicon-menu-right";
+        }
+      }
+
       $rootScope.$on('drone:update', function(ev, data) {
         $scope.drones = data;
       });
