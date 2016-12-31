@@ -124,6 +124,7 @@ angular
 
       var enableUpdates = function() {
         updatesEnabled = true;
+        getDrones(); // force reload
       }
 
       var disableUpdates = function() {

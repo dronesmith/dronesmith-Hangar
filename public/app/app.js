@@ -25,7 +25,9 @@ angular
     'ui.map',
     'ui.ace',
     'nvd3',
-    'ngCsv'
+    'ngCsv',
+    'nemLogging',
+    'ui-leaflet'
   ])
 
   // Global configuration here
@@ -59,20 +61,13 @@ angular
         parent: 'forge'
       })
 
-      // Reporting view
-      .state('analytics', {
-        url: 'analytics',
-        templateUrl: 'app/reporting/reporting.html',
-        controller: 'ReportingCtrl',
+      // Hangar view
+      .state('gcs', {
+        url: 'gcs',
+        templateUrl: 'app/gcs/gcs.html',
+        controller: 'GCSCtrl',
         parent: 'forge'
       })
-
-      // Upload flight state
-      // .state('upload', {
-      //   url: 'upload',
-      //   template: '<uploader></uploader>',
-      //   parent: 'forge'
-      // })
 
       // Login state. The app should always redirect to this state whenever the
       // session returned is null.
@@ -93,8 +88,3 @@ angular
     ;
   })
 ;
-
-// Init Google Maps
-window.onGoogleReady = function() {
-  angular.bootstrap(document.getElementById("map"), ['ui.map']);
-};

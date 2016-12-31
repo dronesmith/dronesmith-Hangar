@@ -14,6 +14,7 @@
     <link href="https://fonts.googleapis.com/css?family=Lato:100,300,400,700" rel="stylesheet" type="text/css">
 
     <!-- bower:css -->
+    <link rel="stylesheet" href="bower_components/leaflet/dist/leaflet.css" />
     <link rel="stylesheet" href="bower_components/nvd3/build/nv.d3.css" />
     <!-- endbower -->
 
@@ -61,6 +62,8 @@
     <script src="bower_components/angular-ui-map/ui-map.js"></script>
     <script src="bower_components/ace-builds/src-min-noconflict/ace.js"></script>
     <script src="bower_components/angular-ui-ace/ui-ace.js"></script>
+    <script src="bower_components/leaflet/dist/leaflet.js"></script>
+    <script src="bower_components/angular-simple-logger/dist/angular-simple-logger.min.js"></script>
     <!-- endbower -->
 
     <!-- injector:js -->
@@ -68,6 +71,7 @@
     <script src="/app/app.js"></script>
     <script src="/app/code/code.controller.js"></script>
     <script src="/app/downloads/downloads.controller.js"></script>
+    <script src="/app/gcs/gcs.controller.js"></script>
     <script src="/app/components/accountModal/accountModal.controller.js"></script>
     <script src="/app/components/alertModal/alertModal.controller.js"></script>
     <script src="/app/components/errorModal/errorModal.controller.js"></script>
@@ -100,8 +104,9 @@
     <script src="/app/services/api.service.js"></script>
     <!-- endinjector -->
 
-    <!-- Google Maps for lat/lon -->
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAobHL5RFTMz12EEyQlMPTnZ178dSj7xA8&v=3.exp&callback=onGoogleReady"></script>
+    <!-- Third party -->
+    <script src="/vendor/ui-leaflet.min.js"></script>
+    <script src="https://www.mapquestapi.com/sdk/leaflet/v2.2/mq-map.js?key=b4Ur1dmXp8ZcdDErU9VyJxP0KkcmBuwW"></script>
 
     <script>
       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){

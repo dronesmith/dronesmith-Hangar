@@ -32,33 +32,6 @@ module.exports = function(app, route) {
             next();
         })
 
-        // Check for global query strings
-        .get('/', function(req, res, next) {
-          if (req.query.code) {
-            User
-              .findOne({_id: req.query.code})
-              .then(function(data, error) {
-                if (error || !data) {
-                  return res.redirect('/');
-                } else {
-                  if (req.query.waitlist) {
-                    return res
-                      .status(400)
-                      .json({"error": "Uh oh, you missed your chance for early access! :("});
-                    ;
-                  } else {
-                    return res
-                      .json({"status": "ok"});
-                    ;
-                  }
-                }
-              })
-            ;
-          } else {
-            return res.redirect('/');
-          }
-        })
-
         // Authenticate a session (allows logins)
         .post   ('/index/session',                session.authenticate)
 
