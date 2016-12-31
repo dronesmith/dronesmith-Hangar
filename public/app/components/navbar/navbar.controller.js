@@ -21,6 +21,7 @@ angular
       $uibModal,
       $state,
       Session,
+      API,
       Error) {
 
         $scope.userInfo = {};
@@ -39,6 +40,7 @@ angular
             .$promise
             .then(function(data) {
               if (!data.userData) {
+                API.disableUpdates();
                 $state.go('login');
               }
             }, Error)
