@@ -70,7 +70,7 @@ module.exports = function(app, route) {
 
         // API requests
         .post   ('/api/*',                        api.postHandler)
-        // .put    ('/api/*',                        api.putHandler)
+        .put    ('/api/*',                        api.putHandler)
         .delete ('/api/*',                        api.delHandler)
         .get    ('/api/*',                        api.getHandler)
 

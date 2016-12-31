@@ -18,8 +18,6 @@
       </div>
     </div>
 
-    <!-- <pre>{{drones | json}}</pre> -->
-
     <uib-accordion close-others="true" ng-click="footerOpen=!footerOpen">
 
       <uib-accordion-group ng-repeat="drone in drones track by $index" heading="">
@@ -30,10 +28,10 @@
             <span
               class="label"
               ng-class="{
-                'label-success': drone.online,
-                'label-danger': !drone.online
+                'label-success': telem[drone.name].online,
+                'label-danger': !telem[drone.name].online
                 }">
-                {{drone.online ? "online" : "offline"}}
+                {{telem[drone.name].online ? "online" : "offline"}}
             </span>
           </p>
         </uib-accordion-heading>
@@ -41,12 +39,12 @@
           <div class="col-sm-4">
             <div class="well" ng-init="isCollapsed = true">
               <h3>{{drone.name || "drone-" + drone.firmwareId}} <small>
-                  <a href="" ng-click="isCollapsed=!isCollapsed; updateDrone(isCollapsed, drone)">{{isCollapsed ? 'edit' : 'update'}}</a></small></h3>
+                  <a href="" ng-click="isCollapsed=!isCollapsed; updateDrone(isCollapsed, drone.name, newname)">{{isCollapsed ? 'edit' : 'update'}}</a></small></h3>
               <div uib-collapse="isCollapsed">
                 <form class="well-sm">
                   <fieldset class="form-group">
                     <label>Name</label>
-                    <input class="form-control" type="text" ng-model="drone.name">
+                    <input class="form-control" type="text" ng-model="newname">
                   </fieldset>
                   <!-- <fieldset class="form-group">
                     <label>System Id</label>
@@ -66,22 +64,44 @@
                 <strong>Created On:</strong> {{drone.created | date:'medium'}} <br>
                 <strong>Last Update:</strong> {{drone.updated | date:'medium'}} <br>
                 <!-- <strong>Hardware Id:</strong> {{drone.firmwareId}} <br> -->
-                <strong>Type:</strong> {{drone.type}} <br>
+                <strong>Virtual Drone:</strong> {{!!(drone.type == "Virtual Drone")}} <br>
                 <!-- <strong>Manufacturer:</strong> {{drone.manufacturer || "Dronesmith Technologies"}} <br> -->
                 <!-- <strong>System Id: </strong> {{drone.systemId}} <br> -->
+
+                <strong ng-show="telem[drone.name].info">Type:</strong> {{telem[drone.name].info.Type}} <br>
+                <strong ng-show="telem[drone.name].info">Firmware:</strong> {{telem[drone.name].info.Firmware}} <br>
+                <strong ng-show="telem[drone.name].info">Protocol:</strong> {{telem[drone.name].info.Protocol}} <br>
               </p>
             </div>
           </div>
           <div class="col-sm-4">
-            <img ng-show="liveDroneData[drone._id].status != 'online'" class="img-responsive" src="assets/img/lucismall.png">
+            <img ng-hide="telem[drone.name].online" class="img-responsive" src="assets/img/lucismall.png">
+                <!-- <pre>{{telem[drone.name].position | json}}</pre> -->
+            <p ng-show="telem[drone.name].online">
+              In <strong>{{telem[drone.name].status.State}}</strong>  mode. <br>
+              <strong>Power:</strong> {{telem[drone.name].status.Power}}% <br>
+              <strong>Armed:</strong> {{telem[drone.name].status.Armed}} <br>
+              <strong>Flying:</strong> {{telem[drone.name].status.InAir}} <br>
+              <strong>VtoL State:</strong> {{telem[drone.name].status.VTOLMode}} <br>
+            </p>
+            <hr>
+            <p ng-show="telem[drone.name].online">
+              <strong>Altitude:</strong> {{telem[drone.name].position.Altitude}} <br>
+              <strong>Heading:</strong> {{telem[drone.name].position.Heading}} <br>
+              <strong>Local Position:</strong> ({{telem[drone.name].position.X | number:'2'}}, {{telem[drone.name].position.Y | number:'2'}}, {{telem[drone.name].position.Z | number: '2'}}) <br>
+              <strong>Global Position:</strong> ({{telem[drone.name].position.Latitude}}, {{telem[drone.name].position.Longitude}}) <br>
+            </p>
             <!-- <div ui-map="gpsMap" ng-show="liveDroneData[drone._id].status == 'online'" ui-options="mapOptions" style="width: 360px; height: 240px;"></div> -->
-            <renderer fullscreen="false" basealt="520" ng-show="liveDroneData[drone._id].status == 'online'" bind="mavStream[drone._id]"></renderer>
+            <!-- <renderer fullscreen="false" basealt="520" ng-show="liveDroneData[drone._id].status == 'online'" bind="mavStream[drone._id]"></renderer> -->
           </div>
           <div class="col-sm-4">
             <div ng-hide="liveDroneData[drone._id].status == 'offline'" class="well well-sm">
               <h4 class="text-center">Actions</h4>
               <!-- <div ng-hide="previewMode"> -->
-                <a href="" class="btn btn-info btn-block" ng-click="initDrone(drone.online, drone.name)">{{drone.online ? "Stop Drone" : "Start Drone"}}</a>
+                <a href="" class="btn btn-info btn-block" ng-click="initDrone(telem[drone.name].online, drone.name)">{{telem[drone.name].online ? "Shut down drone" : "Start Drone"}}</a>
+                <a href="" class="btn btn-default btn-block" ng-click="">Open in Ground Control</a>
+                <a href="" class="btn btn-default btn-block" ng-click="">View Flights</a>
+                <a href="" class="btn btn-default btn-block" ng-click="">Edit Settings</a>
                 <!-- <a ng-hide="liveDroneData[drone._id].status == 'offline'" href="" target="_blank" class="btn btn-default btn-block" ui-sref="live({id: drone._id})">Launch GPS View</a>
                 <a ng-hide="liveDroneData[drone._id].status == 'offline'" href="" class="btn btn-default btn-block" ng-click="updateGCSBroadcast(drone._id);">
                   {{!liveDroneData[drone._id].gcBroadcast ? "Enable GCS Broadcast" : "Disable GCS Broadcast"}}</a> -->
