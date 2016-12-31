@@ -12,12 +12,20 @@
         <a ng-show="previewMode" href="" class="navbar-brand">Dronesmith Hangar</a>
       </div>
       <div class="navbar-collapse collapse" id="navbar-main">
-        <ul class="nav navbar-nav pull-right">
-          <li> <a href="" ng-click="editAccount()">Account</a> </li>
+
+        <ul class="nav navbar-nav">
           <li ng-class="{active: isActive('/hangar')}"> <a href="" ui-sref="hangar">Fleet Manager</a> </li>
-          <li> <a target="_blank" href="https://github.com/Dronesmith/Downloads">Downloads</a> </li>
-          <li> <a target="_blank" href="https://dronesmith.readme.io/docs">Documentation</a> </li>
-          <li> <a href="" ng-click="logout()">Log Out</a> </li>
+          <li ng-class="{active: isActive('/gcs')}"> <a href="" ui-sref="gcs">Ground Control</a> </li>
+          <li ng-class="{active: isActive('/flights')}"> <a href="" ui-sref="flights">View Flights</a> </li>
+          <li ng-class="{active: isActive('/console')}"> <a href="" ui-sref="console">API Console</a> </li>
+        </ul>
+
+        <ul class="nav navbar-nav pull-right">
+          <!-- <li> <a target="_blank" href="https://github.com/Dronesmith/Downloads">Downloads</a> </li> -->
+
+          <li> <a href="" ng-click="editAccount()">My Account</a> </li>
+          <li> <a target="_blank" href="https://dronesmith.readme.io/docs">Help</a> </li>
+          <li> <a href="" ng-click="logout()">Sign Out</a> </li>
         </ul>
       </div>
     </div>
