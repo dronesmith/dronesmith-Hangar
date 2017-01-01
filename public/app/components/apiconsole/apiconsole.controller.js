@@ -16,6 +16,10 @@ angular
   .module('ForgeApp')
   .controller('APIConsoleCtrl', function ($scope, $rootScope, $interval, API) {
 
+    $scope.selectHeight = {"height": "5vh"};
+    $scope.opened = false;
+    $scope.selectGlyph = "glyphicon-triangle-top";
+
     $scope.datalogs = {};
     $scope.datalogs.get = function(index, count, success) {
 
@@ -41,5 +45,17 @@ angular
         success(chunk);
       }, 2000);
     };
+
+    $scope.toggleView = function() {
+      $scope.opened = !$scope.opened;
+
+      if (!$scope.opened) {
+        $scope.selectHeight = {"height": "5vh"};
+        $scope.selectGlyph = "glyphicon-triangle-top";
+      } else {
+        $scope.selectHeight = {"height": "40vh"};
+        $scope.selectGlyph = "glyphicon-triangle-bottom";
+      }
+    }
   })
 ;
