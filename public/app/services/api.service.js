@@ -34,24 +34,43 @@ angular
 
       var updatesEnabled = false;
 
+      // Logging
+      var logAPICall = function(method, string, body, response) {
+        apiLog.push({
+          method: method,
+          url: 'http://api.dronesmith.io'+'/'+string,
+          body: JSON.stringify(body),
+          response: JSON.stringify(response),
+          time: new Date(),
+          toString: '['+method.toUpperCase()+'] ' + string
+        });
+
+        if (apiLog.length >= 200) {
+          apiLog.shift();
+        }
+      }
+
+      var getLog = function() {
+        return apiLog;
+      }
+
       // Update loop
       $interval(function () {
         if (updatesEnabled) {
-
           checkOnline();
-
           getDrones();
 
           // Don't want to overload telem
           $rootScope.$broadcast('telem:update', telem);
         }
-      }, 5000);
+      }, 2000);
 
       var getTelem = function(drone, name) {
         $http({
           method: 'GET',
           url: '/api/drone/'+drone+'/'+name
         }).then(function successCallback(response) {
+          logAPICall('GET', '/api/drone/'+drone+'/'+name, {}, response.data);
           if (telem[drone] == {}) {
             telem[drone] = {
               online: false
@@ -71,6 +90,7 @@ angular
           url: '/api/drone/'+droneName+'/'+cmd,
           body: body
         }).then(function successCallback(response) {
+          logAPICall('POST', '/api/drone/'+droneName+'/'+cmd, body, response.data);
           cb(response.data);
         }, Error);
       }
@@ -80,6 +100,7 @@ angular
           method: 'GET',
           url: '/api/drone'
         }).then(function successCallback(response) {
+          logAPICall('GET', '/api/drone/', {}, response.data);
           drones = response.data.data.drones;
 
           // Fire event
@@ -127,6 +148,7 @@ angular
             url: '/api/drone/' + oldname,
             data: {"$set": {"name": newname}}
           }).then(function successCallback(response) {
+            logAPICall('PUT', '/api/drone/'+oldname,  {"$set": {"name": newname}}, response.data);
             getDrones();
           }, Error);
       }
@@ -137,6 +159,7 @@ angular
           method: 'POST',
           url: '/api/drone'
         }).then(function successCallback(response) {
+          logAPICall('POST', '/api/drone/', {}, response.data);
           getDrones();
         }, Error);
       }
@@ -147,6 +170,7 @@ angular
           method: 'POST',
           url: '/api/drone/'+name+action
         }).then(function successCallback(response) {
+          logAPICall('POST', '/api/drone/'+name+action, {}, response.data);
           getDrones();
         }, Error);
       }
@@ -156,6 +180,7 @@ angular
           method: 'DELETE',
           url: '/api/drone/'+name
         }).then(function successCallback(response) {
+          logAPICall('DELETE', '/api/drone/'+name, {}, response.data);
           getDrones();
         }, Error);
       }
@@ -196,7 +221,8 @@ angular
         checkOnline:        checkOnline,
         addListener:        addListener,
         removeListener:     removeListener,
-        removeAllListeners: removeAllListeners
+        removeAllListeners: removeAllListeners,
+        getLog:             getLog
       };
   })
 ;

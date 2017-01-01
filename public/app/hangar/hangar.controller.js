@@ -14,8 +14,7 @@
 
 angular
   .module('ForgeApp')
-  .controller('HangarCtrl', function ($scope, Error, Session, $http,
-    $uibModal, $state, $rootScope, API) {
+  .controller('HangarCtrl', function ($scope, $rootScope, Error, API) {
 
       API.enableUpdates();
 
@@ -25,6 +24,16 @@ angular
 
       $rootScope.$on('telem:update', function(ev, data) {
         $scope.telem = data;
+
+        $scope.logs = [];
+        var logs = API.getLog();
+
+        for (var i = logs.length-1; i >= 0; --i) {
+          var log = logs[i];
+
+          $scope.logs.push('REQUEST | ' + log.toString);
+          $scope.logs.push(log.response);
+        }
 
         // if online, subscribe
         angular.forEach($scope.telem, function(drone, key) {

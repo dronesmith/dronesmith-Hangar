@@ -39,7 +39,7 @@
           <div class="col-sm-4">
             <div class="well" ng-init="isCollapsed = true">
               <h3>{{drone.name || "drone-" + drone.firmwareId}} <small>
-                  <a href="" ng-click="isCollapsed=!isCollapsed; updateDrone(isCollapsed, drone.name, newname)">{{isCollapsed ? 'edit' : 'update'}}</a></small></h3>
+                  <a href="" ng-show="!telem[drone.name].online" ng-click="isCollapsed=!isCollapsed; updateDrone(isCollapsed, drone.name, newname)">{{isCollapsed ? 'edit' : 'update'}}</a></small></h3>
               <div uib-collapse="isCollapsed">
                 <form class="well-sm">
                   <fieldset class="form-group">
@@ -114,4 +114,7 @@
         </div>
       </uib-accordion-group>
     </uib-accordion>
+
+    <h2>Log</h2>
+    <pre>{{logs | json}}</pre>
 </section>
