@@ -29,6 +29,9 @@ angular
       // Static drone data
       var drones = {};
 
+      // Event listeners
+      var events = {};
+
       var updatesEnabled = false;
 
       // Update loop
@@ -62,6 +65,16 @@ angular
         });
       };
 
+      var droneCmd = function(droneName, cmd, body, cb) {
+        $http({
+          method: 'POST',
+          url: '/api/drone/'+droneName+'/'+cmd,
+          body: body
+        }).then(function successCallback(response) {
+          cb(response.data);
+        }, Error);
+      }
+
       var getDrones = function() {
         $http({
           method: 'GET',
@@ -80,12 +93,32 @@ angular
 
             // Ping each drone to see if it's online
             if (telem[drone.name].online) {
-              getTelem(drone.name, 'status');
-              getTelem(drone.name, 'info');
-              getTelem(drone.name, 'position');
+              // Fire events
+              for (var k in events) {
+                if (events[k]) {
+                  var ev = k.split(':')
+                  getTelem(ev[0], ev[1]);
+                }
+              }
             }
           });
         }, Error);
+      }
+
+      var addListener = function(droneName, telem) {
+        events[droneName+":"+telem] = true;
+      }
+
+      var removeListener = function(droneName, telem) {
+        events[droneName+":"+telem] = false;
+      }
+
+      var removeAllListeners = function(droneName) {
+        for (var k in events) {
+          if (k.split(':')[0] == droneName) {
+            events[k] = false;
+          }
+        }
       }
 
       var updateDrone = function(oldname, newname) {
@@ -151,15 +184,19 @@ angular
       }
 
       return {
-        getDrones:      getDrones,
-        getTelem:       getTelem,
-        newDrone:       newDrone,
-        initDrone:      initDrone,
-        delDrone:       delDrone,
-        updateDrone:    updateDrone,
-        enableUpdates:  enableUpdates,
-        disableUpdates: disableUpdates,
-        checkOnline:    checkOnline
+        getDrones:          getDrones,
+        getTelem:           getTelem,
+        newDrone:           newDrone,
+        initDrone:          initDrone,
+        delDrone:           delDrone,
+        updateDrone:        updateDrone,
+        enableUpdates:      enableUpdates,
+        disableUpdates:     disableUpdates,
+        droneCmd:           droneCmd,
+        checkOnline:        checkOnline,
+        addListener:        addListener,
+        removeListener:     removeListener,
+        removeAllListeners: removeAllListeners
       };
   })
 ;
