@@ -34,6 +34,9 @@ angular
       // Update loop
       $interval(function () {
         if (updatesEnabled) {
+
+          checkOnline();
+
           getDrones();
 
           // Don't want to overload telem
@@ -76,9 +79,11 @@ angular
             }
 
             // Ping each drone to see if it's online
-            getTelem(drone.name, 'status');
-            getTelem(drone.name, 'info');
-            getTelem(drone.name, 'position');
+            if (telem[drone.name].online) {
+              getTelem(drone.name, 'status');
+              getTelem(drone.name, 'info');
+              getTelem(drone.name, 'position');
+            }
           });
         }, Error);
       }
@@ -124,6 +129,7 @@ angular
 
       var enableUpdates = function() {
         updatesEnabled = true;
+        checkOnline();
         getDrones(); // force reload
       }
 
@@ -131,17 +137,29 @@ angular
         updatesEnabled = false;
       }
 
-      // getDrones();
+      var checkOnline = function() {
+        $http({
+          method: 'GET',
+          url: '/index/online'
+        }).then(function successCallback(response) {
+          var drones = response.data.drones;
+          for (var k in drones) {
+            var online = drones[k];
+            telem[k].online = online;
+          }
+        }, Error);
+      }
 
       return {
-        getDrones:    getDrones,
-        getTelem:     getTelem,
-        newDrone:     newDrone,
-        initDrone:    initDrone,
-        delDrone:     delDrone,
-        updateDrone:  updateDrone,
-        enableUpdates: enableUpdates,
-        disableUpdates: disableUpdates
+        getDrones:      getDrones,
+        getTelem:       getTelem,
+        newDrone:       newDrone,
+        initDrone:      initDrone,
+        delDrone:       delDrone,
+        updateDrone:    updateDrone,
+        enableUpdates:  enableUpdates,
+        disableUpdates: disableUpdates,
+        checkOnline:    checkOnline
       };
   })
 ;

@@ -41,6 +41,9 @@ module.exports = function(app, route) {
         // Get use info
         .get    ('/index/user',                   api.getUser)
 
+        // Check to see what drones are online or not
+        .get    ('/index/online',                 api.checkDrones)
+
         // API requests
         .post   ('/api/*',                        api.postHandler)
         .put    ('/api/*',                        api.putHandler)
