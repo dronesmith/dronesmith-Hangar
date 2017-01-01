@@ -21,13 +21,9 @@ angular
     'ngSanitize',
     'ui.router',
     'ui.bootstrap',
-    'ui.uploader',
-    'ui.map',
-    'ui.ace',
-    'nvd3',
-    'ngCsv',
     'nemLogging',
-    'ui-leaflet'
+    'ui-leaflet',
+    'ui.scroll'
   ])
 
   // Global configuration here

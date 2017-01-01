@@ -38,9 +38,9 @@ angular
       var logAPICall = function(method, string, body, response) {
         apiLog.push({
           method: method,
-          url: 'http://api.dronesmith.io'+'/'+string,
+          url: 'http://api.dronesmith.io'+string,
           body: JSON.stringify(body),
-          response: JSON.stringify(response),
+          response: response,
           time: new Date(),
           toString: '['+method.toUpperCase()+'] ' + string
         });
