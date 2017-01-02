@@ -90,7 +90,7 @@ angular
         $http({
           method: 'POST',
           url: '/api/drone/'+droneName+'/'+cmd,
-          body: body
+          data: body
         }).then(function successCallback(response) {
           logAPICall('POST', '/api/drone/'+droneName+'/'+cmd, body, response.data);
           cb(response.data);

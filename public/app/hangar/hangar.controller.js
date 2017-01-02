@@ -27,6 +27,12 @@ angular
 
         // if online, subscribe
         angular.forEach($scope.telem, function(drone, key) {
+
+          // We don't use these
+          API.removeListener(key, 'attitude');
+          API.removeListener(key, 'rates');
+          API.removeListener(key, 'mode');
+
           if (drone.online) {
             API.addListener(key, 'status');
             API.addListener(key, 'position');
