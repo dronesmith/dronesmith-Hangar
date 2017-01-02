@@ -22,8 +22,7 @@ angular
     'ui.router',
     'ui.bootstrap',
     'nemLogging',
-    'ui-leaflet',
-    'ui.scroll'
+    'ui-leaflet'
   ])
 
   // Global configuration here

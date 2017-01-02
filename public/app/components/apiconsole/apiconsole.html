@@ -25,9 +25,27 @@
       <p><em>Under construction</em></p>
     </div>
     <div class="col-sm-6">
-      <h4>API Log</h4>
+      <h4>API Log <small>Click any log item to see request body and reponse</small></h4>
       <hr>
-      <div style="height: 35vh;" ui-scroll-viewport>
+
+      <div style="height: 33vh; overflow: scroll;">
+        <div style="position: relative;">
+          <li style="list-style: none" ng-repeat="item in datalogs">
+            <div ng-init="collapsed=true" ng-click="collapsed=!collapsed">
+
+              <span class="label" ng-class="item.methodClass">{{item.method}}</span> <a href="">[{{item.time | date:'HH:mm:ss'}}] {{item.url}}</a><br>
+             <pre style="
+                 font-size: 10px;
+                 margin: 5px 5px 5px 5px;
+               "
+               ng-hide="collapsed">Body: {{item.body | json}} <br>Response: {{item.response.data | json}}
+             </pre>
+           </div>
+         </li>
+        </div>
+      </div>
+
+      <!-- <div style="height: 35vh;" ui-scroll-viewport>
   	       <li style="list-style: none" ui-scroll="item in datalogs">
              <div ng-init="collapsed=true" ng-click="collapsed=!collapsed">
 
@@ -40,6 +58,6 @@
               </pre>
             </div>
           </li>
-      </div>
+      </div> -->
     </div>
 </section>

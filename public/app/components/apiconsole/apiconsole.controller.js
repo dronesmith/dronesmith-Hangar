@@ -20,31 +20,51 @@ angular
     $scope.opened = false;
     $scope.selectGlyph = "glyphicon-triangle-top";
 
-    $scope.datalogs = {};
-    $scope.datalogs.get = function(index, count, success) {
+    $scope.datalogs = [];
 
-      $interval(function() {
-        var logs = API.getLog();
-        var chunk = [];
+    $rootScope.$on('telem:update', function(ev, data) {
+      $scope.datalogs = [];
+      var logs = API.getLog();
 
-        for (var i = index; i < logs.length && i <= index + count - 1; i++) {
-          var log = logs[i];
+      for (var i = logs.length-1; i >= 0; --i) {
+        var log = logs[i];
 
-          if (log) {
-            switch (log.method) {
-              case 'GET': log.methodClass = 'label-success'; break;
-              case 'POST': log.methodClass = 'label-info'; break;
-              case 'PUT': log.methodClass = 'label-default'; break;
-              case 'DELETE': log.methodClass = 'label-danger'; break;
-            }
-
-            chunk.push(log);
-          }
+        switch (log.method) {
+          case 'GET': log.methodClass = 'label-success'; break;
+          case 'POST': log.methodClass = 'label-info'; break;
+          case 'PUT': log.methodClass = 'label-default'; break;
+          case 'DELETE': log.methodClass = 'label-danger'; break;
         }
 
-        success(chunk);
-      }, 2000);
-    };
+        $scope.datalogs.push(log);
+      }
+    });
+
+    // $scope.datalogs = {};
+    // $scope.datalogs.get = function(index, count, success) {
+    //
+    //   $interval(function() {
+    //     var logs = API.getLog();
+    //     var chunk = [];
+    //
+    //     for (var i = index; i < logs.length && i <= index + count - 1; i++) {
+    //       var log = logs[i];
+    //
+    //       if (log) {
+    //         switch (log.method) {
+    //           case 'GET': log.methodClass = 'label-success'; break;
+    //           case 'POST': log.methodClass = 'label-info'; break;
+    //           case 'PUT': log.methodClass = 'label-default'; break;
+    //           case 'DELETE': log.methodClass = 'label-danger'; break;
+    //         }
+    //
+    //         chunk.push(log);
+    //       }
+    //     }
+    //
+    //     success(chunk);
+    //   }, 2000);
+    // };
 
     $scope.toggleView = function() {
       $scope.opened = !$scope.opened;

@@ -34,12 +34,14 @@ angular
 
       var updatesEnabled = false;
 
+      var selectedDrone = null;
+
       // Logging
       var logAPICall = function(method, string, body, response) {
         apiLog.push({
           method: method,
           url: 'http://api.dronesmith.io'+string,
-          body: JSON.stringify(body),
+          body: body,
           response: response,
           time: new Date(),
           toString: '['+method.toUpperCase()+'] ' + string
@@ -208,6 +210,18 @@ angular
         }, Error);
       }
 
+      var selectDrone = function(name) {
+        if (drones[drone.name]) {
+          $scope.selectedDrone = drones[drone.name];
+        } else {
+          $scope.selectedDrone = null;
+        }
+      }
+
+      var getSelectedDrone = function() {
+        return $scope.selectedDrone;
+      };
+
       return {
         getDrones:          getDrones,
         getTelem:           getTelem,
@@ -222,7 +236,9 @@ angular
         addListener:        addListener,
         removeListener:     removeListener,
         removeAllListeners: removeAllListeners,
-        getLog:             getLog
+        getLog:             getLog,
+        selectDrone:        selectDrone,
+        getSelectedDrone:   getSelectedDrone
       };
   })
 ;
