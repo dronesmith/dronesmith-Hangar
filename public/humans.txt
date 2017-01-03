@@ -6,9 +6,3 @@
   Name: Dronesmith Technologies, Inc
   Contact: hello@dronesmith.io
   Twitter: @dronesmithtech
-
-/*
-  Part of the Dronesmith Suite. This is in rapid development, and subject to change on a frequent basis.
-
-  Found a bug? https://airtable.com/shr6AcuZL30PB4EPH
-*/

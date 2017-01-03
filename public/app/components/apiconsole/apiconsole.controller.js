@@ -16,9 +16,6 @@ angular
   .module('ForgeApp')
   .controller('APIConsoleCtrl', function ($scope, $rootScope, $interval, API) {
 
-    // API Console start
-    API.enableUpdates();
-
     $scope.methods = [
         {id: "1", name: "GET"},
         {id: "2", name: "POST"},
@@ -29,6 +26,18 @@ angular
     $rootScope.$on('drone:update', function(ev, data) {
       $scope.drones = data;
     });
+
+    $scope.validJSON = true;
+
+    $scope.testJSON = function(json) {
+      var validJSON;
+      try {
+        validJSON = JSON.parse(json);
+        $scope.validJSON = true;
+      } catch(e) {
+        $scope.validJSON = false;
+      }
+    }
 
     $scope.sendRequest = function(method, drone, urlportion, body) {
       // Clear Response text

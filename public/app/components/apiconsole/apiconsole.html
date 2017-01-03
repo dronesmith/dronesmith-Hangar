@@ -23,7 +23,7 @@
       <h4>API Console</h4>
       <hr>
       <div style="height: 26vh; overflow: scroll;">
-        <div class="col-sm-12">
+        <!-- <div class="col-sm-12"> -->
           <form class="form">
                 <div class="row" style="margin-top:20px;">
                   <div class="col-xs-6">
@@ -62,7 +62,8 @@
                 <div class="row" style="margin-top:10px;">
                   <div class="col-xs-12">
                     <label class="control-label">Body</label>
-                    <textarea ng-model="request.body" class="form-control" rows="3" style="overflow-y: scroll;
+                    <p ng-hide="validJSON" class="text-danger">Invalid JSON.</p>
+                    <textarea ng-model="request.body" ng-model-options="{ debounce: 1000 }" ng-change="testJSON(request.body)" class="form-control" rows="3" style="overflow-y: scroll;
                          resize: none;" ></textarea>
                   </div>
                 </div>
@@ -87,7 +88,7 @@
                   </div>
                 </div>
               </form>
-        </div>
+        <!-- </div> -->
 
       </div>
     </div>
