@@ -16,6 +16,42 @@ angular
   .module('ForgeApp')
   .controller('APIConsoleCtrl', function ($scope, $rootScope, $interval, API) {
 
+    // API Console start
+    API.enableUpdates();
+
+    $scope.methods = [
+        {id: "1", name: "GET"},
+        {id: "2", name: "POST"},
+        {id: "4", name: "DELETE"},
+        {id: "3", name: "PUT"}
+    ];
+
+    $rootScope.$on('drone:update', function(ev, data) {
+      $scope.drones = data;
+    });
+
+    $scope.sendRequest = function(method, drone, urlportion, body) {
+      // Clear Response text
+      $scope.response = null;
+
+      // Determine if entered url contains {drone} and replace
+      // with current selected drone
+      if (/({drone})/.test(urlportion)) {
+        urlportion = urlportion.replace(/({drone})/, $scope.request.drone.name);
+      }
+
+
+      // Send API request
+      API.sendRequest(method, drone, urlportion, body, function(response){
+        $scope.response = response;
+      });
+    }
+
+    // API Console end
+
+
+
+
     $scope.selectHeight = {"height": "5vh"};
     $scope.opened = false;
     $scope.selectGlyph = "glyphicon-triangle-top";

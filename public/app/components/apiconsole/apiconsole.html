@@ -22,7 +22,74 @@
     <div class="col-sm-6">
       <h4>API Console</h4>
       <hr>
-      <p><em>Under construction</em></p>
+      <div style="height: 26vh; overflow: scroll;">
+        <div class="col-sm-12">
+          <form class="form">
+                <div class="row" style="margin-top:20px;">
+                  <div class="col-xs-6">
+                    <!-- <label class="control-label">Method</label> -->
+                    <div class="input-group">
+                      <div class="input-group-addon"><strong>Method</strong></div>
+                      <select class="form-control" ng-model="request.method"
+                        ng-options="option.name for option in methods track by option.name">
+                      </select>
+                  </div>
+                  <!-- <span id="helpBlock" class="help-block">{{request.method.name}}</span> -->
+                  </div>
+                  <div class="col-xs-6">
+                    <!-- <label class="control-label">Drone</label> -->
+                    <div class="input-group">
+                      <div class="input-group-addon"><strong>Drone</strong></div>
+                      <select class="selectpicker form-control"
+                        ng-model="request.drone"
+                        ng-options="option.name for option in drones track by option.id">
+                      </select>
+                    </div>
+                    <!-- <span id="helpBlock" class="help-block">{{request.drone.name}}</span> -->
+
+                  </div>
+                </div>
+                <div class="row" style="margin-top:20px;">
+                  <div class="col-xs-12">
+                    <!-- <label class="control-label">URL</label> -->
+                    <div class="input-group">
+                      <div class="input-group-addon"> <strong>URL </strong> &nbsp api.dronesmith.io/api/</div>
+                      <input ng-model="request.urlportion" type="text" class="form-control" placeholder="drone/{drone}/position">
+                    </div>
+                    <span id="helpBlock" class="help-block">Use <strong>{drone}</strong> in the url and it will be replaced with the currently selected drone on Send.</span>
+                  </div>
+                </div>
+                <div class="row" style="margin-top:10px;">
+                  <div class="col-xs-12">
+                    <label class="control-label">Body</label>
+                    <textarea ng-model="request.body" class="form-control" rows="3" style="overflow-y: scroll;
+                         resize: none;" ></textarea>
+                  </div>
+                </div>
+                <div class="row" style="margin-top:20px;">
+                  <div class="col-xs-12">
+                    <button type="submit" ng-click="sendRequest(request.method.name, request.drone, request.urlportion, request.body)" class="btn btn-primary">Send</button>
+
+                  </div>
+                </div>
+                <div class="row" style="margin-top:20px;">
+                  <div class="col-xs-6">
+                    <h4><strong>Response</strong></h4>
+                  </div>
+                  <div class="col-xs-6">
+                    <h4><span>Status: </span>{{response.status}} <span>{{response.statusText}}</span></h4>
+                  </div>
+                </div>
+                <div class="row" style="margin-bottom: 20px;">
+                  <div class="col-xs-12">
+
+                    <pre style="height: 300px; overflow: auto;">{{response.data.data | json}}</pre>
+                  </div>
+                </div>
+              </form>
+        </div>
+
+      </div>
     </div>
     <div class="col-sm-6">
       <h4>API Log <small>Click any log item to see request body and reponse</small></h4>
