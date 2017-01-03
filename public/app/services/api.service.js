@@ -65,7 +65,7 @@ angular
           // Don't want to overload telem
           $rootScope.$broadcast('telem:update', telem);
         }
-      }, 2000);
+      }, 5000);
 
       var getTelem = function(drone, name) {
         $http({
@@ -104,6 +104,8 @@ angular
         }).then(function successCallback(response) {
           logAPICall('GET', '/api/drone/', {}, response.data);
           drones = response.data.data.drones;
+
+          console.log(events);
 
           // Fire event
           $rootScope.$broadcast('drone:update', drones);

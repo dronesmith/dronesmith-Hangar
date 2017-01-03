@@ -6,6 +6,61 @@ angular
     $uibModal, $state, $rootScope, API, leafletData) {
       API.enableUpdates();
 
+      var droneMarker = L.divIcon({
+        className: 'map-marker chevron',
+        iconSize: null,
+        html:'<div class="icon"></div><div class="arrow" />'
+      });
+
+      angular.extend($scope, {
+        defaults: {
+          // tileLayer: 'http://{s}.tile.opencyclemap.org/cycle/{z}/{x}/{y}.png',
+          maxZoom: 20,
+          center: {
+            lat: 40.7420,
+            lng: -73.9876,
+            zoom: 18
+          },
+          path: {
+            weight: 10,
+            color: '#800000',
+            opacity: 1
+          }
+        }
+      });
+
+      leafletData.getMap('groundcontrol').then(function(map) {
+        map.addLayer(MQ.mapLayer());
+        map.on('click', function(ev) {
+
+          var modalInstance = $uibModal.open({
+            animation: true,
+            templateUrl: 'gotoModal.html',
+            controller: 'GotoModalCtrl',
+            size: 'md',
+            resolve: {
+              target: function () {
+                return {
+                  name: $scope.currentDrone.name,
+                  lat: ev.latlng.lat, lon: ev.latlng.lng, time: 0
+                };
+              }
+            }
+          });
+
+          modalInstance.result.then(function (selectedItem) {
+            console.log("Got here", selectedItem);
+          }, function () {
+            console.log("Got no args");
+          });
+
+          // console.log(ev);
+          // GroundControlApi.commandRequest('goto', {lat: e.latlng.lat, lon: e.latlng.lng})
+        });
+      });
+
+      $scope.droneGeo = {};
+
       $scope.currentDrone = null;
       $scope.currentDroneTelem = null;
 
@@ -54,23 +109,9 @@ angular
       }
 
       $scope.selectDrone = function(drone) {
-        if ($scope.currentDrone) {
-          console.log('Sys: Removing events for ' + $scope.currentDrone.name);
-          API.removeListener($scope.currentDrone.name, 'position');
-          API.removeListener($scope.currentDrone.name, 'attitude');
-          API.removeListener($scope.currentDrone.name, 'rates');
-        }
-
         // API.selectDrone(name);
         // $scope.currentDrone = API.getSelectedDrone();
         $scope.currentDrone = drone || null;
-
-        if ($scope.currentDrone) {
-          console.log('Sys: Adding events for ' + $scope.currentDrone.name);
-          API.addListener($scope.currentDrone.name, 'position');
-          API.addListener($scope.currentDrone.name, 'attitude');
-          API.addListener($scope.currentDrone.name, 'rates');
-        }
       }
 
       $rootScope.$on('drone:update', function(ev, data) {
@@ -85,9 +126,15 @@ angular
           if (drone.online) {
             API.addListener(key, 'status');
             API.addListener(key, 'mode');
+            API.addListener(key, 'position');
+            API.addListener(key, 'attitude');
+            API.addListener(key, 'rates');
           } else {
             API.removeListener(key, 'status');
             API.removeListener(key, 'mode');
+            API.removeListener(key, 'position');
+            API.removeListener(key, 'attitude');
+            API.removeListener(key, 'rates');
           }
         });
       });
@@ -95,32 +142,40 @@ angular
       $rootScope.$on('telem:update', function(ev, data) {
         $scope.telem = data;
 
+        angular.forEach($scope.telem, function(drone, key) {
+          if ($scope.droneGeo[key]) {
+            var pos = $scope.telem[key].position;
+            if (pos) {
+              var newLatLng = new L.LatLng(pos.Latitude, pos.Longitude);
+              $scope.droneGeo[key].marker.setLatLng(newLatLng);
+              $scope.droneGeo[key].marker.setRotationAngle(pos.Heading);
+            }
+          } else {
+            $scope.droneGeo[key] = {};
+            $scope.droneGeo[key].marker = L.marker([40.7420, -73.9876], {icon: droneMarker});
+            leafletData.getMap('groundcontrol').then(function(map) {
+              $scope.droneGeo[key].marker.addTo(map);
+            });
+          }
+        });
+
         if ($scope.currentDrone) {
           $scope.currentDroneTelem = $scope.telem[$scope.currentDrone.name];
         }
       });
 
 
-      leafletData.getMap('groundcontrol').then(function(map) {
-        map.addLayer(MQ.mapLayer());
-      })
-
-      angular.extend($scope, {
-        defaults: {
-          // tileLayer: 'http://{s}.tile.opencyclemap.org/cycle/{z}/{x}/{y}.png',
-          maxZoom: 18,
-          center: {
-            lat: 40.7420,
-            lng: -73.9876,
-            zoom: 14
-          },
-          path: {
-            weight: 10,
-            color: '#800000',
-            opacity: 1
-          }
-        }
-      });
     }
   )
+  .controller('GotoModalCtrl', function ($scope, $uibModalInstance, target) {
+    $scope.target = target;
+
+    $scope.ok = function() {
+      $uibModalInstance.close();
+    }
+
+    $scope.cancel = function() {
+      $uibModalInstance.dismiss('cancel');
+    }
+  })
 ;
