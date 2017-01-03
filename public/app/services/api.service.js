@@ -223,6 +223,19 @@ angular
       var getSelectedDrone = function() {
         return $scope.selectedDrone;
       };
+      // Send API request
+      var sendRequest = function(method, drone, urlportion, body, callback){
+        $http({
+          method: method,
+          url: "/api/" + urlportion,
+          data: body
+        }).then(function successCallback(response) {
+          callback(response);
+          getDrones();
+        }, function errorCallback(response) {
+          callback(response);
+        });
+      }
 
       return {
         getDrones:          getDrones,
@@ -240,7 +253,8 @@ angular
         removeAllListeners: removeAllListeners,
         getLog:             getLog,
         selectDrone:        selectDrone,
-        getSelectedDrone:   getSelectedDrone
+        getSelectedDrone:   getSelectedDrone,
+        sendRequest: sendRequest
       };
   })
 ;
