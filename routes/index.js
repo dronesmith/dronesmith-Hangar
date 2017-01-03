@@ -21,7 +21,8 @@
 var
   path = require('path'),
   session = require('../lib/controllers/session'),
-  api = require('../lib/controllers/api')
+  api = require('../lib/controllers/api'),
+  mission = require('../lib/controllers/mission')
   ;
 
 module.exports = function(app, route) {
@@ -43,6 +44,15 @@ module.exports = function(app, route) {
 
         // Check to see what drones are online or not
         .get    ('/index/online',                 api.checkDrones)
+
+        // Upload a mission
+        .post   ('mission/start',                 mission.start)
+
+        // Pause a mission
+        .post   ('mission/pause',                 mission.pause)
+
+        // Stop (delete) a mission
+        .post   ('mission/stop',                  mission.stop)
 
         // API requests
         .post   ('/api/*',                        api.postHandler)

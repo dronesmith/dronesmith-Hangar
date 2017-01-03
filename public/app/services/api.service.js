@@ -230,6 +230,7 @@ angular
           url: "/api/" + urlportion,
           data: body
         }).then(function successCallback(response) {
+            logAPICall(method, "/api/" + urlportion, body, response.data);
           callback(response);
           getDrones();
         }, function errorCallback(response) {
@@ -254,7 +255,7 @@ angular
         getLog:             getLog,
         selectDrone:        selectDrone,
         getSelectedDrone:   getSelectedDrone,
-        sendRequest: sendRequest
+        sendRequest:        sendRequest
       };
   })
 ;
