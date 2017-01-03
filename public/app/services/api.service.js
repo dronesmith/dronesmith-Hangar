@@ -105,7 +105,7 @@ angular
           logAPICall('GET', '/api/drone/', {}, response.data);
           drones = response.data.data.drones;
 
-          console.log(events);
+          // console.log(events);
 
           // Fire event
           $rootScope.$broadcast('drone:update', drones);

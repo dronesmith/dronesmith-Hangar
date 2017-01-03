@@ -90,8 +90,13 @@
         <h3 class="modal-title" id="modal-title">Send vehicle {{target.name}} here?</h3>
       </div>
       <div class="modal-body" id="modal-body">
-        Location coordinates: <strong>({{target.lat}}, {{target.lon}})</strong><br>
-        Approximate travel time: <strong>{{target.time}}</strong>
+        Location coordinates: <strong>({{target.lat | number:'5'}}, {{target.lon | number:'5'}})</strong><br>
+        Approximate travel time: <strong>
+          <span ng-show="target.time > 3600000">{{target.time | date:'h'}} hours,</span>
+          <span ng-show="target.time > 60000">{{target.time | date:'m'}} minutes</span>,
+          and {{target.time | date:'s'}} seconds.</strong><br>
+
+        Distance: <strong>{{target.dist | number:'2'}} miles.</strong>
       </div>
       <div class="modal-footer">
         <button class="btn btn-primary" type="button" ng-click="ok()">Confirm</button>

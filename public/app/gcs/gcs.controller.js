@@ -33,29 +33,69 @@ angular
         map.addLayer(MQ.mapLayer());
         map.on('click', function(ev) {
 
-          var modalInstance = $uibModal.open({
-            animation: true,
-            templateUrl: 'gotoModal.html',
-            controller: 'GotoModalCtrl',
-            size: 'md',
-            resolve: {
-              target: function () {
-                return {
-                  name: $scope.currentDrone.name,
-                  lat: ev.latlng.lat, lon: ev.latlng.lng, time: 0
-                };
-              }
+          var directions = MQ.routing.directions().on('success', function(data) {
+            var legs = data.route.legs;
+            console.log("Got route:", legs);
+             if (legs && legs.length > 0) {
+               var mission = legs[0].maneuvers;
+               console.log(mission);
+               var time = 0;
+               var dist = 0;
+               var dps = [];
+
+               for (var i  = 0; i < mission.length; ++i) {
+                 time += mission[i].time
+                 dist += mission[i].distance
+                 dps.push(new L.LatLng(mission[i].startPoint.lat, mission[i].startPoint.lng));
+               }
+
+               if ($scope.droneGeo[$scope.currentDrone.name].route) {
+                 $scope.droneGeo[$scope.currentDrone.name].route.removeFrom(map);
+               }
+
+               $scope.droneGeo[$scope.currentDrone.name].route = L.polyline(dps, {color: 'red'}).addTo(map);
+
+              //  map.addLayer(MQ.routing.routeLayer({
+              //    directions: directions,
+              //    fitBounds: true
+              //  }));
+
+               var modalInstance = $uibModal.open({
+                 animation: true,
+                 templateUrl: 'gotoModal.html',
+                 controller: 'GotoModalCtrl',
+                 size: 'md',
+                 resolve: {
+                   target: function () {
+                     return {
+                       name: $scope.currentDrone.name,
+                       lat: ev.latlng.lat, lon: ev.latlng.lng,
+                       time: time * 1000, dist: dist,
+                       dir: directions
+                     };
+                   }
+                 }
+               });
+
+               modalInstance.result.then(function () {
+                 // Upload to server
+                 console.log("Uploading mission...");
+                 // API.beginMission()
+               });
+             }
+          });
+
+          if ($scope.currentDroneTelem) {
+            var pos = $scope.currentDroneTelem.position;
+            if (pos) {
+              directions.route({
+                locations: [
+                  ''+pos.Latitude+', '+pos.Longitude,
+                  ''+ev.latlng.lat+', '+ev.latlng.lng
+                ]
+              });
             }
-          });
-
-          modalInstance.result.then(function (selectedItem) {
-            console.log("Got here", selectedItem);
-          }, function () {
-            console.log("Got no args");
-          });
-
-          // console.log(ev);
-          // GroundControlApi.commandRequest('goto', {lat: e.latlng.lat, lon: e.latlng.lng})
+          }
         });
       });
 
@@ -167,7 +207,8 @@ angular
 
     }
   )
-  .controller('GotoModalCtrl', function ($scope, $uibModalInstance, target) {
+  .controller('GotoModalCtrl', function ($scope, $uibModalInstance,
+    leafletData, target) {
     $scope.target = target;
 
     $scope.ok = function() {
