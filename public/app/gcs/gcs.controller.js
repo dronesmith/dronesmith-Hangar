@@ -9,7 +9,7 @@ angular
       function getDroneMarker(name) {
         return L.divIcon({
           className: 'chevron',
-          html:'<div id="'+ name +'" class="icon"></div><p class="text-danger" style="font-weight: bold;position: relative; right: 50px;">'+name+'</p><div class="arrow" />'
+          html:'<div id="'+ name +'" class="icon"></div><p class="text-warning" style="font-weight: bold;position: relative; right: 50px;">'+name+'</p><div class="arrow" />'
         });
 
       }
@@ -85,6 +85,8 @@ angular
                  // Upload to server
                  console.log("Uploading mission...");
                  API.flyRoute($scope.currentDrone.name, mission);
+               }, function() {
+                 $scope.droneGeo[$scope.currentDrone.name].route.removeFrom(map);
                });
              }
           });
@@ -153,9 +155,14 @@ angular
       $scope.selectDrone = function(drone) {
         $scope.currentDrone = drone || null;
 
+        leafletData.getMap('groundcontrol').then(function(map) {
+          if ($scope.currentDrone.position) {
+            map.panTo(new L.LatLng($scope.currentDrone.position.Latitude, $scope.currentDrone.position.Longitude));
+          }
+        });
+
         if ($scope.currentDrone) {
           API.getRoute($scope.currentDrone.name, function(res) {
-            console.log(res);
 
             if (!res) {
               return;
@@ -170,6 +177,12 @@ angular
             leafletData.getMap('groundcontrol').then(function(map) {
               if ($scope.droneGeo[$scope.currentDrone.name].route) {
                 $scope.droneGeo[$scope.currentDrone.name].route.removeFrom(map);
+              }
+
+              for (var k in $scope.droneGeo) {
+                if ($scope.droneGeo[k].route) {
+                  $scope.droneGeo[k].route.removeFrom(map);
+                }
               }
 
               $scope.droneGeo[$scope.currentDrone.name].route = L.polyline(dps, {color: 'red'}).addTo(map);

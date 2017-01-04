@@ -52,10 +52,10 @@ module.exports = function(app, route) {
         .get    ('/mission/:name',                 mission.get)
 
         // Pause a mission
-        .post   ('/mission/pause',                 mission.pause)
+        .post   ('/mission/:name/pause',           mission.pause)
 
         // Stop (delete) a mission
-        .post   ('/mission/stop',                  mission.stop)
+        .post   ('/mission/:name/stop',           mission.stop)
 
         // API requests
         .post   ('/api/*',                        api.postHandler)

@@ -16,19 +16,28 @@ angular
   .module('ForgeApp')
   .factory('Error', function($state, $uibModal) {
 
+    var ModalOpened = false;
+
     return function(error, kind) {
       switch (kind) {
         case 'session:null': $state.go('login'); break;
         default:
           // error modal
-          $uibModal.open({
-            animation: true,
-            templateUrl: 'app/components/errorModal/errorModal.html',
-            controller: 'ErrorModalCtrl',
-            resolve: {
-              error: function() { return error }
-            }
-          });
+          if (!ModalOpened) {
+            ModalOpened = true;
+            var instance = $uibModal.open({
+              animation: true,
+              templateUrl: 'app/components/errorModal/errorModal.html',
+              controller: 'ErrorModalCtrl',
+              resolve: {
+                error: function() { return error }
+              }
+            });
+
+            instance.result.then(function () {
+              ModalOpened = false;
+            });
+          }
           break;
       }
 
