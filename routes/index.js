@@ -46,13 +46,16 @@ module.exports = function(app, route) {
         .get    ('/index/online',                 api.checkDrones)
 
         // Upload a mission
-        .post   ('mission/start',                 mission.start)
+        .post   ('/mission/start',                 mission.start)
+
+        // Get all missions
+        .get    ('/mission/:name',                 mission.get)
 
         // Pause a mission
-        .post   ('mission/pause',                 mission.pause)
+        .post   ('/mission/pause',                 mission.pause)
 
         // Stop (delete) a mission
-        .post   ('mission/stop',                  mission.stop)
+        .post   ('/mission/stop',                  mission.stop)
 
         // API requests
         .post   ('/api/*',                        api.postHandler)

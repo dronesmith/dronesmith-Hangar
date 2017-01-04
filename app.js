@@ -113,6 +113,7 @@ app.use(function (error, req, res, next) {
 
 app.locals.pretty = true;
 
+require('./lib/controllers/mission.js').init();
 
 if (cluster.isMaster
     && (app.get('env') !== 'development')

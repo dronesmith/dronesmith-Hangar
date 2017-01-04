@@ -6,11 +6,13 @@ angular
     $uibModal, $state, $rootScope, API, leafletData) {
       API.enableUpdates();
 
-      var droneMarker = L.divIcon({
-        className: 'map-marker chevron',
-        iconSize: null,
-        html:'<div class="icon"></div><div class="arrow" />'
-      });
+      function getDroneMarker(name) {
+        return L.divIcon({
+          className: 'chevron',
+          html:'<div id="'+ name +'" class="icon"></div><p class="text-danger" style="font-weight: bold;position: relative; right: 50px;">'+name+'</p><div class="arrow" />'
+        });
+
+      }
 
       angular.extend($scope, {
         defaults: {
@@ -82,7 +84,7 @@ angular
                modalInstance.result.then(function () {
                  // Upload to server
                  console.log("Uploading mission...");
-                 // API.beginMission()
+                 API.flyRoute($scope.currentDrone.name, mission);
                });
              }
           });
@@ -150,6 +152,30 @@ angular
 
       $scope.selectDrone = function(drone) {
         $scope.currentDrone = drone || null;
+
+        if ($scope.currentDrone) {
+          API.getRoute($scope.currentDrone.name, function(res) {
+            console.log(res);
+
+            if (!res) {
+              return;
+            }
+            var mission = res.chunk;
+            var dps = [];
+
+            for (var i  = 0; i < mission.length; ++i) {
+              dps.push(new L.LatLng(mission[i].startPoint.lat, mission[i].startPoint.lng));
+            }
+
+            leafletData.getMap('groundcontrol').then(function(map) {
+              if ($scope.droneGeo[$scope.currentDrone.name].route) {
+                $scope.droneGeo[$scope.currentDrone.name].route.removeFrom(map);
+              }
+
+              $scope.droneGeo[$scope.currentDrone.name].route = L.polyline(dps, {color: 'red'}).addTo(map);
+            });
+          });
+        }
       }
 
       $scope.deselectDrone = function() {
@@ -158,6 +184,7 @@ angular
 
       $rootScope.$on('drones:update', function(ev, data) {
         $scope.drones = data;
+
         angular.forEach($scope.drones, function(drone) {
           if (drone.online) {
             if ($scope.currentDrone) {
@@ -177,11 +204,11 @@ angular
                 }
               } else {
                 $scope.droneGeo[drone.name] = {};
-                $scope.droneGeo[drone.name].marker = L.marker([drone.position.Latitude, drone.position.Latitude], {icon: droneMarker});
+                $scope.droneGeo[drone.name].marker = L.marker([drone.position.Latitude, drone.position.Latitude], {icon: getDroneMarker(drone.name)});
                 leafletData.getMap('groundcontrol').then(function(map) {
                   $scope.droneGeo[drone.name].marker.addTo(map);
                 });
-              }  
+              }
             }
           }
         });

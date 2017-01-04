@@ -144,6 +144,25 @@ angular
         }, Error);
       }
 
+      var flyRoute = function(name, route, cb) {
+        $http({
+          method: 'POST',
+          url: '/mission/start',
+          data: {name: name, mission: route}
+        }).then(function(res) {
+          cb(res);
+        }, Error);
+      }
+
+      var getRoute = function(name, cb) {
+        $http({
+          method: 'GET',
+          url: '/mission/'+name
+        }).then(function(res) {
+          cb(res.data.mission);
+        }, Error);
+      }
+
       var enableUpdates = function() {
         updatesEnabled = true;
         checkOnline();
@@ -203,7 +222,9 @@ angular
         getLog:             getLog,
         selectDrone:        selectDrone,
         getSelectedDrone:   getSelectedDrone,
-        sendRequest:        sendRequest
+        sendRequest:        sendRequest,
+        flyRoute:           flyRoute,
+        getRoute:           getRoute
       };
   })
 ;
