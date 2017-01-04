@@ -28,10 +28,10 @@
             <span
               class="label"
               ng-class="{
-                'label-success': telem[drone.name].online,
-                'label-danger': !telem[drone.name].online
+                'label-success': drone.online,
+                'label-danger': !drone.online
                 }">
-                {{telem[drone.name].online ? "online" : "offline"}}
+                {{drone.online ? "online" : "offline"}}
             </span>
           </p>
         </uib-accordion-heading>
@@ -39,7 +39,7 @@
           <div class="col-sm-4">
             <div class="well" ng-init="isCollapsed = true">
               <h3>{{drone.name || "drone-" + drone.firmwareId}} <small>
-                  <a href="" ng-show="!telem[drone.name].online" ng-click="isCollapsed=!isCollapsed; updateDrone(isCollapsed, drone.name, newname)">{{isCollapsed ? 'edit' : 'update'}}</a></small></h3>
+                  <a href="" ng-show="!drone.online" ng-click="isCollapsed=!isCollapsed; updateDrone(isCollapsed, drone.name, newname)">{{isCollapsed ? 'edit' : 'update'}}</a></small></h3>
               <div uib-collapse="isCollapsed">
                 <form class="well-sm">
                   <fieldset class="form-group">
@@ -53,57 +53,38 @@
                 <strong>Last Update:</strong> {{drone.updated | date:'medium'}} <br>
                 <strong>Virtual Drone:</strong> {{!!(drone.type == "Virtual Drone")}} <br>
 
-                <strong ng-show="telem[drone.name].info">Type:</strong> {{telem[drone.name].info.Type}} <br>
-                <strong ng-show="telem[drone.name].info">Firmware:</strong> {{telem[drone.name].info.Firmware}} <br>
-                <strong ng-show="telem[drone.name].info">Protocol:</strong> {{telem[drone.name].info.Protocol}} <br>
+                <strong ng-show="drone.info">Type:</strong> {{drone.info.Type}} <br>
+                <strong ng-show="drone.info">Firmware:</strong> {{drone.info.Firmware}} <br>
+                <strong ng-show="drone.info">Protocol:</strong> {{drone.info.Protocol}} <br>
               </p>
             </div>
           </div>
           <div class="col-sm-4">
-            <img ng-hide="telem[drone.name].online" class="img-responsive" src="assets/img/lucismall.png">
-                <!-- <pre>{{telem[drone.name].position | json}}</pre> -->
-            <p ng-show="telem[drone.name].online">
-              In <strong>{{telem[drone.name].status.State}}</strong>  mode. <br>
-              <strong>Power:</strong> {{telem[drone.name].status.Power}}% <br>
-              <strong>Armed:</strong> {{telem[drone.name].status.Armed}} <br>
-              <strong>Flying:</strong> {{telem[drone.name].status.InAir}} <br>
-              <strong>VtoL State:</strong> {{telem[drone.name].status.VTOLMode}} <br>
+            <img ng-hide="drone.online" class="img-responsive" src="assets/img/lucismall.png">
+                <!-- <pre>{{drone.position | json}}</pre> -->
+            <p ng-show="drone.online">
+              In <strong>{{drone.status.State}}</strong>  mode. <br>
+              <strong>Power:</strong> {{drone.status.Power}}% <br>
+              <strong>Armed:</strong> {{drone.status.Armed}} <br>
+              <strong>Flying:</strong> {{drone.status.InAir}} <br>
+              <strong>VtoL State:</strong> {{drone.status.VTOLMode}} <br>
             </p>
             <hr>
-            <p ng-show="telem[drone.name].online">
-              <strong>Altitude:</strong> {{telem[drone.name].position.Altitude}} <br>
-              <strong>Heading:</strong> {{telem[drone.name].position.Heading}} <br>
-              <strong>Local Position:</strong> ({{telem[drone.name].position.X | number:'2'}}, {{telem[drone.name].position.Y | number:'2'}}, {{telem[drone.name].position.Z | number: '2'}}) <br>
-              <strong>Global Position:</strong> ({{telem[drone.name].position.Latitude}}, {{telem[drone.name].position.Longitude}}) <br>
+            <p ng-show="drone.online">
+              <strong>Altitude:</strong> {{drone.position.Altitude}} <br>
+              <strong>Heading:</strong> {{drone.position.Heading}} <br>
+              <strong>Local Position:</strong> ({{drone.position.X | number:'2'}}, {{drone.position.Y | number:'2'}}, {{drone.position.Z | number: '2'}}) <br>
+              <strong>Global Position:</strong> ({{drone.position.Latitude}}, {{drone.position.Longitude}}) <br>
             </p>
           </div>
           <div class="col-sm-4">
             <div ng-hide="liveDroneData[drone._id].status == 'offline'" class="well well-sm">
               <h4 class="text-center">Actions</h4>
-                <a href="" class="btn btn-info btn-block" ng-click="initDrone(telem[drone.name].online, drone.name)">{{telem[drone.name].online ? "Shut down drone" : "Start Drone"}}</a>
+                <a href="" class="btn btn-info btn-block" ng-click="initDrone(drone.online, drone.name)">{{drone.online ? "Shut down drone" : "Start Drone"}}</a>
                 <a href="" class="btn btn-default btn-block" ui-sref="gcs">Open in Ground Control</a>
                 <a href="" class="btn btn-default btn-block" ng-click="">View Flights</a>
                 <a href="" class="btn btn-default btn-block" ng-click="">Console</a>
             </div>
-          </div>
-        </div>
-
-        <div ng-show="liveDroneData[drone._id].status == 'online'" class="row">
-          <div class="col-sm-4">
-            <p><strong>Roll:</strong> {{(mavStream[drone._id]['ATTITUDE'].roll * (180 / 3.14159)).toFixed(2)}}</p>
-            <p><strong>Pitch:</strong> {{(mavStream[drone._id]['ATTITUDE'].pitch * (180 / 3.14159)).toFixed(2)}}</p>
-            <p><strong>Yaw:</strong> {{(mavStream[drone._id]['ATTITUDE'].yaw * (180 / 3.14159)).toFixed(2)}}</p>
-            <p><strong>Throttle:</strong> {{mavStream[drone._id]['VFR_HUD'].throttle}}</p>
-          </div>
-          <div class="col-sm-4">
-            <p><strong>Altitude:</strong> {{(mavStream[drone._id]['VFR_HUD'].alt).toFixed(2)}}</p>
-            <p><strong>Climb:</strong> {{(mavStream[drone._id]['VFR_HUD'].climb).toFixed(2)}}</p>
-            <p><strong>Heading:</strong> {{mavStream[drone._id]['VFR_HUD'].heading}}</p>
-            <!-- <p><strong>Air Speed:</strong> {{mavStream[drone._id]['VFR_HUD'].airspeed}}</p> -->
-            <p><strong>Ground Speed:</strong> {{(mavStream[drone._id]['VFR_HUD'].groundspeed).toFixed(2)}}</p>
-          </div>
-          <div class="col-sm-4">
-            <p><strong>Status:</strong> {{mavStream[drone._id]['STATUSTEXT'].text}}</p>
           </div>
         </div>
         <div class="accordionFooter">

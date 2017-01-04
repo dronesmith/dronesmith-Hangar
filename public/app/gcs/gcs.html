@@ -10,21 +10,21 @@
       <h4 style="margin-top: 7px" class="pull-left">Online Vehicles</h4>
     </hgroup>
     <div class="container-fluid" style="margin-top: 40px;">
-      <div class="panel panel-default" ng-repeat="drone in drones track by $index" ng-show="telem[drone.name].online">
+      <div class="panel panel-default" ng-repeat="drone in drones track by $index" ng-show="drone.online">
           <div class="panel-body">
             <a href="" ng-click="selectDrone(drone)">
-              <strong>{{drone.name}}</strong> | <strong>{{telem[drone.name].status.State}}</strong>
-              <br>In <strong>{{telem[drone.name].mode}}</strong> flight mode <br>
-              <em>{{telem[drone.name].status.Armed ? "Armed" : "Disarmed"}}</em> and
-              <em>{{telem[drone.name].status.InAir ? "Airborne" : "Grounded"}}</em>
+              <strong>{{drone.name}}</strong> | <strong>{{drone.status.State}}</strong>
+              <br>In <strong>{{drone.mode}}</strong> flight mode <br>
+              <em>{{drone.status.Armed ? "Armed" : "Disarmed"}}</em> and
+              <em>{{drone.status.InAir ? "Airborne" : "Grounded"}}</em>
             </a>
 
             <div ng-show="drone.name == currentDrone.name" ng-init="toggleMode=false; ModeSelect = 'Manual'">
               <hr>
-              <button ng-hide="telem[drone.name].status.InAir" ng-click="takeoff(drone.name, 10)" class="btn btn-sm btn-primary">Takeoff</button>
-              <button ng-show="telem[drone.name].status.InAir" ng-click="land(drone.name)" class="btn btn-sm btn-primary">Land</button>
-              <button ng-hide="telem[drone.name].status.Armed" ng-click="setArming(drone.name, true)" class="btn btn-sm btn-primary">Arm</button>
-              <button ng-show="telem[drone.name].status.Armed" ng-click="setArming(drone.name, false)" class="btn btn-sm btn-primary">Disarm</button>
+              <button ng-hide="drone.status.InAir" ng-click="takeoff(drone.name, 10)" class="btn btn-sm btn-primary">Takeoff</button>
+              <button ng-show="drone.status.InAir" ng-click="land(drone.name)" class="btn btn-sm btn-primary">Land</button>
+              <button ng-hide="drone.status.Armed" ng-click="setArming(drone.name, true)" class="btn btn-sm btn-primary">Arm</button>
+              <button ng-show="drone.status.Armed" ng-click="setArming(drone.name, false)" class="btn btn-sm btn-primary">Disarm</button>
               <button
                 ng-click="toggleMode ? setMode(drone.name, ModeSelect): angular.noop(); toggleMode=!toggleMode"
                 class="btn btn-sm btn-primary">
@@ -59,9 +59,9 @@
     <div class="panel panel-default">
       <div class="panel-body">
         <p>
-          <strong>Roll:</strong>{{currentDroneTelem.attitude.Roll | number:'2'}}<br>
-          <strong>Pitch:</strong> {{currentDroneTelem.attitude.Pitch | number:'2'}}<br>
-          <strong>Heading:</strong> {{currentDroneTelem.attitude.Yaw | number:'2'}}
+          <strong>Roll:</strong>{{currentDrone.attitude.Roll | number:'2'}}<br>
+          <strong>Pitch:</strong> {{currentDrone.attitude.Pitch | number:'2'}}<br>
+          <strong>Heading:</strong> {{currentDrone.attitude.Yaw | number:'2'}}
         </p>
       </div>
     </div>
@@ -69,10 +69,10 @@
     <div class="panel panel-default">
       <div class="panel-body">
         <p>
-          <strong>Speed:</strong> {{currentDroneTelem.rates.Groundspeed | number:'2'}}<br>
-          <strong>Throttle:</strong> {{currentDroneTelem.rates.Throttle | number:'2'}}<br>
-          <strong>Climb:</strong> {{currentDroneTelem.rates.Climb | number:'2'}}<br>
-          <strong>Altitude:</strong> {{currentDroneTelem.position.Altitude | number:'2'}}<br>
+          <strong>Speed:</strong> {{currentDrone.rates.Groundspeed | number:'2'}}<br>
+          <strong>Throttle:</strong> {{currentDrone.rates.Throttle | number:'2'}}<br>
+          <strong>Climb:</strong> {{currentDrone.rates.Climb | number:'2'}}<br>
+          <strong>Altitude:</strong> {{currentDrone.position.Altitude | number:'2'}}<br>
         </p>
       </div>
     </div>

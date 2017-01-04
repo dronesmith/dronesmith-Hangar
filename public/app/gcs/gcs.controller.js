@@ -14,7 +14,6 @@ angular
 
       angular.extend($scope, {
         defaults: {
-          // tileLayer: 'http://{s}.tile.opencyclemap.org/cycle/{z}/{x}/{y}.png',
           maxZoom: 20,
           center: {
             lat: 40.7420,
@@ -34,6 +33,9 @@ angular
         map.on('click', function(ev) {
 
           var directions = MQ.routing.directions().on('success', function(data) {
+
+            console.log($scope.droneGeo[$scope.currentDrone.name]);
+
             var legs = data.route.legs;
             console.log("Got route:", legs);
              if (legs && legs.length > 0) {
@@ -85,8 +87,8 @@ angular
              }
           });
 
-          if ($scope.currentDroneTelem) {
-            var pos = $scope.currentDroneTelem.position;
+          if ($scope.currentDrone && $scope.currentDrone.position) {
+            var pos = $scope.currentDrone.position;
             if (pos) {
               directions.route({
                 locations: [
@@ -102,7 +104,6 @@ angular
       $scope.droneGeo = {};
 
       $scope.currentDrone = null;
-      $scope.currentDroneTelem = null;
 
       $scope.showActionBar = true;
       $scope.mapArrow = "glyphicon-menu-left";
@@ -132,7 +133,6 @@ angular
       }
 
       $scope.setMode = function(drone, mode) {
-        console.log({'mode': mode});
         API.droneCmd(drone, 'mode', {'mode': mode}, cmdResponseHandler);
       }
 
@@ -149,62 +149,43 @@ angular
       }
 
       $scope.selectDrone = function(drone) {
-        // API.selectDrone(name);
-        // $scope.currentDrone = API.getSelectedDrone();
         $scope.currentDrone = drone || null;
       }
 
-      $rootScope.$on('drone:update', function(ev, data) {
+      $scope.deselectDrone = function() {
+        $scope.currentDrone = null;
+      }
+
+      $rootScope.$on('drones:update', function(ev, data) {
         $scope.drones = data;
-
-        // Add or remove drones that are online
-        angular.forEach($scope.telem, function(drone, key) {
-
-          // We don't use info here
-          API.removeListener(key, 'info');
-
+        angular.forEach($scope.drones, function(drone) {
           if (drone.online) {
-            API.addListener(key, 'status');
-            API.addListener(key, 'mode');
-            API.addListener(key, 'position');
-            API.addListener(key, 'attitude');
-            API.addListener(key, 'rates');
-          } else {
-            API.removeListener(key, 'status');
-            API.removeListener(key, 'mode');
-            API.removeListener(key, 'position');
-            API.removeListener(key, 'attitude');
-            API.removeListener(key, 'rates');
-          }
-        });
-      });
-
-      $rootScope.$on('telem:update', function(ev, data) {
-        $scope.telem = data;
-
-        angular.forEach($scope.telem, function(drone, key) {
-          if ($scope.droneGeo[key]) {
-            var pos = $scope.telem[key].position;
-            if (pos) {
-              var newLatLng = new L.LatLng(pos.Latitude, pos.Longitude);
-              $scope.droneGeo[key].marker.setLatLng(newLatLng);
-              $scope.droneGeo[key].marker.setRotationAngle(pos.Heading);
+            if ($scope.currentDrone) {
+              if (drone.name == $scope.currentDrone.name) {
+                $scope.currentDrone = drone;
+              }
             }
-          } else {
-            $scope.droneGeo[key] = {};
-            $scope.droneGeo[key].marker = L.marker([40.7420, -73.9876], {icon: droneMarker});
-            leafletData.getMap('groundcontrol').then(function(map) {
-              $scope.droneGeo[key].marker.addTo(map);
-            });
+
+            if (drone.position) {
+              // Update Geoloc
+              if ($scope.droneGeo[drone.name]) {
+                var pos = drone.position;
+                if (pos) {
+                  var newLatLng = new L.LatLng(pos.Latitude, pos.Longitude);
+                  $scope.droneGeo[drone.name].marker.setLatLng(newLatLng);
+                  $scope.droneGeo[drone.name].marker.setRotationAngle(pos.Heading);
+                }
+              } else {
+                $scope.droneGeo[drone.name] = {};
+                $scope.droneGeo[drone.name].marker = L.marker([drone.position.Latitude, drone.position.Latitude], {icon: droneMarker});
+                leafletData.getMap('groundcontrol').then(function(map) {
+                  $scope.droneGeo[drone.name].marker.addTo(map);
+                });
+              }  
+            }
           }
         });
-
-        if ($scope.currentDrone) {
-          $scope.currentDroneTelem = $scope.telem[$scope.currentDrone.name];
-        }
       });
-
-
     }
   )
   .controller('GotoModalCtrl', function ($scope, $uibModalInstance,
