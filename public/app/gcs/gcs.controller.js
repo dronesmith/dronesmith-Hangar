@@ -4,16 +4,58 @@ angular
   .module('ForgeApp')
   .controller('GCSCtrl', function ($scope, Error, Session, $http,
     $uibModal, $state, $rootScope, API, leafletData) {
-      API.enableUpdates();
 
+      // =======================================================================
+      // CONTROLLER PROPERTIES
+      // =======================================================================
+
+      // This object represents all of the dynamic map data for each drone,
+      // such as its marker, and flight path.
+      $scope.droneGeo = {};
+
+      // This object represents the current selected drone.
+      $scope.currentDrone = null;
+
+      // Toggle action bar boolean
+      $scope.showActionBar = true;
+
+      // Change the button icon depending on toggle state.
+      $scope.mapArrow = "glyphicon-menu-left";
+
+      // Map offset style, used for resizing the map.
+      $scope.mapOffset = {
+        "margin-left": "250px"
+      };
+
+      // =======================================================================
+      // PRIVATE FUNCTIONS
+      // =======================================================================
+
+      // Generates a drone marker. Name will be the display name.
       function getDroneMarker(name) {
         return L.divIcon({
           className: 'chevron',
           html:'<div id="'+ name +'" class="icon"></div><p class="text-warning" style="font-weight: bold;position: relative; right: 50px;">'+name+'</p><div class="arrow" />'
         });
-
       }
 
+      // Handles command responses from server.
+      var cmdResponseHandler = function(res) {
+        console.log("Command result:", res.data);
+
+        if (res.data.StatusCode != 0) {
+          Error({status: "Command Failed", statusText: res.data.Status})
+        }
+      }
+
+      // =======================================================================
+      // CONTROLLER INIT CODE
+      // =======================================================================
+
+      // Tell the API Service to begin polling for udpdates.
+      API.enableUpdates();
+
+      // Set up default settings for our groundcontrol map.
       angular.extend($scope, {
         defaults: {
           maxZoom: 20,
@@ -30,13 +72,24 @@ angular
         }
       });
 
+      // Get the ground control map.
       leafletData.getMap('groundcontrol').then(function(map) {
+
+        // Add MapQuest tiles
         map.addLayer(MQ.mapLayer());
+
+        // Check for click events
         map.on('click', function(ev) {
 
+          // Initialize the mapQuest route API, and listen for successful route events.
           var directions = MQ.routing.directions().on('success', function(data) {
 
-            console.log($scope.droneGeo[$scope.currentDrone.name]);
+              //
+              // The following code is used to draw a polyline to show the map route,
+              // and calculate approx. time and distance. (Based on automobiles, unfortunately.)
+              // The droneGeo object stores all of the dynamic map related data, such as the drone marker
+              // and mission path.
+              //
 
             var legs = data.route.legs;
             console.log("Got route:", legs);
@@ -59,11 +112,16 @@ angular
 
                $scope.droneGeo[$scope.currentDrone.name].route = L.polyline(dps, {color: 'red'}).addTo(map);
 
+              // FIXME - MQ route layer wasn't showing up. So I drew a polyline instead.
               //  map.addLayer(MQ.routing.routeLayer({
               //    directions: directions,
               //    fitBounds: true
               //  }));
 
+              //
+              // Open a modal (popup) to task the user if they want to fly the drone to
+              // this location.
+              //
                var modalInstance = $uibModal.open({
                  animation: true,
                  templateUrl: 'gotoModal.html',
@@ -81,16 +139,26 @@ angular
                  }
                });
 
+               // Either cancel the mission, or upload and begin mission.
                modalInstance.result.then(function () {
                  // Upload to server
                  console.log("Uploading mission...");
                  API.flyRoute($scope.currentDrone.name, mission);
+                 for (var k in $scope.droneGeo) {
+                   if ($scope.droneGeo[k].route && (k != $scope.currentDrone.name)) {
+                     $scope.droneGeo[k].route.removeFrom(map);
+                   }
+                 }
                }, function() {
                  $scope.droneGeo[$scope.currentDrone.name].route.removeFrom(map);
                });
              }
           });
 
+          // calculate the route for the drone to fly here. Emits a `success`
+          // event when finished, allowing the above code to executre.
+          // We need to make sure there is a current drone with a valid
+          // position before we do this.
           if ($scope.currentDrone && $scope.currentDrone.position) {
             var pos = $scope.currentDrone.position;
             if (pos) {
@@ -105,41 +173,31 @@ angular
         });
       });
 
-      $scope.droneGeo = {};
+      // =======================================================================
+      // CONTROLLER METHODS
+      // =======================================================================
 
-      $scope.currentDrone = null;
-
-      $scope.showActionBar = true;
-      $scope.mapArrow = "glyphicon-menu-left";
-
-      $scope.mapOffset = {
-        "margin-left": "250px"
-      };
-
-      var cmdResponseHandler = function(res) {
-        console.log("Command result:", res.data);
-
-        if (res.data.StatusCode != 0) {
-          Error({status: "Command Failed", statusText: res.data.Status})
-        }
-      }
-
+      // Command drone to takeoff
       $scope.takeoff = function(drone, alt) {
         API.droneCmd(drone, 'takeoff', {altitude: alt}, cmdResponseHandler);
       }
 
+      // Command drone to land
       $scope.land = function(drone) {
         API.droneCmd(drone, 'land', {}, cmdResponseHandler);
       }
 
+      // Arm/disarm drone
       $scope.setArming = function(drone, arm) {
         API.droneCmd(drone, arm ? 'arm' : 'disarm', {}, cmdResponseHandler);
       }
 
+      // change drone flight mode
       $scope.setMode = function(drone, mode) {
         API.droneCmd(drone, 'mode', {'mode': mode}, cmdResponseHandler);
       }
 
+      // toggle the drone column
       $scope.toggleActionBar = function() {
         $scope.showActionBar = !$scope.showActionBar;
 
@@ -152,9 +210,11 @@ angular
         }
       }
 
+      // Select a drone.
       $scope.selectDrone = function(drone) {
         $scope.currentDrone = drone || null;
 
+        // Pan to drone location.
         leafletData.getMap('groundcontrol').then(function(map) {
           if ($scope.currentDrone.position) {
             map.panTo(new L.LatLng($scope.currentDrone.position.Latitude, $scope.currentDrone.position.Longitude));
@@ -162,6 +222,7 @@ angular
         });
 
         if ($scope.currentDrone) {
+          // Update current flight path.
           API.getRoute($scope.currentDrone.name, function(res) {
 
             if (!res) {
@@ -191,13 +252,30 @@ angular
         }
       }
 
+      // Deselect a drone
       $scope.deselectDrone = function() {
         $scope.currentDrone = null;
+
+        leafletData.getMap('groundcontrol').then(function(map) {
+          for (var k in $scope.droneGeo) {
+            if ($scope.droneGeo[k].route) {
+              $scope.droneGeo[k].route.removeFrom(map);
+            }
+          }
+        });
       }
 
+      // =======================================================================
+      // EVENT LISTENER (UPDATE LOOP)
+      // =======================================================================
+
+      // Get updates from API.
       $rootScope.$on('drones:update', function(ev, data) {
+
+        // Update drones object, which represents all drone telemetry data.
         $scope.drones = data;
 
+        // Filter drones that aren't online
         angular.forEach($scope.drones, function(drone) {
           if (drone.online) {
             if ($scope.currentDrone) {
@@ -206,6 +284,7 @@ angular
               }
             }
 
+            // Update marker info
             if (drone.position) {
               // Update Geoloc
               if ($scope.droneGeo[drone.name]) {
