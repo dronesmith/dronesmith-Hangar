@@ -1,8 +1,5 @@
 'use strict';
 
-
-
-
 angular
   .module('ForgeApp')
   .controller('GCSCtrl', function ($scope, Error, Session, $http,
@@ -15,8 +12,8 @@ angular
         html:'<div class="icon"></div><div class="arrow" />'
       });
 
-       var attitude = $.flightIndicator('#attitude', 'attitude');
-           attitude.setRoll(30); // Sets the roll to 30 degrees
+       // var attitude = $.flightIndicator('#attitude', 'attitude');
+       //     attitude.setRoll(30); // Sets the roll to 30 degrees
 
 
       angular.extend($scope, {
@@ -150,10 +147,6 @@ angular
         $scope.showActionBar = !$scope.showActionBar;
 
 
-
-
-
-
         if ($scope.showActionBar) {
           $scope.mapOffset["margin-left"] = "250px";
           
@@ -222,8 +215,12 @@ angular
           $scope.currentDroneTelem = $scope.telem[$scope.currentDrone.name];
          
          var attitude = $.flightIndicator('#attitude');
-           attitude.setRoll(1); // Sets the roll to 30 degrees
-
+           
+           var flightRoll = $scope.currentDroneTelem.attitude.Roll
+           var flightPitch = $scope.currentDroneTelem.attitude.Pitch
+           
+           attitude.setRoll(flightRoll); // Sets the roll 
+           attitude.setPitch(flightPitch);//Sets pitch
 
         }
       });
