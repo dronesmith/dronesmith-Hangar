@@ -90,6 +90,7 @@ angular
     $scope.datalogs = [];
 
     $rootScope.$on('drones:update', function(ev, data) {
+      $scope.drones = data;
       $scope.datalogs = [];
       var logs = API.getLog();
 
