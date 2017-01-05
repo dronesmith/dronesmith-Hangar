@@ -108,7 +108,7 @@ angular
 
     $scope.datalogs = [];
 
-    $rootScope.$on('telem:update', function(ev, data) {
+    $rootScope.$on('drones:update', function(ev, data) {
       $scope.datalogs = [];
       var logs = API.getLog();
 
