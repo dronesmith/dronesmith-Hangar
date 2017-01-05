@@ -214,14 +214,40 @@ angular
 
           $scope.currentDroneTelem = $scope.telem[$scope.currentDrone.name];
          
-         var attitude = $.flightIndicator('#attitude');
+           var attitude = $.flightIndicator('#attitude');
            
            var flightRoll = $scope.currentDroneTelem.attitude.Roll
            var flightPitch = $scope.currentDroneTelem.attitude.Pitch
            
            attitude.setRoll(flightRoll); // Sets the roll 
            attitude.setPitch(flightPitch);//Sets pitch
+      
+        }
 
+
+      if ($scope.currentDrone) {          
+
+          $scope.currentDroneTelem = $scope.telem[$scope.currentDrone.name];
+
+           var heading = $.flightIndicator('#heading', 'heading');
+           
+           var flightHeading = $scope.currentDroneTelem.attitude.Yaw
+           
+           heading.setHeading(flightHeading); // Sets the heading 
+      
+        }
+     
+
+      if ($scope.currentDrone) {          
+
+          $scope.currentDroneTelem = $scope.telem[$scope.currentDrone.name];
+
+           var climb = $.flightIndicator('#climb', 'variometer');
+           
+           var flightClimb = $scope.currentDroneTelem.rates.Climb
+           
+           climb.setVario(flightClimb); // Sets the heading 
+      
         }
       });
 
