@@ -285,7 +285,7 @@ angular
       // Select a drone.
       $scope.selectDrone = function(drone) {
         $scope.currentDrone = drone || null;
-
+       
         // Pan to drone location.
         leafletData.getMap('groundcontrol').then(function(map) {
           if ($scope.currentDrone.position) {
@@ -295,6 +295,7 @@ angular
 
         if ($scope.currentDrone) {
           // Update current flight path.
+
           API.getRoute($scope.currentDrone.name, function(res) {
 
             if (!res) {
@@ -322,6 +323,10 @@ angular
             });
           });
         }
+
+         
+
+
       }
 
       // Deselect a drone
@@ -353,6 +358,40 @@ angular
             if ($scope.currentDrone) {
               if (drone.name == $scope.currentDrone.name) {
                 $scope.currentDrone = drone;
+
+
+
+
+                var attitude = $.flightIndicator('#attitude');
+           
+           var flightRoll = $scope.currentDrone.attitude.Roll
+           var flightPitch = $scope.currentDrone.attitude.Pitch
+          
+           attitude.setRoll(flightRoll); // Sets the roll 
+           attitude.setPitch(flightPitch);//Sets pitch
+      
+        
+
+
+           var heading = $.flightIndicator('#heading', 'heading');
+           var flightHeading = $scope.currentDrone.attitude.Yaw
+           
+           heading.setHeading(flightHeading); // Sets the heading 
+      
+      
+
+           var climbing = $.flightIndicator('#climbing', 'variometer');
+           
+           var flightClimb = $scope.currentDrone.rates.Climb
+           
+           climbing.setVario(flightClimb); // Sets the climb 
+
+
+
+
+
+           
+
               }
             }
 
