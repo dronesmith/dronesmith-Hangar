@@ -156,6 +156,15 @@ angular
         }, Error);
       }
 
+      var cancelRoute = function(name, cb) {
+        $http({
+          method: 'POST',
+          url: '/mission/' + name + '/stop'
+        }).then(function(res) {
+          cb(res);
+        }, Error);
+      }
+
       var getRoute = function(name, cb) {
         $http({
           method: 'GET',
@@ -226,7 +235,8 @@ angular
         getSelectedDrone:   getSelectedDrone,
         sendRequest:        sendRequest,
         flyRoute:           flyRoute,
-        getRoute:           getRoute
+        getRoute:           getRoute,
+        cancelRoute:        cancelRoute
       };
   })
 ;

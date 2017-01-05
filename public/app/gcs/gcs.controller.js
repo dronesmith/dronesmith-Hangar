@@ -209,11 +209,17 @@ angular
       // Command drone to takeoff
       $scope.takeoff = function(drone, alt) {
         API.droneCmd(drone, 'takeoff', {altitude: alt}, cmdResponseHandler);
+
+        // Also, cancel the route if there is one.
+        API.cancelRoute(drone);
       }
 
       // Command drone to land
       $scope.land = function(drone) {
         API.droneCmd(drone, 'land', {}, cmdResponseHandler);
+
+        // Also, cancel the route if there is one.
+        API.cancelRoute(drone);
       }
 
       // Get number of drones online
@@ -240,6 +246,9 @@ angular
         modalAlert("Are you sure?", armingStr, function(doAction) {
             if (doAction) {
               API.droneCmd(drone, arm ? 'arm' : 'disarm', {}, cmdResponseHandler);
+
+              // Also, cancel the route if there is one.
+              API.cancelRoute(drone);
             }
         });
       }
@@ -247,6 +256,9 @@ angular
       // change drone flight mode
       $scope.setMode = function(drone, mode) {
         API.droneCmd(drone, 'mode', {'mode': mode}, cmdResponseHandler);
+
+        // Also, cancel the route if there is one.
+        API.cancelRoute(drone);
       }
 
       $scope.routeHome = function(drone) {
