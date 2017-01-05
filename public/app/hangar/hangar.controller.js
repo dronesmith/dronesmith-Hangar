@@ -18,6 +18,8 @@ angular
 
       API.enableUpdates();
 
+      $scope.StartLoc = "";
+
       $rootScope.$on('drones:update', function(ev, data) {
         $scope.drones = data;
       });
@@ -32,8 +34,23 @@ angular
         API.newDrone();
       }
 
-      $scope.initDrone = function(stop, name) {
-        API.initDrone(stop, name);
+      $scope.initDrone = function(stop, name, loc) {
+
+        if (stop) {
+          API.initDrone(stop, name);
+        } else {
+          if (!loc) {
+            API.initDrone(stop, name);
+            $scope.StartLoc = "";
+          } else {
+            MQ.geocode().search(loc).on('success', function(e) {
+              var best = e.result.best,
+              latlng = best.latlng;
+              API.initDrone(stop, name, latlng.lat, latlng.lng);
+            });
+          }
+        }
+
       }
 
       $scope.delDrone = function(name) {

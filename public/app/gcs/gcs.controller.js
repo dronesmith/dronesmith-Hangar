@@ -48,6 +48,124 @@ angular
         }
       }
 
+      // Send alert message
+      function modalAlert(title, content, cb) {
+        var modalInstance = $uibModal.open({
+          animation: true,
+          templateUrl: 'app/components/alertModal/alertModal.html',
+          controller: 'alertModalCtrl',
+          size: 'md',
+          resolve: {
+            title: function () {
+              return title;
+            },
+            text: function () {
+              return content;
+            }
+          }
+        });
+
+        modalInstance.result.then(function() {
+          cb(true);
+        }, function() {
+          cb(false);
+        });
+      }
+
+      // Main function for setting up flight paths
+      function performRoute(map, drone, lat, lon) {
+
+        // Initialize the mapQuest route API, and listen for successful route events.
+        var directions = MQ.routing.directions().on('success', function(data) {
+
+            //
+            // The following code is used to draw a polyline to show the map route,
+            // and calculate approx. time and distance. (Based on automobiles, unfortunately.)
+            // The droneGeo object stores all of the dynamic map related data, such as the drone marker
+            // and mission path.
+            //
+
+          var legs = data.route.legs;
+          console.log("Got route:", legs);
+           if (legs && legs.length > 0) {
+             var mission = legs[0].maneuvers;
+             console.log(mission);
+             var time = 0;
+             var dist = 0;
+             var dps = [];
+
+             for (var i  = 0; i < mission.length; ++i) {
+               time += mission[i].time
+               dist += mission[i].distance
+               dps.push(new L.LatLng(mission[i].startPoint.lat, mission[i].startPoint.lng));
+             }
+
+             if ($scope.droneGeo[drone.name].route) {
+               $scope.droneGeo[drone.name].route.removeFrom(map);
+             }
+
+             $scope.droneGeo[drone.name].route = L.polyline(dps, {color: 'red'}).addTo(map);
+
+            // FIXME - MQ route layer wasn't showing up. So I drew a polyline instead.
+            //  map.addLayer(MQ.routing.routeLayer({
+            //    directions: directions,
+            //    fitBounds: true
+            //  }));
+
+            //
+            // Open a modal (popup) to task the user if they want to fly the drone to
+            // this location.
+            //
+             var modalInstance = $uibModal.open({
+               animation: true,
+               templateUrl: 'gotoModal.html',
+               controller: 'GotoModalCtrl',
+               size: 'md',
+               resolve: {
+                 target: function () {
+                   return {
+                     name: drone.name,
+                     lat: lat, lon: lon,
+                     time: time * 1000, dist: dist,
+                     dir: directions
+                   };
+                 }
+               }
+             });
+
+             // Either cancel the mission, or upload and begin mission.
+             modalInstance.result.then(function () {
+               // Upload to server
+               console.log("Uploading mission...");
+               API.flyRoute(drone.name, mission);
+               for (var k in $scope.droneGeo) {
+                 if ($scope.droneGeo[k].route && (k != drone.name)) {
+                   $scope.droneGeo[k].route.removeFrom(map);
+                 }
+               }
+             }, function() {
+               $scope.droneGeo[drone.name].route.removeFrom(map);
+             });
+           }
+        });
+
+        // calculate the route for the drone to fly here. Emits a `success`
+        // event when finished, allowing the above code to executre.
+        // We need to make sure there is a current drone with a valid
+        // position before we do this.
+        if (drone && drone.position) {
+          var pos = drone.position;
+          if (pos) {
+            directions.route({
+              locations: [
+                ''+pos.Latitude+', '+pos.Longitude,
+                ''+lat+', '+lon
+              ]
+            });
+          }
+        }
+      }
+
       // =======================================================================
       // CONTROLLER INIT CODE
       // =======================================================================
@@ -80,96 +198,7 @@ angular
 
         // Check for click events
         map.on('click', function(ev) {
-
-          // Initialize the mapQuest route API, and listen for successful route events.
-          var directions = MQ.routing.directions().on('success', function(data) {
-
-              //
-              // The following code is used to draw a polyline to show the map route,
-              // and calculate approx. time and distance. (Based on automobiles, unfortunately.)
-              // The droneGeo object stores all of the dynamic map related data, such as the drone marker
-              // and mission path.
-              //
-
-            var legs = data.route.legs;
-            console.log("Got route:", legs);
-             if (legs && legs.length > 0) {
-               var mission = legs[0].maneuvers;
-               console.log(mission);
-               var time = 0;
-               var dist = 0;
-               var dps = [];
-
-               for (var i  = 0; i < mission.length; ++i) {
-                 time += mission[i].time
-                 dist += mission[i].distance
-                 dps.push(new L.LatLng(mission[i].startPoint.lat, mission[i].startPoint.lng));
-               }
-
-               if ($scope.droneGeo[$scope.currentDrone.name].route) {
-                 $scope.droneGeo[$scope.currentDrone.name].route.removeFrom(map);
-               }
-
-               $scope.droneGeo[$scope.currentDrone.name].route = L.polyline(dps, {color: 'red'}).addTo(map);
-
-              // FIXME - MQ route layer wasn't showing up. So I drew a polyline instead.
-              //  map.addLayer(MQ.routing.routeLayer({
-              //    directions: directions,
-              //    fitBounds: true
-              //  }));
-
-              //
-              // Open a modal (popup) to task the user if they want to fly the drone to
-              // this location.
-              //
-               var modalInstance = $uibModal.open({
-                 animation: true,
-                 templateUrl: 'gotoModal.html',
-                 controller: 'GotoModalCtrl',
-                 size: 'md',
-                 resolve: {
-                   target: function () {
-                     return {
-                       name: $scope.currentDrone.name,
-                       lat: ev.latlng.lat, lon: ev.latlng.lng,
-                       time: time * 1000, dist: dist,
-                       dir: directions
-                     };
-                   }
-                 }
-               });
-
-               // Either cancel the mission, or upload and begin mission.
-               modalInstance.result.then(function () {
-                 // Upload to server
-                 console.log("Uploading mission...");
-                 API.flyRoute($scope.currentDrone.name, mission);
-                 for (var k in $scope.droneGeo) {
-                   if ($scope.droneGeo[k].route && (k != $scope.currentDrone.name)) {
-                     $scope.droneGeo[k].route.removeFrom(map);
-                   }
-                 }
-               }, function() {
-                 $scope.droneGeo[$scope.currentDrone.name].route.removeFrom(map);
-               });
-             }
-          });
-
-          // calculate the route for the drone to fly here. Emits a `success`
-          // event when finished, allowing the above code to executre.
-          // We need to make sure there is a current drone with a valid
-          // position before we do this.
-          if ($scope.currentDrone && $scope.currentDrone.position) {
-            var pos = $scope.currentDrone.position;
-            if (pos) {
-              directions.route({
-                locations: [
-                  ''+pos.Latitude+', '+pos.Longitude,
-                  ''+ev.latlng.lat+', '+ev.latlng.lng
-                ]
-              });
-            }
-          }
+          performRoute(map, $scope.currentDrone, ev.latlng.lat, ev.latlng.lng);
         });
       });
 
@@ -187,14 +216,45 @@ angular
         API.droneCmd(drone, 'land', {}, cmdResponseHandler);
       }
 
+      // Get number of drones online
+      $scope.getOnlineCnt = function() {
+        var cnt = 0;
+        angular.forEach($scope.drones, function(drone) {
+          if (drone.online) {
+            cnt++;
+          }
+        });
+        return cnt;
+      }
+
       // Arm/disarm drone
       $scope.setArming = function(drone, arm) {
-        API.droneCmd(drone, arm ? 'arm' : 'disarm', {}, cmdResponseHandler);
+        var armingStr = '';
+
+        if (arm) {
+          armingStr = "Arming " + drone + " will enable its motors, and could have adverse side effects.";
+        } else {
+          armingStr =  "Disarming " + drone + " will stop its motors from functioning, and could have adverse side effects.";
+        }
+
+        modalAlert("Are you sure?", armingStr, function(doAction) {
+            if (doAction) {
+              API.droneCmd(drone, arm ? 'arm' : 'disarm', {}, cmdResponseHandler);
+            }
+        });
       }
 
       // change drone flight mode
       $scope.setMode = function(drone, mode) {
         API.droneCmd(drone, 'mode', {'mode': mode}, cmdResponseHandler);
+      }
+
+      $scope.routeHome = function(drone) {
+        API.getTelem(drone.name, 'home', function(data) {
+          leafletData.getMap('groundcontrol').then(function(map) {
+            performRoute(map, drone, data.data.Latitude, data.data.Longitude);
+          });
+        });
       }
 
       // toggle the drone column

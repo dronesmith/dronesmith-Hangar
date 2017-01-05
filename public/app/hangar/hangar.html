@@ -80,10 +80,10 @@
           <div class="col-sm-4">
             <div ng-hide="liveDroneData[drone._id].status == 'offline'" class="well well-sm">
               <h4 class="text-center">Actions</h4>
-                <a href="" class="btn btn-info btn-block" ng-click="initDrone(drone.online, drone.name)">{{drone.online ? "Shut down drone" : "Start Drone"}}</a>
-                <a href="" class="btn btn-default btn-block" ui-sref="gcs">Open in Ground Control</a>
-                <a href="" class="btn btn-default btn-block" ng-click="">View Flights</a>
-                <a href="" class="btn btn-default btn-block" ng-click="">Console</a>
+                <a href="" class="btn btn-info btn-block" ng-click="initDrone(drone.online, drone.name, StartLoc)">{{drone.online ? "Shut down drone" : "Start Drone"}}</a>
+                <p ng-hide="drone.online" style="margin: 5px 0px 5px 0px;">Or, enter a custom starting location for your drone.</p>
+                <input ng-hide="drone.online" style="margin: 5px 0px 5px 0px;" type="text" class="form-control" placeholder="Madison Square Park, NYC" ng-model="StartLoc">
+                <a ng-show="drone.online" style="margin: 5px 0px 5px 0px;"  href="" class="btn btn-default btn-block" ui-sref="gcs">Open in Ground Control</a>
             </div>
           </div>
         </div>

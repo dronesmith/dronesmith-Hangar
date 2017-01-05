@@ -10,6 +10,7 @@
       <h4 style="margin-top: 7px" class="pull-left">Online Vehicles</h4>
     </hgroup>
     <div class="container-fluid" style="margin-top: 40px;">
+      <p ng-hide="getOnlineCnt() > 0">Initialize your drones in the Fleet Manager.</p>
       <div class="panel panel-default" ng-repeat="drone in drones track by $index" ng-show="drone.online">
           <div class="panel-body">
             <a href="" ng-click="selectDrone(drone)">
@@ -21,16 +22,14 @@
 
             <div ng-show="drone.name == currentDrone.name" ng-init="toggleMode=false; ModeSelect = 'Manual'">
               <hr>
-              <button ng-hide="drone.status.InAir" ng-click="takeoff(drone.name, 10)" class="btn btn-sm btn-primary">Takeoff</button>
-              <button ng-show="drone.status.InAir" ng-click="land(drone.name)" class="btn btn-sm btn-primary">Land</button>
-              <button ng-hide="drone.status.Armed" ng-click="setArming(drone.name, true)" class="btn btn-sm btn-primary">Arm</button>
-              <button ng-show="drone.status.Armed" ng-click="setArming(drone.name, false)" class="btn btn-sm btn-primary">Disarm</button>
-              <button
-                ng-click="toggleMode ? setMode(drone.name, ModeSelect): angular.noop(); toggleMode=!toggleMode"
-                class="btn btn-sm btn-primary">
-                  {{toggleMode ? "Set Mode" : "Mode"}}
-              </button>
-              <select ng-show="toggleMode" class="form-control" ng-model="ModeSelect">
+              <button ng-hide="drone.status.InAir" style="margin: 5px 0px 5px 0px;" ng-click="takeoff(drone.name, 30)" class="btn btn-block btn-sm btn-success">Takeoff</button>
+              <button ng-show="drone.status.InAir" style="margin: 5px 0px 5px 0px;" ng-click="land(drone.name)" class="btn btn-sm btn-block btn-danger">Land</button>
+              <button ng-hide="drone.status.Armed" style="margin: 5px 0px 5px 0px;" ng-click="setArming(drone.name, true)" class="btn btn-sm btn-block btn-primary">Arm</button>
+              <button ng-show="drone.status.Armed" style="margin: 5px 0px 5px 0px;" ng-click="setArming(drone.name, false)" class="btn btn-sm btn-block btn-primary">Disarm</button>
+              <button ng-click="routeHome(drone)" style="margin: 5px 0px 5px 0px;" class="btn btn-sm btn-block btn-primary">Fly Home</button>
+              <hr>
+              <a href="" ng-click="toggleMode=!toggleMode">Toggle Flight Mode</a>
+              <select ng-show="toggleMode" class="form-control" ng-init="ModeSelect=drone.mode || 'Manual'" ng-model="ModeSelect" style="margin: 5px 0px 5px 0px;">
                 <option value="Manual">Manual</option>
                 <option value="Altitude">Altitude</option>
                 <option value="Position">Position</option>
@@ -38,6 +37,7 @@
                 <option value="Hold">Hold</option>
                 <option value="Land">Land</option>
               </select>
+              <button ng-click="setMode(drone.name, ModeSelect); toggleMode=false" ng-show="toggleMode" class="btn btn-sm btn-warning">Set Flight Mode</button>
             </div>
           </div>
       </div>
@@ -93,8 +93,8 @@
         Location coordinates: <strong>({{target.lat | number:'5'}}, {{target.lon | number:'5'}})</strong><br>
         Approximate travel time: <strong>
           <span ng-show="target.time > 3600000">{{target.time | date:'h'}} hours,</span>
-          <span ng-show="target.time > 60000">{{target.time | date:'m'}} minutes</span>,
-          and {{target.time | date:'s'}} seconds.</strong><br>
+          <span ng-show="target.time > 60000">{{target.time | date:'m'}} minutes, and</span>
+          {{target.time | date:'s'}} seconds.</strong><br>
 
         Distance: <strong>{{target.dist | number:'2'}} miles.</strong>
       </div>

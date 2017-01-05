@@ -36,7 +36,7 @@ angular
 
             instance.result.then(function () {
               ModalOpened = false;
-            });
+            }, function() { ModalOpened = false; });
           }
           break;
       }

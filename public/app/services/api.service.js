@@ -60,23 +60,14 @@ angular
         }
       }, 2000);
 
-      var getTelem = function(drone, name) {
+      var getTelem = function(drone, name, cb) {
         $http({
           method: 'GET',
           url: '/api/drone/'+drone+'/'+name
         }).then(function successCallback(response) {
           logAPICall('GET', '/api/drone/'+drone+'/'+name, {}, response.data);
-          if (telem[drone] == {}) {
-            telem[drone] = {
-              online: false
-            };
-          }
-          telem[drone][name] = response.data.data;
-          telem[drone].online = true;
-
-        }, function () {
-          telem[drone].online = false;
-        });
+          cb(response.data);
+        }, Error);
       };
 
       var droneCmd = function(droneName, cmd, body, cb) {
@@ -123,13 +114,24 @@ angular
         }, Error);
       }
 
-      var initDrone = function(stop, name) {
+      var initDrone = function(stop, name, startLat, startLon) {
         var action = stop ? '/stop' : '/start'
+        var obj = {};
+
+        if (startLat) {
+          obj["lat"] = startLat;
+        }
+
+        if (startLon) {
+          obj["lon"] = startLon;
+        }
+
         $http({
           method: 'POST',
-          url: '/api/drone/'+name+action
+          url: '/api/drone/'+name+action,
+          data: obj
         }).then(function successCallback(response) {
-          logAPICall('POST', '/api/drone/'+name+action, {}, response.data);
+          logAPICall('POST', '/api/drone/'+name+action, obj, response.data);
           // getDrones();
         }, Error);
       }
