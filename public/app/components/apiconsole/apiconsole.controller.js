@@ -30,25 +30,6 @@ angular
         {id: "3", name: "PUT"}
     ];
 
-    $rootScope.$on('drones:update', function(ev, data) {
-      $scope.drones = data;
-
-      $scope.datalogs = [];
-      var logs = API.getLog();
-
-      for (var i = logs.length-1; i >= 0; --i) {
-        var log = logs[i];
-
-        switch (log.method) {
-          case 'GET': log.methodClass = 'label-success'; break;
-          case 'POST': log.methodClass = 'label-info'; break;
-          case 'PUT': log.methodClass = 'label-default'; break;
-          case 'DELETE': log.methodClass = 'label-danger'; break;
-        }
-
-        $scope.datalogs.push(log);
-      }
-    });
 
     $scope.testJSON = function(json) {
       if (json === "") {
