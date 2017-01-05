@@ -43,11 +43,8 @@
       </div>
     </div>
 
-    <span id="attitude" > <div></div> </span>
-    <span id="heading" > <div></div> </span>
-    <span id="climbing" > <div></div> </span>
 
-    
+
   </div>
   <button style="position: fixed; margin-top: 80px; margin-left: 10px; z-index: 100" class="btn btn-sm btn-primary pull-right" ng-click="toggleActionBar()">
     <span class="glyphicon" ng-class="mapArrow"></span>
@@ -58,19 +55,18 @@
       position: fixed;
       right: 0px;
       z-index: 2000;
-      width: 150px;
-      margin: 15px 15px 15px 15px;
+      width: 200px;
+      margin: 1px 90px 15px 15px;
     ">
     <h3>{{currentDrone.name}}</h3>
-    <div class="panel panel-default">
-      <div class="panel-body">
-        <p>
-          <strong>Roll:</strong>{{currentDrone.attitude.Roll | number:'2'}}<br>
-          <strong>Pitch:</strong> {{currentDrone.attitude.Pitch | number:'2'}}<br>
-          <strong>Heading:</strong> {{currentDrone.attitude.Yaw | number:'2'}}
-        </p>
-      </div>
+    <div>
+      <span id="attitude" > <div></div> </span>
+      <span id="heading" > <div></div> </span>
+      
+
     </div>
+
+    
 
     <div class="panel panel-default">
       <div class="panel-body">
@@ -82,7 +78,18 @@
         </p>
       </div>
     </div>
+
+
   </div>
+
+
+
+
+
+
+
+
+
 
   <leaflet id="groundcontrol" defaults="defaults" ng-style="mapOffset" style="
     width: 100%;

@@ -360,37 +360,29 @@ angular
                 $scope.currentDrone = drone;
 
 
+          //Data for flight instrument
 
-
-                var attitude = $.flightIndicator('#attitude');
-           
+           var attitude = $.flightIndicator('#attitude');
            var flightRoll = $scope.currentDrone.attitude.Roll
            var flightPitch = $scope.currentDrone.attitude.Pitch
-          
            attitude.setRoll(flightRoll); // Sets the roll 
            attitude.setPitch(flightPitch);//Sets pitch
       
         
-
-
            var heading = $.flightIndicator('#heading', 'heading');
            var flightHeading = $scope.currentDrone.attitude.Yaw
-           
            heading.setHeading(flightHeading); // Sets the heading 
       
       
-
            var climbing = $.flightIndicator('#climbing', 'variometer');
-           
            var flightClimb = $scope.currentDrone.rates.Climb
-           
            climbing.setVario(flightClimb); // Sets the climb 
 
 
+           var speeding = $.flightIndicator('#speeding', 'airspeed');
+           var flightSpeed = $scope.currentDrone.rates.Groundspeed
+           speeding.setAirSpeed(flightSpeed); // Sets the speed 
 
-
-
-           
 
               }
             }
