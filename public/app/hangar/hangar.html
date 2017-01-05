@@ -92,9 +92,15 @@
           <div class="col-sm-4">
             <p><strong>Roll:</strong> {{(mavStream[drone._id]['ATTITUDE'].roll * (180 / 3.14159)).toFixed(2)}}</p>
             <p><strong>Pitch:</strong> {{(mavStream[drone._id]['ATTITUDE'].pitch * (180 / 3.14159)).toFixed(2)}}</p>
-            <p><strong>Yaw:</strong> {{(mavStream[drone._id]['ATTITUDE'].yaw * (180 / 3.14159)).toFixed(2)}}</p>
+           <p><strong>Yaw:</strong> {{(mavStream[drone._id]['ATTITUDE'].yaw * (180 / 3.14159)).toFixed(2)}}</p>
             <p><strong>Throttle:</strong> {{mavStream[drone._id]['VFR_HUD'].throttle}}</p>
           </div>
+
+
+            <span id="attitude">HEIOHHHHHHHHYYYYYYY</span>
+
+
+
           <div class="col-sm-4">
             <p><strong>Altitude:</strong> {{(mavStream[drone._id]['VFR_HUD'].alt).toFixed(2)}}</p>
             <p><strong>Climb:</strong> {{(mavStream[drone._id]['VFR_HUD'].climb).toFixed(2)}}</p>

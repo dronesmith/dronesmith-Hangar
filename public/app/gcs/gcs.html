@@ -1,4 +1,5 @@
 <section id="gcs" style="margin-top: -23px; z-index: -100; overflow: hidden;">
+
   <div style="
     width: 250px;
     height: 94vh;
@@ -39,9 +40,17 @@
                 <option value="Land">Land</option>
               </select>
             </div>
+
           </div>
+
       </div>
     </div>
+
+
+              <span id="attitude" > <div></div> </span>
+
+
+
   </div>
   <button style="position: fixed; margin-top: 80px; margin-left: 10px; z-index: 100" class="btn btn-sm btn-primary pull-right" ng-click="toggleActionBar()">
     <span class="glyphicon" ng-class="mapArrow"></span>
@@ -56,14 +65,20 @@
       margin: 15px 15px 15px 15px;
     ">
     <h3>{{currentDrone.name}}</h3>
+
+      
+
     <div class="panel panel-default">
-      <div class="panel-body">
+
+      <div class="panel-body">   
+
         <p>
           <strong>Roll:</strong>{{currentDroneTelem.attitude.Roll | number:'2'}}<br>
           <strong>Pitch:</strong> {{currentDroneTelem.attitude.Pitch | number:'2'}}<br>
           <strong>Heading:</strong> {{currentDroneTelem.attitude.Yaw | number:'2'}}
         </p>
       </div>
+
     </div>
 
     <div class="panel panel-default">
@@ -104,3 +119,4 @@
       </div>
     </script>
 </section>
+
