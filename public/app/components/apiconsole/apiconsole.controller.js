@@ -100,11 +100,6 @@ angular
 
       });
     }
-<<<<<<< HEAD
-
-=======
-
-
 
 
     $scope.selectHeight = {"height": "28px"};
