@@ -17,11 +17,11 @@ angular
   .controller('APIConsoleCtrl', function ($scope, $rootScope, $interval, API) {
 
 
-        $scope.selectHeight = {"height": "5vh"};
-        $scope.opened = false;
-        $scope.selectGlyph = "glyphicon-triangle-top";
+    // TODO: improve positioning of status text
+    // TODO: validate url on change
+    // TODO: remind user to select drone if {drone} is in url
+    // TODO: change color of status text based on error or not, maybe colored circle
 
-        $scope.datalogs = [];
 
     $scope.methods = [
         {id: "1", name: "GET"},
@@ -30,9 +30,66 @@ angular
         {id: "3", name: "PUT"}
     ];
 
-    $rootScope.$on('drones:update', function(ev, data) {
-      $scope.drones = data;
 
+    $scope.testJSON = function(json) {
+      if (json === "") {
+        $scope.consoleForm.body.$setValidity('json', true);
+
+      } else {
+        try {
+          JSON.parse(json);
+          $scope.consoleForm.body.$setValidity('json', true);
+        } catch(e) {
+          $scope.consoleForm.body.$setValidity('json', false);
+        }
+      }
+
+    }
+
+    $scope.bodyDisabled = true;
+
+    $scope.testMethod = function(method) {
+      if(method === "POST" || method === "PUT" || method === "DELETE" ){
+        $scope.bodyDisabled = false;
+      } else {
+        $scope.bodyDisabled = true;
+      }
+
+    }
+    $scope.requestIconColor = "#d3d3d3";
+
+    $scope.sendRequest = function(method, drone, urlportion, body) {
+      // Clear Response text
+      $scope.response = null;
+
+      // Determine if entered url contains {drone} and replace
+      // with current selected drone
+      if (/({drone})/.test(urlportion)) {
+        urlportion = urlportion.replace(/({drone})/, $scope.request.drone.name);
+      }
+
+      // Send API request
+      API.sendRequest(method, drone, urlportion, body, function(response){
+        $scope.response = response;
+
+        // set request status icon
+        if(response.status >= 400){
+          $scope.requestIconColor = "#e74c3c";
+        } else {
+          $scope.requestIconColor = "#a0d468";
+        }
+
+      });
+    }
+
+
+    $scope.selectHeight = {"height": "28px"};
+    $scope.opened = false;
+    $scope.selectGlyph = "glyphicon glyphicon-chevron-up";
+
+    $scope.datalogs = [];
+
+    $rootScope.$on('drones:update', function(ev, data) {
       $scope.datalogs = [];
       var logs = API.getLog();
 
@@ -50,44 +107,15 @@ angular
       }
     });
 
-    $scope.validJSON = true;
-
-    $scope.testJSON = function(json) {
-      var validJSON;
-      try {
-        validJSON = JSON.parse(json);
-        $scope.validJSON = true;
-      } catch(e) {
-        $scope.validJSON = false;
-      }
-    }
-
-    $scope.sendRequest = function(method, drone, urlportion, body) {
-      // Clear Response text
-      $scope.response = null;
-
-      // Determine if entered url contains {drone} and replace
-      // with current selected drone
-      if (/({drone})/.test(urlportion)) {
-        urlportion = urlportion.replace(/({drone})/, $scope.request.drone.name);
-      }
-
-
-      // Send API request
-      API.sendRequest(method, drone, urlportion, body, function(response){
-        $scope.response = response;
-      });
-    }
-    
     $scope.toggleView = function() {
       $scope.opened = !$scope.opened;
 
       if (!$scope.opened) {
-        $scope.selectHeight = {"height": "5vh"};
-        $scope.selectGlyph = "glyphicon-triangle-top";
+        $scope.selectHeight = {"height": "28px"};
+        $scope.selectGlyph = "glyphicon glyphicon-chevron-up";
       } else {
         $scope.selectHeight = {"height": "40vh"};
-        $scope.selectGlyph = "glyphicon-triangle-bottom";
+        $scope.selectGlyph = "glyphicon glyphicon-chevron-down";
       }
     }
   })

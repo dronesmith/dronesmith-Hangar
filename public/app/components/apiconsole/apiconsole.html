@@ -1,116 +1,132 @@
-<section id="apiconsole"
-  style="
-    background: linear-gradient(to top, #eee, #fff);
-    z-index: 2000;
-    padding: 10px 10px 10px 10px;
-    border: 2px solid #ddd;
-    border-radius: 25px 25px 0px 0px;
-    width: 100%;
-    bottom:0;
-    left:0;
-    position: fixed;
-  " ng-style="selectHeight">
+<div style="
+  bottom:0;
+  width: 100%;
+  position: fixed;">
 
-  <a style="
-    font-size: 25px;
-    display: block;
-    margin: 0 auto 0;
-    " href="" class="text-center" ng-click="toggleView()">
-    <span class="glyphicon" ng-class="selectGlyph"></span>
-  </a>
+  <div class="container">
 
-    <div class="col-sm-6">
-      <h4>API Console</h4>
-      <hr>
-      <div style="height: 26vh; overflow: scroll;">
-        <!-- <div class="col-sm-12"> -->
-          <form class="form">
-                <div class="row" style="margin-top:20px;">
-                  <div class="col-xs-6">
-                    <!-- <label class="control-label">Method</label> -->
-                    <div class="input-group">
-                      <div class="input-group-addon"><strong>Method</strong></div>
-                      <select class="form-control" ng-model="request.method"
-                        ng-options="option.name for option in methods track by option.name">
-                      </select>
-                  </div>
-                  <!-- <span id="helpBlock" class="help-block">{{request.method.name}}</span> -->
-                  </div>
-                  <div class="col-xs-6">
-                    <!-- <label class="control-label">Drone</label> -->
-                    <div class="input-group">
-                      <div class="input-group-addon"><strong>Drone</strong></div>
-                      <select class="selectpicker form-control"
-                        ng-model="request.drone"
-                        ng-options="option.name for option in drones track by option.id">
-                      </select>
-                    </div>
-                    <!-- <span id="helpBlock" class="help-block">{{request.drone.name}}</span> -->
+    <section id="apiconsole"
+      style="background: linear-gradient(to top, #eee, #fff);
+        z-index: 2000;
+        padding: 0px 10px 10px 10px;
+        border: 2px solid #d3d3d3;
+        border-radius: 10px 10px 0px 0px;
+        overflow:hidden;" ng-style="selectHeight">
 
-                  </div>
-                </div>
-                <div class="row" style="margin-top:20px;">
-                  <div class="col-xs-12">
-                    <!-- <label class="control-label">URL</label> -->
-                    <div class="input-group">
-                      <div class="input-group-addon"> <strong>URL </strong> &nbsp api.dronesmith.io/api/</div>
-                      <input ng-model="request.urlportion" type="text" class="form-control" placeholder="drone/{drone}/position">
-                    </div>
-                    <span id="helpBlock" class="help-block">Use <strong>{drone}</strong> in the url and it will be replaced with the currently selected drone on Send.</span>
-                  </div>
-                </div>
-                <div class="row" style="margin-top:10px;">
-                  <div class="col-xs-12">
-                    <label class="control-label">Body</label>
-                    <p ng-hide="validJSON" class="text-danger">Invalid JSON.</p>
-                    <textarea ng-model="request.body" ng-model-options="{ debounce: 1000 }" ng-change="testJSON(request.body)" class="form-control" rows="3" style="overflow-y: scroll;
-                         resize: none;" ></textarea>
-                  </div>
-                </div>
-                <div class="row" style="margin-top:20px;">
-                  <div class="col-xs-12">
-                    <button type="submit" ng-click="sendRequest(request.method.name, request.drone, request.urlportion, request.body)" class="btn btn-primary">Send</button>
+      <a style="font-size: 20px; display: block; margin: 0 auto 0;" href=""
+        class="text-center" ng-click="toggleView()">
+        <span class="glyphicon" ng-class="selectGlyph"></span>
+      </a>
+      <div class="col-xs-12 col-sm-6 ">
+        <form class="form" name="consoleForm">
+          <div class="row">
+            <div class="col-xs-8">
+              <h4 style="margin-bottom: 0; margin-top:0;" >API Console</h4>
 
-                  </div>
-                </div>
-                <div class="row" style="margin-top:20px;">
-                  <div class="col-xs-6">
-                    <h4><strong>Response</strong></h4>
-                  </div>
-                  <div class="col-xs-6">
-                    <h4><span>Status: </span>{{response.status}} <span>{{response.statusText}}</span></h4>
-                  </div>
-                </div>
-                <div class="row" style="margin-bottom: 20px;">
-                  <div class="col-xs-12">
+            </div>
+             <div class="col-xs-4" style="">
+              <div id="request-status-icon"
+               style="float: right;
+                 width: 10px;
+                 height: 10px;
+                 border-radius: 5px;
+                 margin: 5px 20px 5px 0;
+                 "
+                ng-style="{background: requestIconColor}"
+                 ></div>
+             </div>
+          </div>
+          <hr style="margin-top: 10px; margin-bottom: 0;">
+          <div style="padding-top: 15px; height: 31vh; overflow: scroll; padding-right: 20px; ">
+            <div class="row" style="">
+              <div class="col-xs-6">
+                <label class="control-label">Method*</label>
+                <span style="padding-left: 20px;"
+                  ng-show="consoleForm.method.$invalid && !consoleForm.$pristine"
+                  class="text-danger">Required</span>
 
-                    <pre style="height: 300px; overflow: auto;">{{response.data.data | json}}</pre>
-                  </div>
+                  <select name="method" ng-change="testMethod(request.method.name)" class="form-control" ng-model="request.method"
+                  ng-options="option.name for option in methods track by option.name" required>
+                  </select>
+              </div>
+              <div class="col-xs-6">
+                <label class="control-label">Drone</label>
+                <select class="selectpicker form-control " ng-model="request.drone"
+                  ng-options="option.name for option in drones track by option.id">
+                </select>
+              </div>
+            </div>
+            <div class="row" style="margin-top:20px;">
+              <div class="col-xs-12">
+                <label class="control-label">URL*</label>
+                <span style="padding-left: 20px;"
+                  ng-show="consoleForm.url.$invalid && !consoleForm.url.$pristine"
+                  class="text-danger">Required</span>
+                <div class="input-group">
+                  <div class="input-group-addon">api.dronesmith.io/api/</div>
+                  <input name="url" ng-model="request.urlportion" type="text"
+                    class="form-control" placeholder="drone/{drone}/position"
+                    required>
                 </div>
-              </form>
-        <!-- </div> -->
+                <span id="helpBlock" class="help-block">Use <strong>{drone}</strong> in the url and it will be replaced with the currently selected drone on Send.</span>
+              </div>
+            </div>
+            <div class="row" style="margin-top:10px;">
+              <div class="col-xs-12">
+                <label class="control-label">Body </label>
+                <span style="padding-left: 20px;" ng-show="consoleForm.body.$error.json" class="text-danger">Invalid JSON</span>
+                <textarea name="body" ng-model="request.body" ng-disabled="bodyDisabled" ng-model-options="{ debounce: 1000 }"
+                  ng-change="testJSON(request.body)" class="form-control" rows="3" style="overflow-y: scroll;
+                       resize: none;"></textarea>
+              </div>
+            </div>
+            <div class="row" style="margin-top: 20px;">
+              <div class="col-xs-8 col-xs-offset-2">
+                <button type="submit" ng-disabled="consoleForm.$invalid" ng-click="sendRequest(request.method.name, request.drone, request.urlportion, request.body)"
+                  class="btn btn-primary btn-block">Send <span class="glyphicon glyphicon-send"></span></button>
+              </div>
+            </div>
 
+            <div class="row" style="margin-top:20px;">
+              <div class="col-xs-12">
+                <h4><strong>Response</strong></h4>
+                <h4>Status: </span>{{response.status}} <span>{{response.statusText}}</h4>
+              </div>
+            </div>
+            <div class="row" style="margin-bottom: 20px;">
+              <div class="col-xs-12">
+                <pre style="height: 300px; overflow: auto;">{{response.data.data | json}}</pre>
+              </div>
+            </div>
+          </div>
+        </form>
       </div>
-    </div>
-    <div class="col-sm-6">
-      <h4>API Log <small>Click any log item to see request body and reponse</small></h4>
-      <hr>
 
-      <div style="height: 32vh; overflow: scroll;">
-        <div style="position: relative;">
-          <li style="list-style: none" ng-repeat="item in datalogs">
-            <div ng-init="collapsed=true" ng-click="collapsed=!collapsed">
-
-              <span class="label" ng-class="item.methodClass">{{item.method}}</span> <a href="">[{{item.time | date:'HH:mm:ss'}}] {{item.url}}</a><br>
-             <pre style="
-                 font-size: 10px;
-                 margin: 5px 5px 5px 5px;
-               "
-               ng-hide="collapsed">Body: {{item.body | json}} <br>Response: {{item.response.data | json}}
-             </pre>
-           </div>
-         </li>
+      <div class="col-xs-12 col-sm-6 ">
+        <div class="row" style="height: 21px; overflow: hidden;">
+          <div class="col-xs-12">
+            <h4 style="margin-bottom: 0; margin-top:0;">API Log <small>Click any log item for details.</small></h4>
+          </div>
+        </div>
+        <hr style="margin-top: 10px; margin-bottom: 0;">
+        <div style=" padding-top: 15px; height: 31vh; overflow: scroll;">
+          <div style="position: relative;">
+            <li style="list-style: none" ng-repeat="item in datalogs">
+              <div ng-init="collapsed=true" ng-click="collapsed=!collapsed">
+                <span class="label" ng-class="item.methodClass">{{item.method}}</span> <a href="">[{{item.time | date:'HH:mm:ss'}}] {{item.url}}</a><br>
+                <pre style="font-size: 10px; margin: 5px 5px 5px 5px;"
+                  ng-hide="collapsed">Body: {{item.body | json}} <br>Response: {{item.response.data | json}}
+                </pre>
+              </div>
+            </li>
+          </div>
         </div>
       </div>
-    </div>
-</section>
+
+    </section>
+
+  </div>
+
+
+
+</div>
