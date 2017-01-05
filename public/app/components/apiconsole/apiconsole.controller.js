@@ -73,7 +73,7 @@ angular
         $scope.response = response;
 
         // set request status icon
-        if(Number(String(response.status).charAt(0)) === 4){
+        if(response.status >= 400){
           $scope.requestIconColor = "#e74c3c";
         } else {
           $scope.requestIconColor = "#a0d468";
