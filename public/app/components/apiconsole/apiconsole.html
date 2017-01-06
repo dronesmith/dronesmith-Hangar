@@ -19,31 +19,38 @@
       </a>
       <div class="col-xs-12 col-sm-6 ">
         <form class="form" name="consoleForm">
-          <div class="row">
-            <div class="col-xs-8">
+          <div class="row" height="71px;">
+            <div class="col-xs-6">
               <h4 style="margin-bottom: 0; margin-top:0;" >API Console</h4>
 
             </div>
-             <div class="col-xs-4" style="">
+             <div class="col-xs-6">
+
               <div id="request-status-icon"
                style="float: right;
                  width: 10px;
                  height: 10px;
                  border-radius: 5px;
-                 margin: 5px 20px 5px 0;
+                 margin: 8px 20px 5px 0;
+
                  "
                 ng-style="{background: requestIconColor}"
                  ></div>
+                 <h4 style="margin-bottom: 0px; margin-top:0; float: right; padding-right:5px;"><small >Status</small></h4>
              </div>
           </div>
           <hr style="margin-top: 10px; margin-bottom: 0;">
           <div style="padding-top: 15px; height: 33.5vh; overflow: scroll; padding-right: 20px; ">
             <div class="row" style="">
-              <div class="col-xs-6">
-                <label class="control-label">Method*</label>
-                <span style="padding-left: 20px;"
-                  ng-show="consoleForm.method.$invalid && !consoleForm.$pristine"
-                  class="text-danger">Required</span>
+              <div class="col-xs-6" style="overflow: hidden;">
+                <div style="white-space:nowrap;">
+                  <label style=""class="control-label">Method*</label>
+                  <span style="padding-left: 5px;"
+                    ng-show="consoleForm.method.$invalid && !consoleForm.$pristine"
+                    class="text-danger">Required</span>
+                </div>
+
+
 
                   <select name="method" ng-change="testMethod(request.method.name)" class="form-control" ng-model="request.method"
                   ng-options="option.name for option in methods track by option.name" required>
@@ -113,7 +120,9 @@
           <div style="position: relative;">
             <li style="list-style: none" ng-repeat="item in datalogs">
               <div ng-init="collapsed=true" ng-click="collapsed=!collapsed">
-                <span class="label" ng-class="item.methodClass">{{item.method}}</span> <a href="">[{{item.time | date:'HH:mm:ss'}}] {{item.url}}</a><br>
+                <div style="white-space:nowrap;">
+                  <span class="label" ng-class="item.methodClass">{{item.method}}</span> <a href="">[{{item.time | date:'HH:mm:ss'}}] {{item.url}}</a><br>
+                </div>
                 <pre style="font-size: 10px; margin: 5px 5px 5px 5px;"
                   ng-hide="collapsed">Body: {{item.body | json}} <br>Response: {{item.response.data | json}}
                 </pre>

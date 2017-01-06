@@ -39,8 +39,9 @@ angular
       // Generates a drone marker. Name will be the display name.
       function getDroneMarker(name) {
         return L.divIcon({
-          className: 'chevron',
-          html:'<div id="'+ name +'" class="icon"></div><div class="arrow" />'
+
+          html:'<img style="margin-left:-13px;margin-top:-20px;" width="35px" src="/assets/img/waypoint.svg">'
+
         });
       }
 
