@@ -7,9 +7,9 @@
     " ng-show="showActionBar">
 
     <hgroup style="padding: 10px 5px 5px 5px">
-      <h4 style="margin-top: 7px" class="pull-left">Deployed Fleet</h4>
+      <h4 style="margin-top: 7px" class="text-center">Deployed Fleet</h4>
     </hgroup>
-    <div class="container-fluid" style="margin-top: 40px;">
+    <div class="container-fluid">
       <p ng-hide="getOnlineCnt() > 0">Initialize your drones in the Fleet Manager.</p>
       <div class="panel panel-default" ng-repeat="drone in drones track by $index" ng-show="drone.online">
           <div class="panel-body">
@@ -58,15 +58,15 @@
     <span class="glyphicon glyphicon-screenshot"></span>
   </button>
 
-  <button tooltip-placement="right" uib-tooltip="Goto Mode" style="position: fixed; margin-top: 160px; margin-left: 10px; z-index: 2001" class="btn btn-sm pull-right" ng-class="gotoToolClass" ng-click="selectTool('goto')">
+  <button ng-disabled="!currentDrone" tooltip-placement="right" uib-tooltip="Goto Mode" style="position: fixed; margin-top: 160px; margin-left: 10px; z-index: 2001" class="btn btn-sm pull-right" ng-class="gotoToolClass" ng-click="selectTool('goto')">
     <span class="glyphicon glyphicon-plane"></span>
   </button>
 
-  <button tooltip-placement="right" uib-tooltip="Route Mode" style="position: fixed; margin-top: 200px; margin-left: 10px; z-index: 2001" class="btn btn-sm pull-right" ng-class="routeToolClass" ng-click="selectTool('route')">
+  <button ng-disabled="!currentDrone" tooltip-placement="right" uib-tooltip="Route Mode" style="position: fixed; margin-top: 200px; margin-left: 10px; z-index: 2001" class="btn btn-sm pull-right" ng-class="routeToolClass" ng-click="selectTool('route')">
     <span class="glyphicon glyphicon-send"></span>
   </button>
 
-  <button tooltip-placement="right" uib-tooltip="Set Home Location" style="position: fixed; margin-top: 240px; margin-left: 10px; z-index: 2001" class="btn btn-sm pull-right" ng-class="homeToolClass" ng-click="selectTool('home')">
+  <button ng-disabled="!currentDrone" tooltip-placement="right" uib-tooltip="Set Home Location" style="position: fixed; margin-top: 240px; margin-left: 10px; z-index: 2001" class="btn btn-sm pull-right" ng-class="homeToolClass" ng-click="selectTool('home')">
     <span class="glyphicon glyphicon-home"></span>
   </button>
 
@@ -89,12 +89,12 @@
 
     <hr>
     <!-- <small style="font-size .5em;">Altitude</small> -->
-      Altitude <h3 class="text-center">{{currentDrone.position.Altitude | number:'2'}} <small style="font-size .5em;">m</small></h3>
-      Speed <h3 class="text-center">{{currentDrone.rates.Groundspeed | number:'2'}} <small style="font-size .5em;">m/s</small></h3>
-      Throttle <h3 class="text-center">{{currentDrone.rates.Throttle | number:'2'}} <small style="font-size .5em;">%</small></h3>
-      Climb <h3 class="text-center">{{currentDrone.rates.Climb | number:'2'}} <small style="font-size .5em;">m/s</small></h3>
+      Altitude <h3 style="margin: 5px 5px 15px 5px;" class="text-center">{{currentDrone.position.Altitude | number:'2'}} <small style="font-size .5em;">m</small></h3>
+      Ground Speed <h3 style="margin: 5px 5px 15px 5px;" class="text-center">{{currentDrone.rates.Groundspeed | number:'2'}} <small style="font-size .5em;">m/s</small></h3>
+      Throttle <h3 style="margin: 5px 5px 15px 5px;" class="text-center">{{currentDrone.rates.Throttle | number:'2'}} <small style="font-size .5em;">%</small></h3>
+      Climb <h3 style="margin: 5px 5px 15px 5px;" class="text-center">{{currentDrone.rates.Climb | number:'2'}} <small style="font-size .5em;">m/s</small></h3>
 
-        </p>
+      <a href="" style="margin: 0 30px;" ng-click="deselectDrone()"><small style="color: #fff;">(Deselect Vehicle)</small></a>
   </div>
 
   <leaflet id="groundcontrol" defaults="defaults" ng-style="mapOffset" style="

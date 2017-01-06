@@ -445,9 +445,9 @@ angular
                 }
               } else {
                 $scope.droneGeo[drone.name] = {};
-                $scope.droneGeo[drone.name].nameMarker = L.marker([drone.position.Latitude, drone.position.Longitude],
-                  {icon: L.divIcon({html: '<div class="icon"><p class="text-warning" style="font-weight: bold;position: relative; right: 50px;">'+drone.name+'</p></div>'})});
                 $scope.droneGeo[drone.name].marker = L.marker([drone.position.Latitude, drone.position.Latitude], {icon: getDroneMarker(drone.name)});
+                $scope.droneGeo[drone.name].nameMarker = L.marker([drone.position.Latitude, drone.position.Longitude],
+                  {icon: L.divIcon({'className': 'mapview-marker-icon', html: '<p class="text-warning" style="font-weight: bold; position: relative; bottom: 2px; left: 30px;">'+drone.name+'</p>'})});
                 leafletData.getMap('groundcontrol').then(function(map) {
                   $scope.droneGeo[drone.name].marker.addTo(map);
                   $scope.droneGeo[drone.name].nameMarker.addTo(map);
