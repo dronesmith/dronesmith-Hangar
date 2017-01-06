@@ -50,6 +50,7 @@ module.exports = function(app, route) {
 
         // Get all missions
         .get    ('/mission/:name',                 mission.get)
+        .get    ('/mission',                       mission.getAll)
 
         // Pause a mission
         .post   ('/mission/:name/pause',           mission.pause)

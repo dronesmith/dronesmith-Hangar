@@ -152,6 +152,7 @@ angular
           url: '/mission/start',
           data: {name: name, mission: route}
         }).then(function(res) {
+          logAPICall('POST', "/api/route", {name: name, mission: route}, res.data);
           if (cb) { cb(res) };
         }, Error);
       }
@@ -169,6 +170,15 @@ angular
         $http({
           method: 'GET',
           url: '/mission/'+name
+        }).then(function(res) {
+          cb(res.data.mission);
+        }, Error);
+      }
+
+      var getAllRoutes = function(cb) {
+        $http({
+          method: 'GET',
+          url: '/mission'
         }).then(function(res) {
           cb(res.data.mission);
         }, Error);
@@ -236,6 +246,7 @@ angular
         sendRequest:        sendRequest,
         flyRoute:           flyRoute,
         getRoute:           getRoute,
+        getAllRoutes:       getAllRoutes,
         cancelRoute:        cancelRoute
       };
   })
