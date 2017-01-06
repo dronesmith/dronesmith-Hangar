@@ -146,11 +146,11 @@ angular
         }, Error);
       }
 
-      var flyRoute = function(name, route, cb) {
+      var flyRoute = function(name, land, route, cb) {
         $http({
           method: 'POST',
           url: '/mission/start',
-          data: {name: name, mission: route}
+          data: {name: name, mission: route, land: land, takeoff: true}
         }).then(function(res) {
           logAPICall('POST', "/api/route", {name: name, mission: route}, res.data);
           if (cb) { cb(res) };
