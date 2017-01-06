@@ -30,6 +30,7 @@ angular
       $scope.routeToolClass = 'btn-primary';
       $scope.panToolClass = 'btn-success';
       $scope.gotoToolClass = 'btn-primary';
+      $scope.homeToolClass = 'btn-primary';
       $scope.selectedTool = 'pan';
 
       // =======================================================================
@@ -216,6 +217,13 @@ angular
                   {lat: ev.latlng.lat, lon: ev.latlng.lng}, cmdResponseHandler);
               }
             });
+          } else if ($scope.selectedTool == 'home') {
+            modalAlert("Set home at this location?", "Latitude: " + ev.latlng.lat + ", Longitude: " + ev.latlng.lng, function(good) {
+              if (good) {
+                API.droneCmd($scope.currentDrone.name, 'home',
+                  {lat: ev.latlng.lat, lon: ev.latlng.lng}, cmdResponseHandler);
+              }
+            });
           }
         });
       });
@@ -277,14 +285,22 @@ angular
           $scope.routeToolClass = 'btn-primary';
           $scope.panToolClass = 'btn-success';
           $scope.gotoToolClass = 'btn-primary';
+          $scope.homeToolClass = 'btn-primary';
         } else if (tool == 'route') {
           $scope.routeToolClass = 'btn-success';
           $scope.panToolClass = 'btn-primary';
           $scope.gotoToolClass = 'btn-primary';
+          $scope.homeToolClass = 'btn-primary';
         } else if (tool == 'goto') {
           $scope.routeToolClass = 'btn-primary';
           $scope.panToolClass = 'btn-primary';
           $scope.gotoToolClass = 'btn-success';
+          $scope.homeToolClass = 'btn-primary';
+        } else if (tool == 'home') {
+          $scope.routeToolClass = 'btn-primary';
+          $scope.panToolClass = 'btn-primary';
+          $scope.gotoToolClass = 'btn-primary';
+          $scope.homeToolClass = 'btn-success';
         }
       }
 
