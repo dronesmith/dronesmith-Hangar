@@ -50,19 +50,19 @@
 
 
   </div>
-  <button style="position: fixed; margin-top: 80px; margin-left: 10px; z-index: 100" class="btn btn-sm btn-primary pull-right" ng-click="toggleActionBar()">
+  <button style="position: fixed; margin-top: 80px; margin-left: 10px; z-index: 2001" class="btn btn-sm btn-primary pull-right" ng-click="toggleActionBar()">
     <span class="glyphicon" ng-class="mapArrow"></span>
   </button>
 
-  <button tooltip-placement="right" uib-tooltip="Pan Mode" style="position: fixed; margin-top: 120px; margin-left: 10px; z-index: 100" class="btn btn-sm pull-right" ng-class="panToolClass" ng-click="selectTool('pan')">
+  <button tooltip-placement="right" uib-tooltip="Pan Mode" style="position: fixed; margin-top: 120px; margin-left: 10px; z-index: 2001" class="btn btn-sm pull-right" ng-class="panToolClass" ng-click="selectTool('pan')">
     <span class="glyphicon glyphicon-screenshot"></span>
   </button>
 
-  <button tooltip-placement="right" uib-tooltip="Goto Mode" style="position: fixed; margin-top: 160px; margin-left: 10px; z-index: 100" class="btn btn-sm pull-right" ng-class="gotoToolClass" ng-click="selectTool('goto')">
+  <button tooltip-placement="right" uib-tooltip="Goto Mode" style="position: fixed; margin-top: 160px; margin-left: 10px; z-index: 2001" class="btn btn-sm pull-right" ng-class="gotoToolClass" ng-click="selectTool('goto')">
     <span class="glyphicon glyphicon-plane"></span>
   </button>
 
-  <button tooltip-placement="right" uib-tooltip="Route Mode" style="position: fixed; margin-top: 200px; margin-left: 10px; z-index: 100" class="btn btn-sm pull-right" ng-class="routeToolClass" ng-click="selectTool('route')">
+  <button tooltip-placement="right" uib-tooltip="Route Mode" style="position: fixed; margin-top: 200px; margin-left: 10px; z-index: 2001" class="btn btn-sm pull-right" ng-class="routeToolClass" ng-click="selectTool('route')">
     <span class="glyphicon glyphicon-send"></span>
   </button>
 
@@ -72,17 +72,12 @@
       right: 0px;
       z-index: 2000;
       width: 200px;
-      margin: 1px 90px 15px 15px;
     ">
     <h3>{{currentDrone.name}}</h3>
-    <div>
-      <span id="attitude" > <div></div> </span>
-      <span id="heading" > <div></div> </span>
-      
-
+    <div style="display: block; margin: 0 30px 0 30px;">
+      <div style="display: block; margin 0 30px 0 30px;" id="attitude"></div>
+      <div style="display: block; margin 0 30px 0 30px;" id="heading"></div>
     </div>
-
-    
 
     <div class="panel panel-default">
       <div class="panel-body">
@@ -94,18 +89,7 @@
         </p>
       </div>
     </div>
-
-
   </div>
-
-
-
-
-
-
-
-
-
 
   <leaflet id="groundcontrol" defaults="defaults" ng-style="mapOffset" style="
     width: 100%;

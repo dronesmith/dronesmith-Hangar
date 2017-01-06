@@ -326,7 +326,7 @@ angular
       // Select a drone.
       $scope.selectDrone = function(drone) {
         $scope.currentDrone = drone || null;
-       
+
         // Pan to drone location.
         leafletData.getMap('groundcontrol').then(function(map) {
           if ($scope.currentDrone.position) {
@@ -365,7 +365,7 @@ angular
           });
         }
 
-         
+
 
 
       }
@@ -387,6 +387,11 @@ angular
       // EVENT LISTENER (UPDATE LOOP)
       // =======================================================================
 
+      var attitude = $.flightIndicator('#attitude');
+      var heading = $.flightIndicator('#heading', 'heading');
+      attitude.resize(150, 150);
+      heading.resize(150, 150);
+
       // Get updates from API.
       $rootScope.$on('drones:update', function(ev, data) {
 
@@ -400,31 +405,13 @@ angular
               if (drone.name == $scope.currentDrone.name) {
                 $scope.currentDrone = drone;
 
+                 var flightRoll = $scope.currentDrone.attitude.Roll;
+                 var flightPitch = $scope.currentDrone.attitude.Pitch;
+                 attitude.setRoll(flightRoll); // Sets the roll
+                 attitude.setPitch(flightPitch);//Sets pitch
 
-          //Data for flight instrument
-
-           var attitude = $.flightIndicator('#attitude');
-           var flightRoll = $scope.currentDrone.attitude.Roll
-           var flightPitch = $scope.currentDrone.attitude.Pitch
-           attitude.setRoll(flightRoll); // Sets the roll 
-           attitude.setPitch(flightPitch);//Sets pitch
-      
-        
-           var heading = $.flightIndicator('#heading', 'heading');
-           var flightHeading = $scope.currentDrone.attitude.Yaw
-           heading.setHeading(flightHeading); // Sets the heading 
-      
-      
-           var climbing = $.flightIndicator('#climbing', 'variometer');
-           var flightClimb = $scope.currentDrone.rates.Climb
-           climbing.setVario(flightClimb); // Sets the climb 
-
-
-           var speeding = $.flightIndicator('#speeding', 'airspeed');
-           var flightSpeed = $scope.currentDrone.rates.Groundspeed
-           speeding.setAirSpeed(flightSpeed); // Sets the speed 
-
-
+                 var flightHeading = $scope.currentDrone.attitude.Yaw
+                 heading.setHeading(flightHeading); // Sets the heading
               }
             }
 
