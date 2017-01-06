@@ -1,4 +1,4 @@
-<section id="gcs" style="margin-top: -23px; z-index: -100; overflow: hidden;">
+<section id="gcs" style="margin-top: -23px; z-index: -100; overflow: scroll;">
   <div style="
     width: 250px;
     height: 94vh;
@@ -7,9 +7,9 @@
     " ng-show="showActionBar">
 
     <hgroup style="padding: 10px 5px 5px 5px">
-      <h4 style="margin-top: 7px" class="pull-left">Online Vehicles</h4>
+      <h4 style="margin-top: 7px" class="text-center">Deployed Fleet</h4>
     </hgroup>
-    <div class="container-fluid" style="margin-top: 40px;">
+    <div class="container-fluid">
       <p ng-hide="getOnlineCnt() > 0">Initialize your drones in the Fleet Manager.</p>
       <div class="panel panel-default" ng-repeat="drone in drones track by $index" ng-show="drone.online">
           <div class="panel-body">
@@ -28,6 +28,10 @@
               <button ng-show="drone.status.Armed" style="margin: 5px 0px 5px 0px;" ng-click="setArming(drone.name, false)" class="btn btn-sm btn-block btn-primary">Disarm</button>
               <button ng-click="routeHome(drone)" style="margin: 5px 0px 5px 0px;" class="btn btn-sm btn-block btn-primary">Fly Home</button>
               <hr>
+              <a href="" ng-click="toggleRoute=!toggleRoute">Toggle Route Select</a>
+              <input ng-show="toggleRoute" style="margin: 5px 0px 5px 0px; font-size: .8em;" type="text" class="form-control" placeholder="Madison Square Park, NYC" ng-model="RouteAddress">
+              <button ng-click="routeLoc(drone, RouteAddress)" ng-show="toggleRoute" class="btn btn-sm btn-warning">Find Flight Route</button>
+              <hr>
               <a href="" ng-click="toggleMode=!toggleMode">Toggle Flight Mode</a>
               <select ng-show="toggleMode" class="form-control" ng-init="ModeSelect=drone.mode || 'Manual'" ng-model="ModeSelect" style="margin: 5px 0px 5px 0px;">
                 <option value="Manual">Manual</option>
@@ -41,13 +45,31 @@
             </div>
           </div>
       </div>
+
+      <button ng-show="getOnlineCnt() > 0" class="btn btn-block btn-danger" ng-click="sendFleetHome()">Send Fleet Home</button>
     </div>
 
 
 
   </div>
-  <button style="position: fixed; margin-top: 80px; margin-left: 10px; z-index: 100" class="btn btn-sm btn-primary pull-right" ng-click="toggleActionBar()">
+  <button style="position: fixed; margin-top: 80px; margin-left: 10px; z-index: 2001" class="btn btn-sm btn-primary pull-right" ng-click="toggleActionBar()">
     <span class="glyphicon" ng-class="mapArrow"></span>
+  </button>
+
+  <button tooltip-placement="right" uib-tooltip="Pan Mode" style="position: fixed; margin-top: 120px; margin-left: 10px; z-index: 2001" class="btn btn-sm pull-right" ng-class="panToolClass" ng-click="selectTool('pan')">
+    <span class="glyphicon glyphicon-screenshot"></span>
+  </button>
+
+  <button ng-disabled="!currentDrone" tooltip-placement="right" uib-tooltip="Goto Mode" style="position: fixed; margin-top: 160px; margin-left: 10px; z-index: 2001" class="btn btn-sm pull-right" ng-class="gotoToolClass" ng-click="selectTool('goto')">
+    <span class="glyphicon glyphicon-plane"></span>
+  </button>
+
+  <button ng-disabled="!currentDrone" tooltip-placement="right" uib-tooltip="Route Mode" style="position: fixed; margin-top: 200px; margin-left: 10px; z-index: 2001" class="btn btn-sm pull-right" ng-class="routeToolClass" ng-click="selectTool('route')">
+    <span class="glyphicon glyphicon-send"></span>
+  </button>
+
+  <button ng-disabled="!currentDrone" tooltip-placement="right" uib-tooltip="Set Home Location" style="position: fixed; margin-top: 240px; margin-left: 10px; z-index: 2001" class="btn btn-sm pull-right" ng-class="homeToolClass" ng-click="selectTool('home')">
+    <span class="glyphicon glyphicon-home"></span>
   </button>
 
   <div id="telemetryPane" ng-show="currentDrone"
@@ -56,40 +78,26 @@
       right: 0px;
       z-index: 2000;
       width: 200px;
-      margin: 1px 90px 15px 15px;
+      background-color: rgba(0, 0, 0, 0.5);
+      color: #fff;
+      padding: 0px 15px 15px 15px;
+      border-radius: 0px 0px 0px 15px;
     ">
-    <h3>{{currentDrone.name}}</h3>
-    <div>
-      <span id="attitude" > <div></div> </span>
-      <span id="heading" > <div></div> </span>
-      
-
+    <h3 class="text-center" style="word-wrap: break-word;">{{currentDrone.name}}</h3>
+    <div style="display: block; margin: 0 15px 0 15px;">
+      <div style="display: block; margin 0 15px 0 15px;" id="attitude"></div>
+      <div style="display: block; margin 0 15px 0 15px;" id="heading"></div>
     </div>
 
-    
+    <hr>
+    <!-- <small style="font-size .5em;">Altitude</small> -->
+      Altitude <h3 style="margin: 5px 5px 15px 5px;" class="text-center">{{currentDrone.position.Altitude | number:'2'}} <small style="font-size .5em;">m</small></h3>
+      Ground Speed <h3 style="margin: 5px 5px 15px 5px;" class="text-center">{{currentDrone.rates.Groundspeed | number:'2'}} <small style="font-size .5em;">m/s</small></h3>
+      Throttle <h3 style="margin: 5px 5px 15px 5px;" class="text-center">{{currentDrone.rates.Throttle | number:'2'}} <small style="font-size .5em;">%</small></h3>
+      Climb <h3 style="margin: 5px 5px 15px 5px;" class="text-center">{{currentDrone.rates.Climb | number:'2'}} <small style="font-size .5em;">m/s</small></h3>
 
-    <div class="panel panel-default">
-      <div class="panel-body">
-        <p>
-          <strong>Speed:</strong> {{currentDrone.rates.Groundspeed | number:'2'}}<br>
-          <strong>Throttle:</strong> {{currentDrone.rates.Throttle | number:'2'}}<br>
-          <strong>Climb:</strong> {{currentDrone.rates.Climb | number:'2'}}<br>
-          <strong>Altitude:</strong> {{currentDrone.position.Altitude | number:'2'}}<br>
-        </p>
-      </div>
-    </div>
-
-
+      <a href="" style="margin: 0 30px;" ng-click="deselectDrone()"><small style="color: #fff;">(Deselect Vehicle)</small></a>
   </div>
-
-
-
-
-
-
-
-
-
 
   <leaflet id="groundcontrol" defaults="defaults" ng-style="mapOffset" style="
     width: 100%;
