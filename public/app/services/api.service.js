@@ -152,7 +152,7 @@ angular
           url: '/mission/start',
           data: {name: name, mission: route}
         }).then(function(res) {
-          cb(res);
+          if (cb) { cb(res) };
         }, Error);
       }
 
@@ -161,7 +161,7 @@ angular
           method: 'POST',
           url: '/mission/' + name + '/stop'
         }).then(function(res) {
-          cb(res);
+          if (cb) { cb(res) };
         }, Error);
       }
 
