@@ -146,7 +146,7 @@ angular
         }, Error);
       }
 
-      var flyRoute = function(name, land, route, cb) {
+      var flyRoute = function(name, route, land, cb) {
         $http({
           method: 'POST',
           url: '/mission/start',

@@ -27,10 +27,10 @@
               <button ng-hide="drone.status.Armed" style="margin: 5px 0px 5px 0px;" ng-click="setArming(drone.name, true)" class="btn btn-sm btn-block btn-primary">Arm</button>
               <button ng-show="drone.status.Armed" style="margin: 5px 0px 5px 0px;" ng-click="setArming(drone.name, false)" class="btn btn-sm btn-block btn-primary">Disarm</button>
               <button ng-click="routeHome(drone)" style="margin: 5px 0px 5px 0px;" class="btn btn-sm btn-block btn-primary">Fly Home</button>
-              <hr>
+              <!-- <hr>
               <a href="" ng-click="toggleRoute=!toggleRoute">Toggle Route Select</a>
               <input ng-show="toggleRoute" style="margin: 5px 0px 5px 0px; font-size: .8em;" type="text" class="form-control" placeholder="Madison Square Park, NYC" ng-model="RouteAddress">
-              <button ng-click="routeLoc(drone, RouteAddress)" ng-show="toggleRoute" class="btn btn-sm btn-warning">Find Flight Route</button>
+              <button ng-click="routeLoc(drone, RouteAddress)" ng-show="toggleRoute" class="btn btn-sm btn-warning">Find Flight Route</button> -->
               <hr>
               <a href="" ng-click="toggleMode=!toggleMode">Toggle Flight Mode</a>
               <select ng-show="toggleMode" class="form-control" ng-init="ModeSelect=drone.mode || 'Manual'" ng-model="ModeSelect" style="margin: 5px 0px 5px 0px;">
@@ -49,34 +49,38 @@
       <button ng-show="getOnlineCnt() > 0" class="btn btn-block btn-danger" ng-click="sendFleetHome()">Send Fleet Home</button>
     </div>
 
-
-
   </div>
-  <button style="position: fixed; margin-top: 80px; margin-left: 10px; z-index: 2001" class="btn btn-sm btn-primary pull-right" ng-click="toggleActionBar()">
+  <button style="position: fixed; margin-top: 80px; margin-left: 10px; z-index: 2" class="btn btn-sm btn-primary pull-right" ng-click="toggleActionBar()">
     <span class="glyphicon" ng-class="mapArrow"></span>
   </button>
 
-  <button tooltip-placement="right" uib-tooltip="Pan Mode" style="position: fixed; margin-top: 120px; margin-left: 10px; z-index: 2001" class="btn btn-sm pull-right" ng-class="panToolClass" ng-click="selectTool('pan')">
+  <button tooltip-placement="right" uib-tooltip="Pan Mode" style="position: fixed; margin-top: 120px; margin-left: 10px; z-index: 2" class="btn btn-sm pull-right" ng-class="panToolClass" ng-click="selectTool('pan')">
     <span class="glyphicon glyphicon-screenshot"></span>
   </button>
 
-  <button ng-disabled="!currentDrone" tooltip-placement="right" uib-tooltip="Goto Mode" style="position: fixed; margin-top: 160px; margin-left: 10px; z-index: 2001" class="btn btn-sm pull-right" ng-class="gotoToolClass" ng-click="selectTool('goto')">
+  <button ng-disabled="!currentDrone" tooltip-placement="right" uib-tooltip="Goto Mode" style="position: fixed; margin-top: 160px; margin-left: 10px; z-index: 2" class="btn btn-sm pull-right" ng-class="gotoToolClass" ng-click="selectTool('goto')">
     <span class="glyphicon glyphicon-plane"></span>
   </button>
 
-  <button ng-disabled="!currentDrone" tooltip-placement="right" uib-tooltip="Route Mode" style="position: fixed; margin-top: 200px; margin-left: 10px; z-index: 2001" class="btn btn-sm pull-right" ng-class="routeToolClass" ng-click="selectTool('route')">
+  <button ng-disabled="!currentDrone" tooltip-placement="right" uib-tooltip="Route Mode" style="position: fixed; margin-top: 200px; margin-left: 10px; z-index: 2" class="btn btn-sm pull-right" ng-class="routeToolClass" ng-click="selectTool('route')">
     <span class="glyphicon glyphicon-send"></span>
   </button>
 
-  <button ng-disabled="!currentDrone" tooltip-placement="right" uib-tooltip="Set Home Location" style="position: fixed; margin-top: 240px; margin-left: 10px; z-index: 2001" class="btn btn-sm pull-right" ng-class="homeToolClass" ng-click="selectTool('home')">
+  <button ng-disabled="!currentDrone" tooltip-placement="right" uib-tooltip="Set Home Location" style="position: fixed; margin-top: 240px; margin-left: 10px; z-index: 2" class="btn btn-sm pull-right" ng-class="homeToolClass" ng-click="selectTool('home')">
     <span class="glyphicon glyphicon-home"></span>
   </button>
+
+  <div ng-show="selectedTool=='route'" style="margin-top: 10px; padding: 8px; width: 20%; position: fixed; z-index: 2; background-color: rgba(0,0,0,.5); border-radius: 15px;" ng-style="routeOffset">
+    <h4 style="color: #eee; margin-top: 0px;" class="text-center">Route By Address</h4>
+    <input style="margin: 5px 0px 5px 0px; font-size: .8em;" type="text" class="form-control" placeholder="Madison Square Park, NYC" ng-model="RouteAddress">
+    <button ng-click="routeLoc(currentDrone, RouteAddress)" class="btn btn-sm btn-block btn-info">Find Flight Route</button>
+  </div>
 
   <div id="telemetryPane" ng-show="currentDrone"
     style="
       position: fixed;
       right: 0px;
-      z-index: 2000;
+      z-index: 2;
       width: 200px;
       background-color: rgba(0, 0, 0, 0.5);
       color: #fff;

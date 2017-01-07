@@ -27,6 +27,10 @@ angular
         "margin-left": "250px"
       };
 
+      $scope.routeOffset = {
+        "margin-left": "300px"
+      };
+
       $scope.routeToolClass = 'btn-primary';
       $scope.panToolClass = 'btn-success';
       $scope.gotoToolClass = 'btn-primary';
@@ -146,7 +150,7 @@ angular
              modalInstance.result.then(function () {
                // Upload to server
                console.log("Uploading mission...");
-               API.flyRoute(drone.name, land, mission);
+               API.flyRoute(drone.name, mission, land);
               //  for (var k in $scope.droneGeo) {
               //    if ($scope.droneGeo[k].route && (k != drone.name)) {
               //     //  $scope.droneGeo[k].route.removeFrom(map);
@@ -225,7 +229,9 @@ angular
               if (good) {
                 API.droneCmd($scope.currentDrone.name, 'home',
                   {lat: ev.latlng.lat, lon: ev.latlng.lng}, function() {
-                    $scope.updateHome($scope.currentDrone);
+                    $timeout(function () {
+                      $scope.updateHome($scope.currentDrone);
+                    }, 2000);
                   });
               }
             });
@@ -339,7 +345,7 @@ angular
                  }
 
                  console.log("Uploading mission...");
-                 API.flyRoute(drone.name, mission);
+                 API.flyRoute(drone.name, mission, false);
                }
              });
 
@@ -377,7 +383,7 @@ angular
       $scope.routeHome = function(drone) {
         API.getTelem(drone.name, 'home', function(data) {
           leafletData.getMap('groundcontrol').then(function(map) {
-            performRoute(map, drone, ''+data.data.Latitude+', '+  ''+data.data.Longitude, true);
+            performRoute(map, drone, ''+data.data.Latitude+', '+  ''+data.data.Longitude, false);
           });
         });
       }
@@ -394,10 +400,12 @@ angular
 
         if ($scope.showActionBar) {
           $scope.mapOffset["margin-left"] = "250px";
+          $scope.routeOffset["margin-left"] = "300px";
           $scope.mapArrow = "glyphicon-menu-left";
         } else {
           $scope.mapOffset["margin-left"] = "0px";
           $scope.mapArrow = "glyphicon-menu-right";
+          $scope.routeOffset["margin-left"] = "50px";
         }
       }
 
@@ -413,9 +421,8 @@ angular
 
           API.getTelem(drone.name, 'home', function(res) {
             if (!$scope.droneGeo[drone.name].homeMarker) {
-              console.log('adding home');
               $scope.droneGeo[drone.name].homeMarker = L.marker([res.data.Latitude, res.data.Longitude],
-                {icon: L.divIcon({'className': 'mapview-marker-icon', html: '<span class="glyphicon glyphicon-home"></span><p class="text-warning" style="font-weight: bold; position: relative; bottom: 2px;">'+drone.name+' home</p>'})});
+                {icon: L.divIcon({'className': 'mapview-marker-icon', html: '<div style=""><span style="color: #003B71; font-size: 2em;" class="glyphicon glyphicon-home"></span></div><p class="text-warning" style="font-weight: bold; position: relative; bottom: 2px;">'+drone.name+' home</p>'})});
               $scope.droneGeo[drone.name].homeMarker.addTo(map);
             } else {
               var newLatLng = new L.LatLng(res.data.Latitude, res.data.Longitude);
@@ -488,6 +495,8 @@ angular
             if (!res) {
               return;
             }
+
+            console.log(res);
 
             leafletData.getMap('groundcontrol').then(function(map) {
               for (var k in res) {
@@ -562,7 +571,7 @@ angular
                 $scope.droneGeo[drone.name] = {};
                 $scope.droneGeo[drone.name].marker = L.marker([drone.position.Latitude, drone.position.Latitude], {icon: getDroneMarker(drone.name)});
                 $scope.droneGeo[drone.name].nameMarker = L.marker([drone.position.Latitude, drone.position.Longitude],
-                  {icon: L.divIcon({'className': 'mapview-marker-icon', html: '<p class="text-warning" style="font-weight: bold; position: relative; bottom: 2px; left: 30px;">'+drone.name+'</p>'})});
+                  {icon: L.divIcon({'className': 'mapview-marker-icon', html: '<p class="text-warning" style="font-weight: bold; position: relative; bottom: 6px; left: 32px;">'+drone.name+'</p>'})});
                 leafletData.getMap('groundcontrol').then(function(map) {
                   $scope.droneGeo[drone.name].marker.addTo(map);
                   $scope.droneGeo[drone.name].nameMarker.addTo(map);
