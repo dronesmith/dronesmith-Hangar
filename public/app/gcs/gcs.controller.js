@@ -37,6 +37,8 @@ angular
       $scope.homeToolClass = 'btn-primary';
       $scope.selectedTool = 'pan';
 
+      var droneInModal = null;
+
       // =======================================================================
       // PRIVATE FUNCTIONS
       // =======================================================================
@@ -85,6 +87,8 @@ angular
       // Main function for setting up flight paths
       function performRoute(map, drone, locStr, land) {
 
+        droneInModal = drone.name;
+
         // Initialize the mapQuest route API, and listen for successful route events.
         var directions = MQ.routing.directions().on('success', function(data) {
 
@@ -112,6 +116,7 @@ angular
 
              if ($scope.droneGeo[drone.name].route) {
                $scope.droneGeo[drone.name].route.removeFrom(map);
+               $scope.droneGeo[drone.name].route = undefined;
              }
 
              $scope.droneGeo[drone.name].route = L.polyline(dps, {color: 'red'}).addTo(map);
@@ -147,6 +152,7 @@ angular
 
              // Either cancel the mission, or upload and begin mission.
              modalInstance.result.then(function () {
+               droneInModal = null;
                // Upload to server
                console.log("Uploading mission...");
                API.flyRoute(drone.name, mission, land);
@@ -157,7 +163,9 @@ angular
               //    }
               //  }
              }, function() {
+               droneInModal = null;
                $scope.droneGeo[drone.name].route.removeFrom(map);
+               $scope.droneGeo[drone.name].route = undefined;
              });
            }
         });
@@ -186,6 +194,12 @@ angular
 
       // Tell the API Service to begin polling for udpdates.
       API.enableUpdates();
+
+      // Set up dials
+      var attitude = $.flightIndicator('#attitude');
+      var heading = $.flightIndicator('#heading', 'heading');
+      attitude.resize(150, 150);
+      heading.resize(150, 150);
 
       // Set up default settings for our groundcontrol map.
       angular.extend($scope, {
@@ -315,60 +329,60 @@ angular
       }
 
       $scope.sendFleetHome = function() {
-        angular.forEach($scope.drones, function(drone) {
-          if (drone.online) {
 
-            // Initialize the mapQuest route API, and listen for successful route events.
-            var directions = MQ.routing.directions().on('success', function(data) {
+        modalAlert("Are you sure?", "This action will send all online drones to their home locations.", function(good) {
+         if (good) {
+           angular.forEach($scope.drones, function(drone) {
+             if (drone.online) {
 
-                //
-                // The following code is used to draw a polyline to show the map route,
-                // and calculate approx. time and distance. (Based on automobiles, unfortunately.)
-                // The droneGeo object stores all of the dynamic map related data, such as the drone marker
-                // and mission path.
-                //
+               // Initialize the mapQuest route API, and listen for successful route events.
+               var directions = MQ.routing.directions().on('success', function(data) {
 
-              var legs = data.route.legs;
-              console.log("Got route:", legs);
-               if (legs && legs.length > 0) {
-                 var mission = legs[0].maneuvers;
-                 console.log(mission);
-                 var time = 0;
-                 var dist = 0;
-                 var dps = [];
+                   //
+                   // The following code is used to draw a polyline to show the map route,
+                   // and calculate approx. time and distance. (Based on automobiles, unfortunately.)
+                   // The droneGeo object stores all of the dynamic map related data, such as the drone marker
+                   // and mission path.
+                   //
 
-                 for (var i  = 0; i < mission.length; ++i) {
-                   time += mission[i].time
-                   dist += mission[i].distance
-                   dps.push(new L.LatLng(mission[i].startPoint.lat, mission[i].startPoint.lng));
-                 }
+                 var legs = data.route.legs;
+                 console.log("Got route:", legs);
+                  if (legs && legs.length > 0) {
+                    var mission = legs[0].maneuvers;
+                    console.log(mission);
+                    var time = 0;
+                    var dist = 0;
+                    var dps = [];
 
-                 console.log("Uploading mission...");
-                 API.flyRoute(drone.name, mission, false);
-               }
-             });
+                    for (var i  = 0; i < mission.length; ++i) {
+                      time += mission[i].time
+                      dist += mission[i].distance
+                      dps.push(new L.LatLng(mission[i].startPoint.lat, mission[i].startPoint.lng));
+                    }
 
-             API.getTelem(drone.name, 'home', function(data) {
-               if (drone && drone.position) {
-                 var pos = drone.position;
-                 if (pos) {
-                   console.log("Routing...");
-                   directions.route({
-                     locations: [
-                       ''+pos.Latitude+', '+pos.Longitude,
-                       ''+data.data.Latitude+', '+  ''+data.data.Longitude
-                     ]
-                   });
-                 }
-               }
-             });
-          }
-        });
+                    console.log("Uploading mission...");
+                    API.flyRoute(drone.name, mission, false);
+                  }
+                });
 
-        $timeout(function () {
-          console.log("Fetching new missions");
-          $scope.deselectDrone();
-        }, 5000);
+                API.getTelem(drone.name, 'home', function(data) {
+                  if (drone && drone.position) {
+                    var pos = drone.position;
+                    if (pos) {
+                      console.log("Routing...");
+                      directions.route({
+                        locations: [
+                          ''+pos.Latitude+', '+pos.Longitude,
+                          ''+data.data.Latitude+', '+  ''+data.data.Longitude
+                        ]
+                      });
+                    }
+                  }
+                });
+             }
+           });
+         }
+       });
       }
 
       // change drone flight mode
@@ -391,7 +405,6 @@ angular
         MQ.geocode().search(address).on('success', function(ev) {
           var best = ev.result.best;
           var latlng = best.latlng;
-           // send POST /api/home here
           modalAlert("Set home at this location?", "Latitude: " + latlng.lat + ", Longitude: " + latlng.lng, function(good) {
            if (good) {
              API.droneCmd($scope.currentDrone.name, 'home',
@@ -501,27 +514,24 @@ angular
         }
       }
 
-      // Deselect a drone
-      $scope.deselectDrone = function() {
-        $scope.currentDrone = null;
-
-        leafletData.getMap('groundcontrol').then(function(map) {
-          for (var k in $scope.droneGeo) {
-            if ($scope.droneGeo[k].route) {
-              $scope.droneGeo[k].route.setStyle({color: '#2C3E50'});
-            }
+      function updateRoutes() {
+        // Update current flight path.
+        API.getAllRoutes(function(res) {
+          if (!res) {
+            return;
           }
 
-          // Update current flight path.
-          API.getAllRoutes(function(res) {
-            if (!res) {
-              return;
-            }
+          leafletData.getMap('groundcontrol').then(function(map) {
+            angular.forEach($scope.drones, function(drone) {
+              var k = drone.name;
 
-            console.log(res);
+              // Don't update if in a modal
+              if (k == droneInModal) {
+                return;
+              }
 
-            leafletData.getMap('groundcontrol').then(function(map) {
-              for (var k in res) {
+              if (res[k]) {
+                // has a mission
                 var mission = res[k].chunk;
                 var dps = [];
 
@@ -533,10 +543,27 @@ angular
                   $scope.droneGeo[k] = {};
                 }
 
+                var lineStyle = {
+                  color: '#2C3E50'
+                };
+
+                if ($scope.currentDrone && $scope.currentDrone.name == k) {
+                  lineStyle['color'] = 'red';
+                  lineStyle['z-index'] = '2000';
+                }
+
                 if ($scope.droneGeo[k].route) {
-                  $scope.droneGeo[k].route.setStyle({color: '#2C3E50'});
+                  $scope.droneGeo[k].route.removeFrom(map);
+                  $scope.droneGeo[k].route = L.polyline(dps, lineStyle).addTo(map);
                 } else {
-                  $scope.droneGeo[k].route = L.polyline(dps, {color: '#2C3E50'}).addTo(map);
+                  $scope.droneGeo[k].route = L.polyline(dps, lineStyle).addTo(map);
+                }
+              } else {
+                // doesn't have a mission
+                if ($scope.droneGeo[k] && $scope.droneGeo[k].route) {
+                  // if there's a route, delete it
+                  $scope.droneGeo[k].route.removeFrom(map);
+                  $scope.droneGeo[k].route = undefined;
                 }
               }
             });
@@ -544,16 +571,22 @@ angular
         });
       }
 
-      $scope.deselectDrone();
+      // Deselect a drone
+      $scope.deselectDrone = function() {
+        $scope.currentDrone = null;
+
+        leafletData.getMap('groundcontrol').then(function(map) {
+          for (var k in $scope.droneGeo) {
+            if ($scope.droneGeo[k].route) {
+              $scope.droneGeo[k].route.setStyle({color: '#2C3E50'});
+            }
+          }
+        });
+      }
 
       // =======================================================================
       // EVENT LISTENER (UPDATE LOOP)
       // =======================================================================
-
-      var attitude = $.flightIndicator('#attitude');
-      var heading = $.flightIndicator('#heading', 'heading');
-      attitude.resize(150, 150);
-      heading.resize(150, 150);
 
       // Get updates from API.
       $rootScope.$on('drones:update', function(ev, data) {
@@ -603,6 +636,8 @@ angular
                 });
               }
             }
+
+            updateRoutes();
           }
         });
       });
