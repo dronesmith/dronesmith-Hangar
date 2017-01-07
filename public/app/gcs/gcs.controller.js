@@ -44,9 +44,8 @@ angular
       // Generates a drone marker. Name will be the display name.
       function getDroneMarker(name) {
         return L.divIcon({
-
+          'className': 'mapview-marker-icon',
           html:'<img style="margin-left:-13px;margin-top:-20px;" width="35px" src="/assets/img/waypoint.svg">'
-
         });
       }
 
@@ -55,7 +54,7 @@ angular
         console.log("Command result:", res.data);
 
         if (res.data.StatusCode != 0) {
-          Error({status: "Command Failed", statusText: res.data.Status})
+          Error({status: "Command Failed", statusText: res.data.Status});
         }
       }
 
@@ -422,7 +421,12 @@ angular
           API.getTelem(drone.name, 'home', function(res) {
             if (!$scope.droneGeo[drone.name].homeMarker) {
               $scope.droneGeo[drone.name].homeMarker = L.marker([res.data.Latitude, res.data.Longitude],
-                {icon: L.divIcon({'className': 'mapview-marker-icon', html: '<div style=""><span style="color: #003B71; font-size: 2em;" class="glyphicon glyphicon-home"></span></div><p class="text-warning" style="font-weight: bold; position: relative; bottom: 2px;">'+drone.name+' home</p>'})});
+                {
+                  icon: L.divIcon({
+                    'className': 'mapview-marker-icon',
+                    html: '<div><span style="color: #003B71; font-size: 2em;" class="glyphicon glyphicon-home"></span></div><p class="text-warning" style="font-weight: bold; position: relative; bottom: 2px;">'+drone.name+' home</p>'
+                  })
+                });
               $scope.droneGeo[drone.name].homeMarker.addTo(map);
             } else {
               var newLatLng = new L.LatLng(res.data.Latitude, res.data.Longitude);
@@ -571,7 +575,10 @@ angular
                 $scope.droneGeo[drone.name] = {};
                 $scope.droneGeo[drone.name].marker = L.marker([drone.position.Latitude, drone.position.Latitude], {icon: getDroneMarker(drone.name)});
                 $scope.droneGeo[drone.name].nameMarker = L.marker([drone.position.Latitude, drone.position.Longitude],
-                  {icon: L.divIcon({'className': 'mapview-marker-icon', html: '<p class="text-warning" style="font-weight: bold; position: relative; bottom: 6px; left: 32px;">'+drone.name+'</p>'})});
+                  {icon: L.divIcon({
+                    'className': 'mapview-marker-icon',
+                    html: '<p class="text-warning" style="font-weight: bold; position: relative; bottom: 6px; left: 32px;">'+drone.name+'</p>'})
+                  });
                 leafletData.getMap('groundcontrol').then(function(map) {
                   $scope.droneGeo[drone.name].marker.addTo(map);
                   $scope.droneGeo[drone.name].nameMarker.addTo(map);
