@@ -388,6 +388,24 @@ angular
         });
       }
 
+      $scope.homeLoc = function(drone, address) {
+        MQ.geocode().search(address).on('success', function(ev) {
+          var best = ev.result.best;
+          var latlng = best.latlng;
+           // send POST /api/home here
+          modalAlert("Set home at this location?", "Latitude: " + latlng.lat + ", Longitude: " + latlng.lng, function(good) {
+           if (good) {
+             API.droneCmd($scope.currentDrone.name, 'home',
+               {lat: latlng.lat, lon: latlng.lng}, function() {
+                 $timeout(function () {
+                   $scope.updateHome($scope.currentDrone);
+                 }, 2000);
+               });
+           }
+          });
+        });
+      }
+
       $scope.routeLoc = function(drone, address) {
         leafletData.getMap('groundcontrol').then(function(map) {
           performRoute(map, drone, address, false);
