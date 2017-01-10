@@ -125,6 +125,12 @@ angular
         if (startLon) {
           obj["lon"] = startLon;
         }
+       
+
+       if (action === "/stop")
+        { 
+          cancelRoute(name)
+        }
 
         $http({
           method: 'POST',
@@ -158,12 +164,13 @@ angular
       }
 
       var cancelRoute = function(name, cb) {
-        $http({
+       var reCall= $http({
           method: 'POST',
           url: '/mission/' + name + '/stop'
         }).then(function(res) {
           if (cb) { cb(res) };
         }, Error);
+        console.log(reCall)
       }
 
       var getRoute = function(name, cb) {
