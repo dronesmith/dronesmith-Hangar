@@ -164,13 +164,12 @@ angular
       }
 
       var cancelRoute = function(name, cb) {
-       var reCall= $http({
+        $http({
           method: 'POST',
           url: '/mission/' + name + '/stop'
         }).then(function(res) {
           if (cb) { cb(res) };
         }, Error);
-        console.log(reCall)
       }
 
       var getRoute = function(name, cb) {
