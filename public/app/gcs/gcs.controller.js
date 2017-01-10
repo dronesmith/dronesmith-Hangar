@@ -573,6 +573,7 @@ angular
 
       // Deselect a drone
       $scope.deselectDrone = function() {
+    
         $scope.currentDrone = null;
 
         leafletData.getMap('groundcontrol').then(function(map) {

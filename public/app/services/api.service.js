@@ -125,6 +125,12 @@ angular
         if (startLon) {
           obj["lon"] = startLon;
         }
+       
+
+       if (action === "/stop")
+        { 
+          cancelRoute(name)
+        }
 
         $http({
           method: 'POST',
