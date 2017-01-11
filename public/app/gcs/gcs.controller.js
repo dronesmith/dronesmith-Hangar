@@ -224,6 +224,17 @@ angular
         // Add MapQuest tiles
         map.addLayer(MQ.mapLayer());
 
+        // Add Layers Control
+        var layers = {
+          'Map': MQ.mapLayer(),
+          'Hybrid': MQ.hybridLayer(),
+          'Satellite': MQ.satelliteLayer(),
+          'Dark': MQ.darkLayer(),
+          'Light': MQ.lightLayer(),
+        };
+
+        L.control.layers(layers, null, {position:'topleft'}).addTo(map);
+
         // Check for click events
         map.on('click', function(ev) {
           if ($scope.selectedTool == 'route') {
@@ -573,7 +584,7 @@ angular
 
       // Deselect a drone
       $scope.deselectDrone = function() {
-    
+
         $scope.currentDrone = null;
 
         leafletData.getMap('groundcontrol').then(function(map) {
