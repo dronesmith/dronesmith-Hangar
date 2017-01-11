@@ -70,13 +70,13 @@
     <span class="glyphicon glyphicon-home"></span>
   </button>
 
-  <div ng-show="selectedTool=='route'" style="margin-top: 10px; padding: 8px; width: 20%; position: fixed; z-index: 2; background-color: rgba(0,0,0,.5); border-radius: 15px;" ng-style="routeOffset">
+  <div ng-show="selectedTool=='route'" style="margin-top: 80px; padding: 8px; width: 20%; position: fixed; z-index: 2; background-color: rgba(0,0,0,.5); border-radius: 15px;" ng-style="routeOffset">
     <h4 style="color: #eee; margin-top: 0px;" class="text-center">Route By Address</h4>
     <input style="margin: 5px 0px 5px 0px; font-size: .8em;" type="text" class="form-control" placeholder="Madison Square Park, NYC" ng-model="RouteAddress">
     <button ng-click="routeLoc(currentDrone, RouteAddress)" class="btn btn-sm btn-block btn-info">Find Flight Route</button>
   </div>
 
-  <div ng-show="selectedTool=='home'" style="margin-top: 10px; padding: 8px; width: 20%; position: fixed; z-index: 2; background-color: rgba(0,0,0,.5); border-radius: 15px;" ng-style="routeOffset">
+  <div ng-show="selectedTool=='home'" style="margin-top: 80px; padding: 8px; width: 20%; position: fixed; z-index: 2; background-color: rgba(0,0,0,.5); border-radius: 15px;" ng-style="routeOffset">
     <h4 style="color: #eee; margin-top: 0px;" class="text-center">Set Home By Address</h4>
     <input style="margin: 5px 0px 5px 0px; font-size: .8em;" type="text" class="form-control" placeholder="Madison Square Park, NYC" ng-model="HomeAddress">
     <button ng-click="homeLoc(currentDrone, HomeAddress)" class="btn btn-sm btn-block btn-info">Find Home Location</button>

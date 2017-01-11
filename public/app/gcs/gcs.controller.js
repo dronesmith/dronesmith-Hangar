@@ -480,7 +480,7 @@ angular
 
       // Select a drone.
       $scope.selectDrone = function(drone) {
-        $scope.currentDrone = drone || null;
+        $scope.currentDrone = angular.copy(drone) || null;
 
         $scope.updateHome(drone);
 
@@ -611,7 +611,7 @@ angular
           if (drone.online) {
             if ($scope.currentDrone) {
               if (drone.name == $scope.currentDrone.name) {
-                $scope.currentDrone = drone;
+                $scope.currentDrone = angular.copy(drone);
 
                  var flightRoll = $scope.currentDrone.attitude.Roll;
                  var flightPitch = $scope.currentDrone.attitude.Pitch;
