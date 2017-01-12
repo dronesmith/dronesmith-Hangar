@@ -648,10 +648,39 @@ angular
                 });
               }
             }
-
-            updateRoutes();
           }
         });
+
+        // Remove any geo data if a drones object doesn't exist
+        angular.forEach($scope.droneGeo, function(drone, key) {
+          var found = false;
+          for (var i = 0; i < $scope.drones.length; ++i) {
+            if ($scope.drones[i].name == key && $scope.drones[i].online) {
+              found = true;
+              break;
+            }
+          }
+
+          if (!found) {
+            // remove geodata
+            leafletData.getMap('groundcontrol').then(function(map) {
+              if (drone.marker) {
+                drone.marker.removeFrom(map);
+              }
+
+              if (drone.nameMarker) {
+                drone.nameMarker.removeFrom(map);
+              }
+
+              if (drone.homeMarker) {
+                drone.homeMarker.removeFrom(map);
+              }
+            });
+          }
+        });
+
+
+        updateRoutes();
       });
     }
   )
