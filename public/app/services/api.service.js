@@ -227,6 +227,14 @@ angular
                 var prop = props[k];
                 drone[prop.toLowerCase()] = telemItem[prop];
               }
+
+              if (telemItem['Status']) {
+                drone['online'] = !!telemItem['Status']['Online'] || false;
+              } else {
+                drone['online'] = false;
+              }
+            } else {
+              drone['online'] = false;
             }
           }
 
