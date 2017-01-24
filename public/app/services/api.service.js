@@ -25,6 +25,7 @@ angular
 
       // Static drone data
       var drones = {};
+      var telem = {};
 
       var updatesEnabled = false;
 
@@ -53,12 +54,14 @@ angular
       // Update loop
       $interval(function () {
         if (updatesEnabled) {
-          checkOnline();
+          getDrones(function(d) {
+            checkOnline(d);
+          });
 
           // Don't want to overload telem
           $rootScope.$broadcast('drones:update', drones);
         }
-      }, 2000);
+      }, 1000);
 
       var getTelem = function(drone, name, cb) {
         $http({
@@ -81,13 +84,17 @@ angular
         }, Error);
       }
 
-      var getDrones = function() {
+      var getDrones = function(cb) {
         $http({
           method: 'GET',
           url: '/api/drone'
         }).then(function successCallback(response) {
           logAPICall('GET', '/api/drone/', {}, response.data);
-          drones = response.data.data.drones;
+          if (cb) {
+            cb(response.data.data.drones);
+          } else {
+            drones = response.data.data.drones;
+          }
 
         }, Error);
       }
@@ -125,10 +132,10 @@ angular
         if (startLon) {
           obj["lon"] = startLon;
         }
-       
+
 
        if (action === "/stop")
-        { 
+        {
           cancelRoute(name)
         }
 
@@ -192,20 +199,41 @@ angular
 
       var enableUpdates = function() {
         updatesEnabled = true;
-        checkOnline();
-        // getDrones(); // force reload
+        // checkOnline();
+        getDrones(function(drones) {
+          checkOnline(drones);
+        }); // force reload
       }
 
       var disableUpdates = function() {
         updatesEnabled = false;
       }
 
-      var checkOnline = function() {
+      var checkOnline = function(localdrones) {
         $http({
           method: 'GET',
           url: '/index/online'
         }).then(function successCallback(response) {
-          drones = response.data.drones;
+          telem = response.data.drones;
+
+          for (var i = 0; i < localdrones.length; ++i) {
+            var drone = localdrones[i];
+
+            if (telem[drone.name]) {
+              var telemItem = telem[drone.name];
+
+              var props = Object.keys(telemItem);
+              for (var k = 0; k < props.length; ++k) {
+                var prop = props[k];
+                drone[prop.toLowerCase()] = telemItem[prop];
+              }
+            }
+          }
+
+          // console.log(localdrones, telem);
+
+          drones = localdrones;
+
         }, Error);
       }
 
