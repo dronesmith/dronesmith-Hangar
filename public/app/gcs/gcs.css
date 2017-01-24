@@ -10,3 +10,14 @@
 .leaflet-control-layers-list{
   width: 70px;
 }
+
+#w3w-logo{
+  background: url(/assets/img/w3w.png);
+  background-size: 18px 18px;
+  margin-bottom: -4px;
+  margin-left: 3px;
+  display:inline-block;
+  height: 18px;
+  width: 18px;
+
+}
