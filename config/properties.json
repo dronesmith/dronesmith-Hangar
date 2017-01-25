@@ -9,6 +9,14 @@
         "path": "log/",
         "filename": "dss.log"
     },
+    "authy": {
+      "key": "SecX8QnzIA3CgeEUN5JBwBFGTxa2M5Rv"
+    },
+    "mailer": {
+      "key": "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",
+      "templateId": "f7c9db63-6d20-4594-acfc-4bc7776da437",
+      "email": "support@dronesmith.io"
+    },
     "api": "http://104.196.255.180",
     "adminKey": "ca93abe8-6f81-4bad-ab04-60a43d73e877"
 }
