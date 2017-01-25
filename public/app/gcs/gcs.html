@@ -70,15 +70,24 @@
     <span class="glyphicon glyphicon-home"></span>
   </button>
 
-  <div ng-show="selectedTool=='route'" style="margin-top: 80px; padding: 8px; width: 20%; position: fixed; z-index: 2; background-color: rgba(0,0,0,.5); border-radius: 15px;" ng-style="routeOffset">
-    <h4 style="color: #eee; margin-top: 0px;" class="text-center">Route By Address</h4>
-    <input style="margin: 5px 0px 5px 0px; font-size: .8em;" type="text" class="form-control" placeholder="Madison Square Park, NYC" ng-model="RouteAddress">
+  <div ng-show="selectedTool=='goto'" style="margin-top: 80px; padding: 8px; width: 15%; position: fixed; z-index: 2; background-color: rgba(0,0,0,.5); border-radius: 10px;" ng-style="routeOffset">
+    <h4 style="color: #eee; margin-top: 0px;" class="text-center">Set Goto Waypoint</h4>
+    <h5 style="color: #eee; margin-top: 0px;" class="text-center">Enter a what3words<a id="w3w-logo" href="http://what3words.com/"></a>&nbsp address.</h5>
+    <input style="margin: 5px 0px 5px 0px; font-size: .8em;" type="text" class="form-control" placeholder="echo.fixed.force" ng-model="GotoAddress">
+    <button ng-click="gotoLoc(currentDrone, GotoAddress)" class="btn btn-sm btn-block btn-info">Goto</button>
+  </div>
+
+  <div ng-show="selectedTool=='route'" style="margin-top: 80px; padding: 8px; width: 20%; position: fixed; z-index: 2; background-color: rgba(0,0,0,.5); border-radius: 10px;" ng-style="routeOffset">
+    <h4 style="color: #eee; margin-top: 0px;" class="text-center">Set Route</h4>
+    <h5 style="color: #eee; margin-top: 0px;" class="text-center">Enter a postal or what3words<a id="w3w-logo" href="http://what3words.com/"></a>&nbsp address.</h5>
+    <input style="margin: 5px 0px 5px 0px; font-size: .8em;" type="text" class="form-control" placeholder="Central Park, NYC    |    echo.fixed.force" ng-model="RouteAddress">
     <button ng-click="routeLoc(currentDrone, RouteAddress)" class="btn btn-sm btn-block btn-info">Find Flight Route</button>
   </div>
 
-  <div ng-show="selectedTool=='home'" style="margin-top: 80px; padding: 8px; width: 20%; position: fixed; z-index: 2; background-color: rgba(0,0,0,.5); border-radius: 15px;" ng-style="routeOffset">
-    <h4 style="color: #eee; margin-top: 0px;" class="text-center">Set Home By Address</h4>
-    <input style="margin: 5px 0px 5px 0px; font-size: .8em;" type="text" class="form-control" placeholder="Madison Square Park, NYC" ng-model="HomeAddress">
+  <div ng-show="selectedTool=='home'" style="margin-top: 80px; padding: 8px; width: 20%; position: fixed; z-index: 2; background-color: rgba(0,0,0,.5); border-radius: 10px;" ng-style="routeOffset">
+    <h4 style="color: #eee; margin-top: 0px;" class="text-center">Set Home Location</h4>
+    <h5 style="color: #eee; margin-top: 0px;" class="text-center">Enter a postal or what3words<a id="w3w-logo" href="http://what3words.com/"></a>&nbsp address.</h5>
+    <input style="margin: 5px 0px 5px 0px; font-size: .8em;" type="text" class="form-control" placeholder="Central Park, NYC    |    echo.fixed.force" ng-model="HomeAddress">
     <button ng-click="homeLoc(currentDrone, HomeAddress)" class="btn btn-sm btn-block btn-info">Find Home Location</button>
   </div>
 

@@ -412,26 +412,80 @@ angular
         });
       }
 
-      $scope.homeLoc = function(drone, address) {
-        MQ.geocode().search(address).on('success', function(ev) {
-          var best = ev.result.best;
-          var latlng = best.latlng;
-          modalAlert("Set home at this location?", "Latitude: " + latlng.lat + ", Longitude: " + latlng.lng, function(good) {
-           if (good) {
-             API.droneCmd($scope.currentDrone.name, 'home',
-               {lat: latlng.lat, lon: latlng.lng}, function() {
-                 $timeout(function () {
-                   $scope.updateHome($scope.currentDrone);
-                 }, 2000);
-               });
-           }
+
+      function what3words(w3w, cb) {
+        $http({
+          method: 'GET',
+          url: 'https://api.what3words.com/v2/forward?addr='+ w3w +'&display=minimal&format=json&key=BXIP296D'
+        }).then(function successCallback(response) {
+
+          cb(response.data.geometry.lat, response.data.geometry.lng);
+        }, Error);
+      }
+
+      $scope.gotoLoc = function(drone, address) {
+        what3words(address, function(lat, lng) {
+          modalAlert("Fly directly to this location?", "Latitude: " + lat + ", Longitude: " + lng, function(good) {
+            if (good) {
+              API.droneCmd($scope.currentDrone.name, 'goto',
+                {lat: lat, lon: lng}, cmdResponseHandler);
+              API.cancelRoute($scope.currentDrone.name);
+            }
           });
         });
       }
 
+      $scope.homeLoc = function(drone, address) {
+        var re = /^([a-z]+\.+[a-z]+\.+[a-z]*$)/g;
+
+        if(address.match(re) != null){
+            console.log("Valid what3words address");
+            what3words(address, function(lat, lng) {
+              modalAlert("Set home at this location?", "Latitude: " + lat + ", Longitude: " + lng, function(good) {
+                if (good) {
+                 API.droneCmd($scope.currentDrone.name, 'home',
+                   {lat: lat, lon: lng}, function() {
+                     $timeout(function () {
+                       $scope.updateHome($scope.currentDrone);
+                     }, 2000);
+                   });
+                 }
+               });
+            });
+        } else {
+          MQ.geocode().search(address).on('success', function(ev) {
+            var best = ev.result.best;
+            var latlng = best.latlng;
+            modalAlert("Set home at this location?", "Latitude: " + latlng.lat + ", Longitude: " + latlng.lng, function(good) {
+             if (good) {
+               API.droneCmd($scope.currentDrone.name, 'home',
+                 {lat: latlng.lat, lon: latlng.lng}, function() {
+                   $timeout(function () {
+                     $scope.updateHome($scope.currentDrone);
+                   }, 2000);
+                 });
+             }
+            });
+          });
+        }
+
+
+      }
+
       $scope.routeLoc = function(drone, address) {
         leafletData.getMap('groundcontrol').then(function(map) {
-          performRoute(map, drone, address, false);
+          var re = /^([a-z]+\.+[a-z]+\.+[a-z]*$)/g;
+
+          if(address.match(re) != null){
+              //console.log("Valid what3words address");
+              what3words(address, function(lat, lng) {
+                performRoute(map, drone, ''+lat+', '+  ''+lng, false);
+              });
+
+          } else {
+            performRoute(map, drone, address, false);
+          }
+
         });
       }
 
