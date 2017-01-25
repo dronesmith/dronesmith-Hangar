@@ -48,9 +48,6 @@ module.exports = function(app, route) {
         // Verify authentication code
         .post   ('/index/session/sms/verify',     session.verifyPhone)
 
-        // Get user session
-        .get    ('/index/session',                session.poll)
-
         // Get use info
         .get    ('/index/user',                   api.getUser)
 
