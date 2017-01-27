@@ -72,12 +72,19 @@ angular
         controller: 'LoginViewCtrl'
       })
 
-      // Signup state. Entered when the user wishes to make a new account.
-     .state('signup', {
-       url: '/signup',
-       template: '<signup-pane></signup-pane>',
-       parent: 'login'
-     })
+      // Signup state.
+      .state('signup', {
+        url: '/signup',
+        templateUrl: 'app/signupView/signupView.html',
+        controller: 'SignupViewCtrl'
+      })
+
+    //   // Signup form state.
+    //  .state('signupForm', {
+    //    url: '/signupForm',
+    //    template: '<signup-form-pane></signup-form-pane>',
+    //    parent: 'signup'
+    //  })
 
      // Whenever the user wishes to reset their password.
      .state('resetPassword', {
