@@ -23,7 +23,7 @@ angular
       userAccount) {
 
         // always poll session since it may have been updated.
-        Session.get({}, function(data) {
+        Session.account.get({}, function(data) {
           $scope.userAccount = data.userData;
         }, Error);
 

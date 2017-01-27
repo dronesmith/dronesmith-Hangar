@@ -43,8 +43,9 @@
         class="btn btn-primary"
         ng-disabled="!loginForm.$valid"
         ng-click="update(user)"
-        value="LogIn">Get Started</button>
-        <button class="btn btn-default pull-right" ui-sref="signup">Signup for Early Access</button>
+        value="LogIn">Login</button>
+          <button class="btn btn-default pull-right" ng-click="signup()">Sign up</button>
+        <!-- <button class="btn btn-default pull-right" ui-sref="signup">Signup for Early Access</button> -->
       <a ui-sref="resetPassword">Forgot Password?</a>
     </form>
     <!-- <hr> -->

@@ -16,9 +16,13 @@ angular
   .module('ForgeApp')
   .controller('LoginPaneCtrl', function ($scope, $state, Session, Error) {
 
+    $scope.signup = function() {
+      $state.go('signup');
+    }
+
     $scope.update = function(user) {
       Session
-        .authenticate(user)
+        .account.authenticate(user)
         .$promise
         .then(function(data) {
           $state.go('hangar');

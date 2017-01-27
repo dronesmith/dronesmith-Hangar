@@ -15,5 +15,15 @@
 angular
   .module('ForgeApp')
   .controller('signupPaneCtrl', function ($scope, Session, Error) {
+
+    $scope.update = function(user) {
+      Session
+        .signup.send(user)
+        .$promise
+        .then(function(data) {
+          // $state.go('hangar');
+        }, Error)
+      ;
+    };
   })
 ;

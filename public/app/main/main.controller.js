@@ -25,7 +25,7 @@ angular
     // Get session
     //
     Session
-      .get(
+      .account.get(
         {},
         function(data) {
 
