@@ -79,19 +79,20 @@ angular
         controller: 'SignupViewCtrl'
       })
 
-    //   // Signup form state.
-    //  .state('signupForm', {
-    //    url: '/signupForm',
-    //    template: '<signup-form-pane></signup-form-pane>',
-    //    parent: 'signup'
-    //  })
-
      // Whenever the user wishes to reset their password.
      .state('resetPassword', {
        url: '/resetPassword',
        template: '<reset-password-pane></reset-password-pane>',
        parent: 'login'
      })
+
+     // Signup state.
+     .state('signupSuccess', {
+       url: '/signup/success',
+       templateUrl: 'app/signupSuccessView/signupSuccessView.html',
+       controller: 'SignupSuccessViewCtrl'
+     })
+     //
     ;
 
     $urlRouterProvider
