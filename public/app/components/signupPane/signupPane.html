@@ -13,7 +13,7 @@
               name="firstName"
               placeholder="Phillip J."
               ng-model="user.firstname"
-              ng-model-options="{ updateOn: 'default' }"
+              ng-model-options="{ updateOn: 'default blur', debounce: { 'default': 200, 'blur': 0 }}"
               required>
               <span ng-show="signUpForm.firstName.$dirty && signUpForm.firstName.$invalid" class="text-danger">Please enter a first name.</span>
           </fieldset>
@@ -28,7 +28,8 @@
               name="lastName"
               placeholder="Fry"
               ng-model="user.lastname"
-              ng-model-options="{ updateOn: 'default' }">
+              ng-model-options="{ updateOn: 'default blur', debounce: { 'default': 200, 'blur': 0 }}"
+              required>
               <span ng-show="signUpForm.firstName.$dirty && signUpForm.lastName.$invalid" class="text-danger">Please enter a last name.</span>
           </fieldset>
         </div>
@@ -48,7 +49,7 @@
           name="email"
           placeholder="Email"
           ng-model="user.email"
-          ng-model-options="{ updateOn: 'default' }"
+          ng-model-options="{ updateOn: 'default blur', debounce: { 'default': 200, 'blur': 0 }}"
           required>
           <span ng-show="signUpForm.email.$error.email" class="text-danger">Please enter a valid email.</span>
       </fieldset>
@@ -69,7 +70,7 @@
 
               placeholder="Password"
               ng-model="user.password"
-              ng-model-options="{ updateOn: 'blur' }"
+              ng-model-options="{ updateOn: 'default blur', debounce: { 'default': 200, 'blur': 0 }}"
               ng-pattern="/^(?=.*[a-z]).{8,20}$/"
               required>
               <span ng-show="signUpForm.password.$error.pattern" class="text-danger">Password must be at least 8 characters</span>
