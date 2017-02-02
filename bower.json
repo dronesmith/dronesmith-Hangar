@@ -29,7 +29,7 @@
     "angular-route": "~1.4.7",
     "lodash": "~3.10.1",
     "es5-shim": "~4.3.1",
-    "font-awesome": "~4.4.0",
+    "font-awesome": "~4.7.0",
     "angular-ui-uploader": "~1.1.2",
     "angular-nvd3": "~1.0.3",
     "ng-csv": "~0.3.6",
