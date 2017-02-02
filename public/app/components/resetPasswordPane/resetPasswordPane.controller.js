@@ -14,6 +14,13 @@
 
 angular
   .module('ForgeApp')
-  .controller('resetPasswordPaneCtrl', function ($scope, Session, Error) {
+  .controller('resetPasswordPaneCtrl', function ($scope, $state, Session, Error) {
+
+    $scope.gotoLogin = function() {
+      $state.go('login');
+    }
+
+
+
   })
 ;

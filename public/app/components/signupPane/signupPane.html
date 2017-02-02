@@ -1,207 +1,193 @@
 <section id="signupPane">
-    <!-- <h3 class="text-center">Sign Up</h3> -->
+  <form ng-hide="signupSubmitted" class="panel-body" name="signUpForm"
+  novalidate>
 
-    <form ng-hide="signupSubmitted" class="panel-body" name="signUpForm" novalidate>
-      <div class="row">
-        <div class="col-xs-6">
-          <fieldset class="form-group">
-            <label for="firstName">First Name</label>
-            <input
-              type="text"
-              class="form-control"
-              id="firstName"
-              name="firstName"
-              placeholder="Phillip J."
-              ng-model="user.firstname"
-              ng-model-options="{ updateOn: 'default blur', debounce: { 'default': 200, 'blur': 0 }}"
-              required>
-              <span ng-show="signUpForm.firstName.$dirty && signUpForm.firstName.$invalid" class="text-danger">Please enter a first name.</span>
-          </fieldset>
-        </div>
-        <div class="col-xs-6">
-          <fieldset class="form-group">
-            <label for="lastName">Last Name</label>
-            <input
-              type="text"
-              class="form-control"
-              id="lastName"
-              name="lastName"
-              placeholder="Fry"
-              ng-model="user.lastname"
-              ng-model-options="{ updateOn: 'default blur', debounce: { 'default': 200, 'blur': 0 }}"
-              required>
-              <span ng-show="signUpForm.firstName.$dirty && signUpForm.lastName.$invalid" class="text-danger">Please enter a last name.</span>
-          </fieldset>
-        </div>
+  <div class="row">
+    <div class="col-xs-12" style="padding: 15px 15px 30px 15px;">
+      <div style="display: block; float: left;
+        font-size: 22px;
+        line-height: 1;
+        font-weight: normal">Create an account</div>
+      <div style="display: block;float: right;
+        margin-top: 7px;
+        line-height: 1;
+        font-weight: normal">
+        or
+        <a ng-click="gotoLogin()" href="">log in</a>
       </div>
+    </div>
+  </div>
 
 
-      <fieldset
-        class="form-group"
-        ng-class="{
-          'has-error': signUpForm.email.$dirty && signUpForm.email.$invalid
+
+  </div>
+    <div class="row">
+      <div class="col-xs-6">
+        <fieldset class="form-group has-feedback" ng-class="{
+        'has-error': signUpForm.firstName.$dirty && signUpForm.firstName.$invalid
         }">
-        <label for="email">Email</label>
-        <input
-          type="email"
-          class="form-control"
-          id="email"
-          name="email"
-          placeholder="Email"
-          ng-model="user.email"
+          <label for="firstName">First Name</label>
+          <input type="text" id="firstName" name="firstName"
+          class="form-control input-lg"
+          placeholder=""
+          ng-model="user.firstname"
           ng-model-options="{ updateOn: 'default blur', debounce: { 'default': 200, 'blur': 0 }}"
           required>
-          <span ng-show="signUpForm.email.$error.email" class="text-danger">Please enter a valid email.</span>
-      </fieldset>
-      <div class="row">
-        <div class="col-xs-12">
-          <fieldset
-            class="form-group"
-            ng-class="{
-              'has-error': signUpForm.password.$dirty && signUpForm.password.$invalid
-
-            }">
-            <label for="password">Create a password</label>
-            <input
-              type="password"
-              class="form-control"
-              id="password"
-              name="password"
-
-              placeholder="Password"
-              ng-model="user.password"
-              ng-model-options="{ updateOn: 'default blur', debounce: { 'default': 200, 'blur': 0 }}"
-              ng-pattern="/^(?=.*[a-z]).{8,20}$/"
-              required>
-              <span ng-show="signUpForm.password.$error.pattern" class="text-danger">Password must be at least 8 characters</span>
-          </fieldset>
-        </div>
-        <!-- <div class="col-xs-6">
-          <fieldset
-            class="form-group"
-            ng-class="{
-              'has-error': (signUpForm.confirmPassword.$dirty) &&  (signUpForm.confirmPassword.$invalid || (user.confirmPassword !== user.password)),
-              'has-success': signUpForm.confirmPassword.$dirty && signUpForm.confirmPassword.$valid
-            }">
-            <label for="confirmPassword">Confirm Password</label>
-            <input
-              type="password"
-              class="form-control"
-              id="confirmPassword"
-              name="confirmPassword"
-              placeholder="Confirm Password"
-              ng-model="user.confirmPassword"
-              ng-model-options="{ updateOn: 'blur' }"
-              ng-pattern="/^(?=.*[a-z]).{8,20}$/"
-              required>
-              <span ng-show="signUpForm.confirmPassword.$error.pattern" class="text-danger">Please enter a valid password.</span>
-              <span ng-show="signUpForm.confirmPassword.$dirty && (user.confirmPassword !== user.password)" class="text-danger">Passwords don't match.</span>
-          </fieldset> -->
-        </div>
+          <span class="fa fa-timesfa-fw form-control-feedback"
+            ng-class="{'fa-times': signUpForm.firstName.$dirty && signUpForm.firstName.$invalid,
+              'fa-check': signUpForm.firstName.$dirty && signUpForm.firstName.$valid
+            }"
+            aria-hidden="true"></span>
+          <span ng-show="signUpForm.firstName.$dirty && signUpForm.firstName.$invalid" class="text-danger">Please enter a first name.</span>
+        </fieldset>
       </div>
-
-
-
-      <h3 class="text-center">I am a ...</h3>
-
-      <fieldset
-        class="radio-inline">
-        <label for="kind">
-        <input
-          type="radio"
-          ng-model="user.kind"
-          name="kind"
-          id="kind"
-          value="developer"
-          >Developer</label>
-      </fieldset>
-
-      <fieldset
-        class="radio-inline">
-        <label for="kind">
-        <input
-          type="radio"
-          ng-model="user.kind"
-          name="kind"
-          id="kind"
-          value="enthusiast">Enthusiast</label>
-      </fieldset>
-
-      <fieldset
-        class="radio-inline">
-        <label for="kind">
-        <input
-          type="radio"
-          ng-model="user.kind"
-          name="kind"
-          id="kind"
-          value="educator">Educator</label>
-      </fieldset>
-
-      <fieldset
-        class="radio-inline">
-        <label for="kind">
-        <input
-          type="radio"
-          ng-model="user.kind"
-          name="kind"
-          id="kind"
-          value="hacker">Hacker</label>
-      </fieldset>
-
-      <fieldset
-        class="radio-inline">
-        <label for="kind">
-        <input
-        ngInit="user.kind=='other'"
-          type="radio"
-          ng-model="user.kind"
-          name="kind"
-          id="kind"
-          value="other"
-          >Other</label>
-      </fieldset>
-
-      <fieldset
-
-        ng-hide="user.kind!='other'"
-        class="form-group"
-        ng-class="{
-          'has-error': signUpForm.Otherkind.$dirty && signUpForm.Otherkind.$invalid,
-          'has-success': signUpForm.Otherkind.$dirty && signUpForm.Otherkind.$valid
+      <div class="col-xs-6">
+        <fieldset class="form-group has-feedback" ng-class="{
+        'has-error': signUpForm.lastName.$dirty && signUpForm.lastName.$invalid
         }">
-        <input
-          type="text"
-          ng-maxlength="25"
-          class="form-control"
-          id="Otherkind"
-          name="Otherkind"
-          placeholder="What do you do?"
-          ng-model="user.other"
-          ng-required="user.kind=='other'">
+          <label for="lastName">Last Name</label>
+          <input type="text" class="form-control input-lg" id="lastName" name="lastName" placeholder="" ng-model="user.lastname" ng-model-options="{ updateOn: 'default blur', debounce: { 'default': 200, 'blur': 0 }}" required>
 
-      </fieldset>
-    <div class="row" style="margin-top:30px;">
-      <div class="col-xs-6 col-xs-offset-3">
-        <button
-          type="submit"
-          style="background-color: #093c71 !important;"
-          class="btn btn-primary btn-block"
-          ng-disabled="!signUpForm.$valid"
-          ng-click="update(user)"
-          value="Signup">Create Account</button>
+          <span
+            class="fa fa-fw form-control-feedback"
+            ng-show="signUpForm.lastName.$dirty"
+            ng-class="{'fa-times': signUpForm.lastName.$dirty && signUpForm.lastName.$invalid,
+              'fa-check': signUpForm.lastName.$dirty && signUpForm.lastName.$valid
+            }"
+            aria-hidden="true"></span>
+
+          <span ng-show="signUpForm.lastName.$dirty && signUpForm.lastName.$invalid" class="text-danger">Please enter a last name.</span>
+        </fieldset>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-xs-12">
+        <fieldset class="form-group has-feedback" ng-class="{
+        'has-error': signUpForm.email.$dirty && signUpForm.email.$invalid
+        }">
+          <label for="email">Email</label>
+
+          <input type="email" class="form-control input-lg" id="email" name="email" placeholder="" ng-model="user.email" ng-model-options="{ updateOn: 'default blur', debounce: { 'default': 200, 'blur': 0 }}" required>
+          <span
+            class="fa fa-fw form-control-feedback"
+            ng-show="signUpForm.email.$dirty"
+            ng-class="{'fa-times': signUpForm.email.$dirty && signUpForm.email.$invalid,
+          'fa-check': signUpForm.email.$dirty && signUpForm.email.$valid
+          }"
+            aria-hidden="true"></span>
+
+          <span ng-show="signUpForm.email.$error.email" class="text-danger">Please enter a valid email.</span>
+        </fieldset>
+
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-xs-12">
+        <fieldset class="form-group has-feedback" ng-class="{
+        'has-error': signUpForm.password.$dirty && signUpForm.password.$invalid
+        }">
+          <label for="password">Create a password</label>
+          <input
+            tooltip-placement="right"
+            uib-tooltip="Good passwords are hard to guess. Use uncommon words or inside jokes, non-standard uPPercasing, creative spelllling, and non-obvious numbers and symbols"
+            tooltip-append-to-body="true"
+            type="password"
+            class="form-control input-lg"
+            id="password"
+            name="password"
+            placeholder=""
+            ng-model="user.password"
+            ng-model-options="{ updateOn: 'default blur', debounce: { 'default': 200, 'blur': 0 }}"
+            ng-pattern="/^(?=.*[a-z]).{8,20}$/"
+            required>
+          <span
+            class="fa fa-times fa-fw form-control-feedback"
+            ng-show="signUpForm.password.$dirty"
+            ng-class="{'fa-times': signUpForm.password.$dirty && signUpForm.password.$invalid,
+          'fa-check': signUpForm.password.$dirty && signUpForm.password.$valid
+          }"
+            aria-hidden="true"></span>
+          <span ng-show="signUpForm.password.$error.pattern" class="text-danger">Password must be at least 8 characters</span>
+        </fieldset>
       </div>
 
     </div>
 
+    <label for="kind">I am a . . .</label>
+    <div class="row">
+      <div class="col-xs-4">
+        <fieldset class="radio ">
+          <label for="kind">
+            <input type="radio" ng-model="user.kind" name="kind" id="kind" value="developer" required>Developer</label>
+        </fieldset>
+      </div>
+      <div class="col-xs-4">
+        <fieldset class="radio">
+          <label for="kind">
+            <input type="radio" ng-model="user.kind" name="kind" id="kind" value="enthusiast" required>Enthusiast</label>
+        </fieldset>
+      </div>
+      <div class="col-xs-4">
+
+        <fieldset class="radio">
+          <label for="kind">
+            <input type="radio" ng-model="user.kind" name="kind" id="kind" value="enthusiast" required>Enthusiast</label>
+        </fieldset>
+      </div>
+      <div class="col-xs-4">
+        <fieldset class="radio">
+          <label for="kind">
+            <input type="radio" ng-model="user.kind" name="kind" id="kind" value="educator" required>Educator</label>
+        </fieldset>
+      </div>
+      <div class="col-xs-4">
+        <fieldset class="radio">
+          <label for="kind">
+            <input type="radio" ng-model="user.kind" name="kind" id="kind" value="hacker" required>Hacker</label>
+        </fieldset>
+      </div>
+      <div class="col-xs-4">
+
+        <fieldset class="radio">
+          <label for="kind">
+            <input ngInit="user.kind=='other'" type="radio" ng-model="user.kind" name="kind" id="kind" value="other">Other</label>
+        </fieldset>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xs-12">
+        <fieldset ng-hide="user.kind!='other'"
+          class="form-group"
+          ng-class="{
+          'has-error': signUpForm.Otherkind.$dirty && signUpForm.Otherkind.$invalid
+          }">
+
+            <input type="text" id="Otherkind" name="Otherkind"
+              class="form-control input-lg"
+              placeholder="What do you do?"
+              ng-maxlength="25"
+              ng-model="user.other"
+              ng-required="user.kind=='other'">
+
+        </fieldset>
+      </div>
+    </div>
+    <div class="row "  style="margin-top:15px;">
+      <div class="col-xs-6 col-xs-offset-3">
+        <button type="submit"
+          style="background-color: #093c71 !important;"
+          class="btn btn-primary btn-block"
+          ng-disabled="!signUpForm.$valid"
+          ng-click="update(user)"
+          value="Signup">Create an account</button>
+      </div>
+    </div>
+  </form>
 
 
-    </form>
-    <!-- <hgroup class="text-center" ng-show="signupSubmitted">
-      <h3>Thanks for signing up!</h3>
-      <p class="lead">
-        You'll need to verify your account in order be apart of the early access.
-      </p>
-      <button class="btn btn-defualt" ui-sref="login">Return to Login</button>
-    </hgroup> -->
+
+
+
 </section>

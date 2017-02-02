@@ -15,18 +15,24 @@
 angular
   .module('ForgeApp')
   .controller('LoginPaneCtrl', function ($scope, $state, Session, Error) {
-
-    $scope.signup = function() {
+    $scope.error = false;
+    $scope.spin = false;
+    $scope.gotoSignup = function() {
       $state.go('signup');
     }
 
     $scope.update = function(user) {
+      $scope.spin = true;
       Session
         .account.authenticate(user)
         .$promise
         .then(function(data) {
           $state.go('hangar');
-        }, Error)
+          $scope.spin = false;
+        }, function(){
+          $scope.error = true;
+          $scope.spin = false;
+        })
       ;
     };
   })
