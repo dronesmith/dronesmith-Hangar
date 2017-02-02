@@ -24,7 +24,7 @@
         </div>
       </div>
     </div>
-
+<md-progress-circular md-mode="indeterminate"></md-progress-circular>
 
     <div class="row">
       <div class="col-xs-12">
@@ -73,7 +73,7 @@
             ng-pattern="/^(?=.*[a-z]).{8,20}$/"
             required>
           <span
-            class="fa fa-times fa-fw form-control-feedback"
+            class="fa fa-fw form-control-feedback"
             ng-show="loginForm.password.$dirty"
             ng-class="{'fa-times': loginForm.password.$dirty && loginForm.password.$invalid,
           'fa-check': loginForm.password.$dirty && loginForm.password.$valid

@@ -33,7 +33,7 @@
           ng-model="user.firstname"
           ng-model-options="{ updateOn: 'default blur', debounce: { 'default': 200, 'blur': 0 }}"
           required>
-          <span class="fa fa-timesfa-fw form-control-feedback"
+          <span class="fa fa-fw form-control-feedback"
             ng-class="{'fa-times': signUpForm.firstName.$dirty && signUpForm.firstName.$invalid,
               'fa-check': signUpForm.firstName.$dirty && signUpForm.firstName.$valid
             }"
@@ -103,7 +103,7 @@
             ng-pattern="/^(?=.*[a-z]).{8,20}$/"
             required>
           <span
-            class="fa fa-times fa-fw form-control-feedback"
+            class="fa fa-fw form-control-feedback"
             ng-show="signUpForm.password.$dirty"
             ng-class="{'fa-times': signUpForm.password.$dirty && signUpForm.password.$invalid,
           'fa-check': signUpForm.password.$dirty && signUpForm.password.$valid
