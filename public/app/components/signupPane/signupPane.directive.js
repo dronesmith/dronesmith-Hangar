@@ -17,7 +17,7 @@ angular
   .directive('signupPane', function() {
     return {
       templateUrl: 'app/components/signupPane/signupPane.html',
-      controller: 'signupPaneCtrl'
+      controller: 'SignupPaneCtrl'
     }
   })
 ;

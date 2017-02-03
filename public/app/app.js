@@ -66,29 +66,47 @@ angular
 
       // Login state. The app should always redirect to this state whenever the
       // session returned is null.
+      .state('loginView', {
+        abstract:true ,
+        templateUrl: 'app/loginView/loginView.html',
+        controller: 'LoginViewCtrl',
+
+      })
+      // Login state. The app should always redirect to this state whenever the
+      // session returned is null.
       .state('login', {
         url: '/login',
-        templateUrl: 'app/loginView/loginView.html',
-        controller: 'LoginViewCtrl'
+        templateUrl: 'app/components/loginPane/loginPane.html',
+        parent: 'loginView',
+        controller: 'LoginPaneCtrl',
       })
-
       // Signup state.
       .state('signup', {
-        url: '/signup',
-        templateUrl: 'app/signupView/signupView.html',
-        controller: 'SignupViewCtrl'
+        url: '^/signup',
+        template: '<signup-pane></signup-pane>',
+        templateUrl: 'app/components/signupPane/signupPane.html',
+        parent: 'loginView'
       })
 
      // Whenever the user wishes to reset their password.
      .state('resetPassword', {
-       url: '/resetPassword',
+       url: '^/forgot',
        template: '<reset-password-pane></reset-password-pane>',
-       parent: 'login'
+       parent: 'loginView'
+     })
+
+     .state('sentResetPassword', {
+       url: '^/forgot/sent',
+       template: '<sent-reset-password-pane></sent-reset-password-pane>',
+       parent: 'loginView',
+       params: {
+        email: null
+       }
      })
 
      // Signup state.
      .state('signupSuccess', {
-       url: '/signup/success',
+       url: '/success',
        templateUrl: 'app/signupSuccessView/signupSuccessView.html',
        controller: 'SignupSuccessViewCtrl'
      })

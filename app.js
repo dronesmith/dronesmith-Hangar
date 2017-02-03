@@ -89,7 +89,9 @@ app.use('/index/', function(req, res, next) {
     // res.status(400).json({error: "Sorry, Forge Cloud is currently invite only."});
   } else if (req.path == '/session/newuser' && req.method == 'POST') {
     next();
-  } else if (!req.session.email || !req.session.key) {
+  } else if (req.path == '/session/reset' && req.method == 'POST') {
+    next();
+  }else if (!req.session.email || !req.session.key) {
   res.status(400).json({error: "Not logged in."});
   } else {
     next();

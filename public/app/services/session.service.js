@@ -34,6 +34,12 @@ angular
             method: 'POST'
           }
         }),
+        resetPassword: $resource('/index/session/reset', {
+        },{
+          send: {
+            method: 'POST'
+          }
+        }),
         sendsms: $resource('/index/session/sms/send'),
         verifysms: $resource('/index/session/sms/verify')
 

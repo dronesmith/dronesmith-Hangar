@@ -14,7 +14,7 @@
 
 angular
   .module('ForgeApp')
-  .controller('signupPaneCtrl', function ($scope, $state, Session, Error) {
+  .controller('SignupPaneCtrl', function ($scope, $state, Session, Error) {
 
     $scope.gotoLogin = function() {
       $state.go('login');
