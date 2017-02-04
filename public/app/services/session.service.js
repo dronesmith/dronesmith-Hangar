@@ -26,9 +26,22 @@ angular
           },
           authenticate: {
             method: 'POST'
+          },
+
+        }),
+        temp: $resource('/index/session/temp', {
+        },{
+          send: {
+            method: 'POST'
           }
         }),
         signup: $resource('/index/session/newuser', {
+        },{
+          send: {
+            method: 'POST'
+          }
+        }),
+        forgotPassword: $resource('/index/session/forgot', {
         },{
           send: {
             method: 'POST'

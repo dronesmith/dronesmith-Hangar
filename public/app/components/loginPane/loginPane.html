@@ -71,7 +71,7 @@
             ng-model="user.password"
             ng-model-options="{ updateOn: 'default blur', debounce: { 'default': 200, 'blur': 0 }}"
             ng-pattern="/^(?=.*[a-z]).{8,20}$/"
-            required>
+            >
           <span
             class="fa fa-fw form-control-feedback"
             ng-show="loginForm.password.$dirty"
@@ -128,7 +128,7 @@
             </div>
             <div class="row" style="margin-top:15px;">
               <div class="col-xs-12 text-center">
-                <a class="" ui-sref="resetPassword">Forgot password?</a>
+                <a class="" ui-sref="forgotPassword">Forgot password?</a>
               </div>
             </div>
 

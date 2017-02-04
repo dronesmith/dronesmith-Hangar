@@ -3,7 +3,7 @@
 
 angular
   .module('ForgeApp')
-  .controller('sentResetPasswordPaneCtrl', function ($scope, $state, Session, $stateParams) {
+  .controller('SentResetPasswordPaneCtrl', function ($scope, $state, Session, $stateParams) {
 
         console.log($stateParams);
     $scope.email = $stateParams.email;

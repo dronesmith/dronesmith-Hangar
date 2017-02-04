@@ -36,11 +36,16 @@ module.exports = function(app, route) {
         // Authenticate a session (allows logins)
         .post   ('/index/session',                session.authenticate)
 
+
+
         // Get user session
         .get    ('/index/session',                session.poll)
 
         // Create new user in API & get API key
         .post   ('/index/session/newuser',        session.signUp)
+
+        // Email password reset link
+        .post   ('/index/session/forgot',          session.forgotPassword)
 
         // Reset password
         .post   ('/index/session/reset',          session.resetPassword)

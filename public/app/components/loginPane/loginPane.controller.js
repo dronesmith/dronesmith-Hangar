@@ -15,6 +15,18 @@
 angular
   .module('ForgeApp')
   .controller('LoginPaneCtrl', function ($scope, $state, Session, Error) {
+
+    // angular.element(document).ready(function () {
+    //   console.log("hello");
+    //     Session
+    //       .temp.send()
+    //       .$promise
+    //       .then(function(data) {
+    //           console.log("worked");
+    //       }, function(data){
+    //
+    //       });
+    // });
     $scope.error = false;
     $scope.spin = false;
     $scope.gotoSignup = function() {

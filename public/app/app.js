@@ -69,7 +69,7 @@ angular
       .state('loginView', {
         abstract:true ,
         templateUrl: 'app/loginView/loginView.html',
-        controller: 'LoginViewCtrl',
+        controller: 'LoginViewCtrl'
 
       })
       // Login state. The app should always redirect to this state whenever the
@@ -83,28 +83,39 @@ angular
       // Signup state.
       .state('signup', {
         url: '^/signup',
-        template: '<signup-pane></signup-pane>',
         templateUrl: 'app/components/signupPane/signupPane.html',
+        controller: 'SignupPaneCtrl',
         parent: 'loginView'
       })
 
      // Whenever the user wishes to reset their password.
-     .state('resetPassword', {
+     .state('forgotPassword', {
        url: '^/forgot',
-       template: '<reset-password-pane></reset-password-pane>',
+       templateUrl: 'app/components/forgotPasswordPane/forgotPasswordPane.html',
+       controller: 'ForgotPasswordPaneCtrl',
        parent: 'loginView'
      })
 
      .state('sentResetPassword', {
        url: '^/forgot/sent',
-       template: '<sent-reset-password-pane></sent-reset-password-pane>',
+       templateUrl: 'app/components/sentResetPasswordPane/sentResetPasswordPane.html',
+       controller: 'SentResetPasswordPaneCtrl',
        parent: 'loginView',
        params: {
         email: null
        }
      })
+     .state('resetPassword', {
+       url: '^/reset?token',
+       templateUrl: 'app/components/resetPasswordPane/resetPasswordPane.html',
+       controller: 'ResetPasswordPaneCtrl',
+       parent: 'loginView',
+       params: {
+        token: null
+       }
+     })
 
-     // Signup state.
+     // Signup success state.
      .state('signupSuccess', {
        url: '/success',
        templateUrl: 'app/signupSuccessView/signupSuccessView.html',
