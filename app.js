@@ -97,6 +97,8 @@ app.use('/index/', function(req, res, next) {
     next();
   } else if (req.path == '/session/temp' && req.method == 'POST') {
     next();
+  } else if (req.path == '/session/reset/validate' && req.method == 'POST') {
+    next();
   } else if (!req.session.email || !req.session.key) {
   res.status(400).json({error: "Not logged in."});
   } else {

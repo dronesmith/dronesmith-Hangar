@@ -23,19 +23,31 @@
  -webkit-transition: none;
 }
 
+.btn:disabled{
+
+    opacity: 1;
+}
+
 // Spinner styles
 .spinner{
-  width: 20px;
+width: 20px;
   height: 20px;
+
+  position: absolute;
+  overflow: visible;
+top: 7px;
+  right: 30px;
+  z-index: 5000;
+
 
 }
 
 // Spinner animation
 
 .spinner > img{
-
+  width: 20px;
+  height: 20px;
   position: absolute;
-  overflow: visible;
   top: 0;
   left: 0;
   animation: indeterminate-rotate 800ms linear infinite;
@@ -92,7 +104,7 @@
 @brand-success:         #A0D468;
 @brand-info:            #3498DB;
 @brand-warning:         #F39C12;
-@brand-danger:          #E74C3C;
+@brand-danger:          #ED314A;
 
 
 //== Scaffolding
@@ -218,9 +230,9 @@
 
 @btn-font-weight:                normal;
 
-@btn-default-color:              #fff;
-@btn-default-bg:                 @gray;
-@btn-default-border:             @btn-default-bg;
+@btn-default-color:              #FFFFFF;
+@btn-default-bg:                 #003b71;
+@btn-default-border:             #003b71;
 
 @btn-primary-color:              @btn-default-color;
 @btn-primary-bg:                 @brand-primary;
@@ -257,7 +269,7 @@
 //** `<input>` background color
 @input-bg:                       white;
 //** `<input disabled>` background color
-@input-bg-disabled:              @gray-lighter;
+@input-bg-disabled:              @gray-light;
 
 //** Text color for `<input>`s
 @input-color:                    @text-color;
@@ -694,9 +706,9 @@
 //
 //## Define alert colors, border radius, and padding.
 
-@alert-padding:               15px;
+@alert-padding:               0.5em;
 @alert-border-radius:         @border-radius-base;
-@alert-link-font-weight:      bold;
+@alert-link-font-weight:      700;
 
 @alert-success-bg:            @state-success-bg;
 @alert-success-text:          @state-success-text;
@@ -711,7 +723,7 @@
 @alert-warning-border:        @state-warning-border;
 
 @alert-danger-bg:             @state-danger-bg;
-@alert-danger-text:           @state-danger-text;
+@alert-danger-text:           #FFFFFF;
 @alert-danger-border:         @state-danger-border;
 
 

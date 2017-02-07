@@ -14,8 +14,20 @@
 
 angular
   .module('ForgeApp')
-  .controller('ResetPasswordPaneCtrl', function ($scope, $state, Session, $stateParams) {
-    $scope.error = null;
+  .controller('ResetPasswordPaneCtrl', function ($scope, $state, $stateParams, Session) {
+$scope.error = null;
+    console.log("Validate token");
+    Session
+      .validateToken.send($stateParams)
+      .$promise.then(function(data) {
+
+      }, function(data) {
+        //$scope.error = data.data.error;
+        $state.go('forgotPassword', {error: "We apologize, that password reset link has expired."});
+      });
+
+
+
 
 
     $scope.update = function(user) {

@@ -47,6 +47,12 @@ angular
             method: 'POST'
           }
         }),
+        validateToken: $resource('/index/session/reset/validate', {
+        },{
+          send: {
+            method: 'POST'
+          }
+        }),
         resetPassword: $resource('/index/session/reset', {
         },{
           send: {

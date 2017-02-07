@@ -14,8 +14,8 @@
 
 angular
   .module('ForgeApp')
-  .controller('ForgotPasswordPaneCtrl', function ($scope, $state, Session) {
-    $scope.error = null;
+  .controller('ForgotPasswordPaneCtrl', function ($scope, $state, $stateParams, Session) {
+    $scope.error =  $stateParams.error;
 
     $scope.gotoLogin = function() {
       $state.go('login');
@@ -29,7 +29,7 @@ angular
 
           console.log(data.status);
           $state.go('sentResetPassword', {email: user.email});
-          //$state.go('signupSuccess');
+
         }, function(data) {
           console.log(data.data.error);
           $scope.error = data.data.error;

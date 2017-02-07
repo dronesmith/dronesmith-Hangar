@@ -14,20 +14,10 @@
 
 angular
   .module('ForgeApp')
-  .controller('LoginPaneCtrl', function ($scope, $state, Session, Error) {
+  .controller('LoginPaneCtrl', function ($scope, $state, $stateParams, Session, Error) {
 
-    // angular.element(document).ready(function () {
-    //   console.log("hello");
-    //     Session
-    //       .temp.send()
-    //       .$promise
-    //       .then(function(data) {
-    //           console.log("worked");
-    //       }, function(data){
-    //
-    //       });
-    // });
-    $scope.error = false;
+
+    $scope.error = $stateParams.error;
     $scope.spin = false;
     $scope.gotoSignup = function() {
       $state.go('signup');
@@ -41,8 +31,10 @@ angular
         .then(function(data) {
           $state.go('hangar');
           $scope.spin = false;
-        }, function(){
-          $scope.error = true;
+        }, function(data){
+          $scope.error = data.data.error;
+          $state.go('.', {error: $scope.error}, {reload: true});
+
           $scope.spin = false;
         })
       ;

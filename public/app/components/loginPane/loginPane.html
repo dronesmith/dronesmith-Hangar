@@ -1,13 +1,13 @@
 <section id="loginPane">
   <form ng-hide="signupSubmitted" class="panel-body" name="loginForm"
   novalidate>
-    <div class="spinner" ng-show="spin==true"
-      style=" position: absolute;
-      overflow: visible;
-      top: -110px;
-      right: 20px;
-    ">
-      <img src="assets/img/spinner.svg" alt="">
+
+    <div class="row" ng-show="error" style="">
+      <div class="col-xs-12 ">
+        <div class="alert alert-danger" role="alert">
+          <p ng-model="error" style="font-size: 13px;" class="" >{{error}}</p>
+        </div>
+      </div>
     </div>
     <div class="row">
       <div class="col-xs-12" style="padding: 15px 15px 30px 15px;">
@@ -38,7 +38,7 @@
             id="email" name="email"
             placeholder=""
             ng-model="user.email"
-            ng-model-options="{ updateOn: 'default blur', debounce: { 'default': 200, 'blur': 0 }}" required>
+            ng-model-options="{ updateOn: 'default blur', debounce: { 'default': 700, 'blur': 0 }}" required>
           <span
             class="fa fa-fw form-control-feedback"
             ng-show="loginForm.email.$dirty"
@@ -47,7 +47,7 @@
           }"
             aria-hidden="true"></span>
 
-          <span ng-show="loginForm.email.$error.email" class="text-danger">Please enter a valid email.</span>
+          <div ng-show="loginForm.email.$error.email" class="alert alert-danger">Please enter a valid email.</div>
         </fieldset>
 
       </div>
@@ -69,9 +69,9 @@
             name="password"
             placeholder=""
             ng-model="user.password"
-            ng-model-options="{ updateOn: 'default blur', debounce: { 'default': 200, 'blur': 0 }}"
+            ng-model-options="{ updateOn: 'default blur', debounce: { 'default':700, 'blur': 0 }}"
             ng-pattern="/^(?=.*[a-z]).{8,20}$/"
-            >
+            required>
           <span
             class="fa fa-fw form-control-feedback"
             ng-show="loginForm.password.$dirty"
@@ -105,9 +105,7 @@
         </fieldset>
       </div>
     </div>
-    <div class="row" ng-show="error==true" style="margin-top:15px;">
-      <div class="col-xs-12 text-center">
-        <p class="text-danger">Email and password do not match.</p>
+
 
       </div>
     </div>
@@ -116,11 +114,15 @@
 
           <button
             type="submit"
-            style="background-color: #093c71 !important;"
-            class="btn btn-primary btn-block"
+            style=""
+            class="btn btn-default btn-block"
             ng-disabled="!loginForm.$valid"
             ng-click="update(user)"
-            value="LogIn">Log in</button>
+            value="LogIn">Log in
+              <div class="spinner" ng-show="spin==true">
+                <img src="assets/img/spinner.svg" alt="">
+              </div>
+          </button>
 
 
             </div>

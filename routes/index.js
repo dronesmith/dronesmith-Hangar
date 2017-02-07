@@ -36,8 +36,6 @@ module.exports = function(app, route) {
         // Authenticate a session (allows logins)
         .post   ('/index/session',                session.authenticate)
 
-
-
         // Get user session
         .get    ('/index/session',                session.poll)
 
@@ -45,7 +43,10 @@ module.exports = function(app, route) {
         .post   ('/index/session/newuser',        session.signUp)
 
         // Email password reset link
-        .post   ('/index/session/forgot',          session.forgotPassword)
+        .post   ('/index/session/forgot',         session.forgotPassword)
+
+        // Validate token in reset link
+        .post   ('/index/session/reset/validate', session.validateToken)
 
         // Reset password
         .post   ('/index/session/reset',          session.resetPassword)

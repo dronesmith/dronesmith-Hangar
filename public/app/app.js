@@ -79,6 +79,9 @@ angular
         templateUrl: 'app/components/loginPane/loginPane.html',
         parent: 'loginView',
         controller: 'LoginPaneCtrl',
+        params: {
+          error: null
+        }
       })
       // Signup state.
       .state('signup', {
@@ -93,7 +96,10 @@ angular
        url: '^/forgot',
        templateUrl: 'app/components/forgotPasswordPane/forgotPasswordPane.html',
        controller: 'ForgotPasswordPaneCtrl',
-       parent: 'loginView'
+       parent: 'loginView',
+       params: {
+         error: null
+       }
      })
 
      .state('sentResetPassword', {
