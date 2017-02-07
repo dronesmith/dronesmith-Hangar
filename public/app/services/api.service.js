@@ -89,7 +89,7 @@ angular
           method: 'GET',
           url: '/api/drone'
         }).then(function successCallback(response) {
-          logAPICall('GET', '/api/drone/', {}, response.data);
+          //logAPICall('GET', '/api/drone/', {}, response.data);
           if (cb) {
             cb(response.data.data.drones);
           } else {
