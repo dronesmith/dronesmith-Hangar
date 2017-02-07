@@ -112,7 +112,7 @@ angular
        }
      })
      .state('resetPassword', {
-       url: '^/reset?token',
+       url: '^/reset/{token}',
        templateUrl: 'app/components/resetPasswordPane/resetPasswordPane.html',
        controller: 'ResetPasswordPaneCtrl',
        parent: 'loginView',
