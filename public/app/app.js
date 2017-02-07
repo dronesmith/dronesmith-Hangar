@@ -22,7 +22,8 @@ angular
     'ui.router',
     'ui.bootstrap',
     'nemLogging',
-    'ui-leaflet'
+    'ui-leaflet',
+    'ngAnimate'
   ])
 
   // Global configuration here
