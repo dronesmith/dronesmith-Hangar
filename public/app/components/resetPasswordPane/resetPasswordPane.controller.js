@@ -28,8 +28,6 @@ $scope.error = null;
 
 
 
-
-
     $scope.update = function(user) {
       user.token = $stateParams.token;
 
