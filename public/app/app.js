@@ -23,7 +23,8 @@ angular
     'ui.bootstrap',
     'nemLogging',
     'ui-leaflet',
-    'ngAnimate'
+    'ngAnimate',
+    'progressSpinner'
   ])
 
   // Global configuration here
