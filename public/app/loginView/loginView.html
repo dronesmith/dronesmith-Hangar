@@ -1,26 +1,28 @@
 <section id="loginView" style="
     position: absolute;
     width: 100%;
-    height: auto;
+    height: 100%;
     min-height: 100%;  /* Fallback for vh unit */
-  min-height: 100vh;
+    min-height: 100vh;
     top: 0px;
     left: 0px;
     background: url('assets/img/dronesmith_cityscape.svg') no-repeat center center fixed;
+    background-size: cover;
     display: flex;
     flex-direction: column;
     justify-content: center;
-
+    overflow: hidden;
   "
   >
   <div class="container-fluid" style="">
 
     <div class="row"  >
       <div class="col-xs-12"style="">
-        <div class="panel panel-default"
+        <div id="loginPanel" class="panel panel-default"
         style="box-shadow: 0px 0px 20px #555;
          margin-top:21px;
          width: 450px;
+
         padding: 0px 15px 15px 15px;">
 
          <div class="row panel-body " style="background-color: white; ">
