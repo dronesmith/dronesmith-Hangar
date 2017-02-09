@@ -8,20 +8,21 @@
     background: url('assets/img/dronesmith_cityscape.svg') no-repeat center center fixed;
     min-height: 100%;
   ">
-
-  <article class="container">
+  <div class="container">
     <div class="row text-center">
       <div class="col-xs-12">
-        <h1 style="color: white; font-size: 90px; font-weight: 700; margin-top: 30px;">Success!</h1>
-
-
+        <h1 style="
+          color: white;
+          font-size: 90px;
+          font-weight: 700;
+          margin-top: 30px;">Success!</h1>
       </div>
     </div>
-    <div class="row text-center" style="margin-top: 200px;">
+    <div class="row text-center" style="margin-top: 20px;">
       <div class="col-xs-12">
-
-        <h3 style="color: white; font-weight: 400;">We sent you an email <br> containing your API key.</h3>
-
+        <h3 ng-model="email" style="
+          color: white;
+          font-weight: 400;">We sent an email <br> to {{email}} <br> containing your API key.</h3>
       </div>
     </div>
     <div class="row text-center"  style="">
@@ -36,4 +37,4 @@
       </div>
     </div>
   </article>
-</section>
+</div>

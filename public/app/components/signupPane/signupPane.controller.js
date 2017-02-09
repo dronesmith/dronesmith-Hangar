@@ -14,20 +14,21 @@
 
 angular
   .module('ForgeApp')
-  .controller('SignupPaneCtrl', function ($scope, $state, Session, Error) {
-
-    $scope.gotoLogin = function() {
-      $state.go('login');
-    }
-
+  .controller('SignupPaneCtrl', function ($scope, $state, $stateParams, Session, progressSpinner, Error) {
 
     $scope.update = function(user) {
+      progressSpinner.start();
       Session
         .signup.send(user)
         .$promise
         .then(function(data) {
-          $state.go('signupSuccess');
-        }, Error)
+          progressSpinner.complete();
+          $state.go('signupSuccess', {email: user.email});
+        }, function(data) {
+          $scope.error = data.data.error;
+          progressSpinner.complete();
+          $state.go('.', {error: $scope.error}, {reload: true});
+        })
       ;
     };
   })

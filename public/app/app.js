@@ -127,7 +127,10 @@ angular
      .state('signupSuccess', {
        url: '/success',
        templateUrl: 'app/signupSuccessView/signupSuccessView.html',
-       controller: 'SignupSuccessViewCtrl'
+       controller: 'SignupSuccessViewCtrl',
+       params: {
+        email: null
+       }
      })
      //
     ;
