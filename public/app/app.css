@@ -9091,54 +9091,14 @@ button.close {
   -webkit-transition: none;
 }
 .btn:disabled {
+  pointer-events: none;
+  cursor: default;
+  border-color: #7b8a8b;
+  background-color: #7b8a8b;
   opacity: 1;
 }
-.spinner {
-  width: 20px;
-  height: 20px;
-  position: absolute;
-  overflow: visible;
-  top: 7px;
-  right: 30px;
-  z-index: 5000;
-}
-.spinner > img {
-  width: 20px;
-  height: 20px;
-  position: absolute;
-  top: 0;
-  left: 0;
-  animation: indeterminate-rotate 800ms linear infinite;
-}
-@-moz-keyframes indeterminate-rotate {
-  0% {
-    -webkit-transform: rotate(0deg);
-    transform: rotate(0deg);
-  }
-  100% {
-    -webkit-transform: rotate(1turn);
-    transform: rotate(1turn);
-  }
-}
-@-webkit-keyframes indeterminate-rotate {
-  0% {
-    -webkit-transform: rotate(0deg);
-    transform: rotate(0deg);
-  }
-  100% {
-    -webkit-transform: rotate(1turn);
-    transform: rotate(1turn);
-  }
-}
-@keyframes indeterminate-rotate {
-  0% {
-    -webkit-transform: rotate(0deg);
-    transform: rotate(0deg);
-  }
-  100% {
-    -webkit-transform: rotate(1turn);
-    transform: rotate(1turn);
-  }
+.form-alert {
+  padding: 5px 0 0 10px;
 }
 #footer {
   text-align: right;
@@ -9152,4 +9112,9 @@ button.close {
 }
 #loginView .spacer {
   margin-top: 40px;
+}
+@media (max-width: 767px) {
+  #loginPanel {
+    width: 100%;
+  }
 }

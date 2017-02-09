@@ -24,64 +24,14 @@
 }
 
 .btn:disabled{
-
+    pointer-events: none;
+    cursor: default;
+    border-color: @gray-dark;
+    background-color: @gray-dark;
     opacity: 1;
 }
-
-// Spinner styles
-.spinner{
-width: 20px;
-  height: 20px;
-
-  position: absolute;
-  overflow: visible;
-top: 7px;
-  right: 30px;
-  z-index: 5000;
-
-
-}
-
-// Spinner animation
-
-.spinner > img{
-  width: 20px;
-  height: 20px;
-  position: absolute;
-  top: 0;
-  left: 0;
-  animation: indeterminate-rotate 800ms linear infinite;
-}
-
-@-moz-keyframes indeterminate-rotate {
-  0% {
-      -webkit-transform: rotate(0deg);
-      transform: rotate(0deg);
-  }
-  100% {
-      -webkit-transform: rotate(1turn);
-      transform: rotate(1turn);
-  }
-}
-@-webkit-keyframes indeterminate-rotate {
-  0% {
-      -webkit-transform: rotate(0deg);
-      transform: rotate(0deg);
-  }
-  100% {
-      -webkit-transform: rotate(1turn);
-      transform: rotate(1turn);
-  }
-}
-@keyframes indeterminate-rotate {
-  0% {
-      -webkit-transform: rotate(0deg);
-      transform: rotate(0deg);
-  }
-  100% {
-      -webkit-transform: rotate(1turn);
-      transform: rotate(1turn);
-  }
+.form-alert{
+  padding: 5px 0 0 10px;
 }
 
 

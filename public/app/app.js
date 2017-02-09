@@ -141,4 +141,5 @@ angular
       .html5Mode(false)
     ;
   })
+
 ;

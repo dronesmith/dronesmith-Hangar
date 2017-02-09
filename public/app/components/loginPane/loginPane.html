@@ -9,6 +9,7 @@
         </div>
       </div>
     </div>
+    
     <div class="row">
       <div class="col-xs-12" style="padding: 15px 15px 30px 15px;">
         <div style="display: block; float: left;
@@ -25,61 +26,40 @@
       </div>
     </div>
 
-
     <div class="row">
       <div class="col-xs-12">
-        <fieldset class="form-group has-feedback" ng-class="{
-        'has-error': loginForm.email.$dirty && loginForm.email.$invalid
-        }">
+        <fieldset class="form-group">
           <label for="email">Email</label>
-
-          <!-- <span class="input-group-addon">&nbsp<i class="fa fa-envelope fa-fw"></i>&nbsp</span> -->
-          <input type="email" class="form-control input-lg"
-            id="email" name="email"
-            placeholder=""
+          <input
+            type="email"
+            name="email"
+            class="form-control input-lg"
             ng-model="user.email"
-            ng-model-options="{ updateOn: 'default blur', debounce: { 'default': 700, 'blur': 0 }}" required>
-          <span
-            class="fa fa-fw form-control-feedback"
-            ng-show="loginForm.email.$dirty"
-            ng-class="{'fa-times': loginForm.email.$dirty && loginForm.email.$invalid,
-          'fa-check': loginForm.email.$dirty && loginForm.email.$valid
-          }"
-            aria-hidden="true"></span>
-
-          <div ng-show="loginForm.email.$error.email" class="alert alert-danger">Please enter a valid email.</div>
+            ng-model-options="{ updateOn: 'default blur', debounce: {'default': 200, 'blur': 0 }}"
+            ng-pattern="/[\w-]+@([\w-]+\.)+[\w-]+/"
+            required>
+          <div
+            ng-show="loginForm.email.$touched && loginForm.email.$invalid"
+            class="text-danger form-alert">Invalid email</div>
         </fieldset>
-
       </div>
     </div>
 
     <div class="row">
       <div class="col-xs-12">
-        <fieldset class="form-group has-feedback" ng-class="{
-        'has-error': loginForm.password.$dirty && loginForm.password.$invalid
-        }">
+        <fieldset class="form-group">
           <label for="password">Password</label>
           <input
-            tooltip-placement="right"
-            uib-tooltip="If you have never created a password please click Reset Password"
-            tooltip-append-to-body="true"
             type="password"
-            class="form-control input-lg"
-            id="password"
             name="password"
-            placeholder=""
+            class="form-control input-lg"
             ng-model="user.password"
-            ng-model-options="{ updateOn: 'default blur', debounce: { 'default':700, 'blur': 0 }}"
-            ng-pattern="/^(?=.*[a-z]).{8,20}$/"
+            ng-model-options="{ updateOn: 'default blur', debounce: { 'default':200, 'blur': 0 }}"
+            ng-pattern="/^([a-zA-Z0-9@*?=.]{8,20})$/"
             required>
-          <span
-            class="fa fa-fw form-control-feedback"
-            ng-show="loginForm.password.$dirty"
-            ng-class="{'fa-times': loginForm.password.$dirty && loginForm.password.$invalid,
-          'fa-check': loginForm.password.$dirty && loginForm.password.$valid
-          }"
-            aria-hidden="true"></span>
-          <span ng-show="loginForm.password.$error.pattern" class="text-danger">Password must be at least 8 characters</span>
+          <div
+            ng-show="loginForm.password.$touched && loginForm.password.$invalid"
+            class="text-danger form-alert">Password must be atleast 8 characters</div>
         </fieldset>
       </div>
 
@@ -109,43 +89,22 @@
 
       </div>
     </div>
-      <div class="row" style="margin-top:15px;">
+
+  <div class="row" style="margin-top:15px;">
     <div class="col-xs-6 col-xs-offset-3">
-
-          <button
-            type="submit"
-            style=""
-            class="btn btn-default btn-block"
-            ng-disabled="!loginForm.$valid"
-            ng-click="update(user)"
-            value="LogIn">Log in
-              <div class="spinner" ng-show="spin==true">
-                <img src="assets/img/spinner.svg" alt="">
-              </div>
-          </button>
-
-
-            </div>
-
-            </div>
-            <div class="row" style="margin-top:15px;">
-              <div class="col-xs-12 text-center">
-                <a class="" ui-sref="forgotPassword">Forgot password?</a>
-              </div>
-            </div>
+        <button
+          type="submit"
+          class="btn btn-default btn-block"
+          ng-disabled="!loginForm.$valid"
+          ng-click="update(user)">Log in</button>
+    </div>
+  </div>
+    <div class="row" style="margin-top:15px;">
+      <div class="col-xs-12 text-center">
+        <a class="" ui-sref="forgotPassword">Forgot password?</a>
+      </div>
+    </div>
 
   </form>
-
-
-  <!-- <div class="row" style="">
-    <div class="col-xs-6 col-xs-offset-3">
-      <button type="submit"
-        style="background-color: #093c71 !important;"
-        class="btn btn-primary btn-block"
-        ng-disabled="!loginForm.$valid"
-        ng-click="update(user)"
-        value="Signup">Create an account</button>
-    </div>
-  </div> -->
 
 </section>

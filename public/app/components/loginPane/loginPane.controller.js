@@ -22,7 +22,9 @@ angular
     $scope.gotoSignup = function() {
       $state.go('signup');
     }
-
+    $scope.testchange = function(){
+      console.log("changed");
+    }
     $scope.update = function(user) {
 
       progressSpinner.start();
