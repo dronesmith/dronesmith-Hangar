@@ -15,6 +15,7 @@
 angular
   .module('ForgeApp')
   .controller('SignupPaneCtrl', function ($scope, $state, $stateParams, Session, progressSpinner, Error) {
+    $scope.error =  $stateParams.error;
 
     $scope.update = function(user) {
       progressSpinner.start();

@@ -90,7 +90,10 @@ angular
         url: '^/signup',
         templateUrl: 'app/components/signupPane/signupPane.html',
         controller: 'SignupPaneCtrl',
-        parent: 'loginView'
+        parent: 'loginView',
+        params: {
+          error: null
+        }
       })
 
      // Whenever the user wishes to reset their password.
