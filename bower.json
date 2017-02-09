@@ -22,7 +22,7 @@
   "dependencies": {
     "bootstrap": "~3.3.5",
     "jquery": "~2.1.4",
-    "angular": "~1.4.7",
+    "angular": "~1.6.2",
     "angular-resource": "~1.4.7",
     "angular-bootstrap": "~0.14.3",
     "angular-ui-router": "~0.3.2",
