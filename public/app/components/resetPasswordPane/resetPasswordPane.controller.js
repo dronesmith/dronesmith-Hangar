@@ -23,11 +23,11 @@ angular
 
       }, function(data) {
         $scope.error = data.data.error;
-        $state.go('forgotPassword', {error: $scope.error});
+        //$state.go('forgotPassword', {error: $scope.error});
       });
 
     $scope.update = function(user) {
-      progressSpinner.start();progressSpinner.complete();
+      progressSpinner.start();
       user.token = $stateParams.token;
 
       Session

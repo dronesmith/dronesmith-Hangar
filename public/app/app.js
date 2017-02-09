@@ -126,6 +126,15 @@ angular
         token: null
        }
      })
+     .state('resetPasswordSuccess', {
+       url: '^/resetSuccess',
+       templateUrl: 'app/components/resetPasswordSuccessPane/resetPasswordSuccessPane.html',
+       controller: 'ResetPasswordSuccessPaneCtrl',
+       parent: 'loginView',
+       params: {
+        error: null
+       }
+     })
 
      // Signup success state.
      .state('signupSuccess', {
