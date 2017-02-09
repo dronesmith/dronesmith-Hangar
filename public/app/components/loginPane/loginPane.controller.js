@@ -37,8 +37,9 @@ angular
           $state.go('hangar');
 
         }, function(data){
-          $scope.error = data.data.error;
+
           progressSpinner.complete();
+          $scope.error = data.data.error;
           $state.go('.', {error: $scope.error}, {reload: true});
 
 
