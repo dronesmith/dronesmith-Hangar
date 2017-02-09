@@ -29,15 +29,15 @@ angular
         .$promise
         .then(function(data) {
 
-          console.log(data.status);
           progressSpinner.complete();
           $state.go('sentResetPassword', {email: user.email});
 
         }, function(data) {
-          console.log(data.data.error);
+
           $scope.error = data.data.error;
           progressSpinner.complete();
           $state.go('.', {error: $scope.error}, {reload: true});
+          
         })
       ;
     };

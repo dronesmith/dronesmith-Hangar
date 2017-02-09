@@ -122,6 +122,7 @@ angular
        controller: 'ResetPasswordPaneCtrl',
        parent: 'loginView',
        params: {
+        error: null,
         token: null
        }
      })
