@@ -9,7 +9,7 @@
         </div>
       </div>
     </div>
-    
+
     <div class="row">
       <div class="col-xs-12" style="padding: 15px 15px 30px 15px;">
         <div style="display: block; float: left;
@@ -55,7 +55,7 @@
             class="form-control input-lg"
             ng-model="user.password"
             ng-model-options="{ updateOn: 'default blur', debounce: { 'default':200, 'blur': 0 }}"
-            ng-pattern="/^([a-zA-Z0-9@*?=.]{8,20})$/"
+            ng-pattern="/^([ -~]{8,20})$/"
             required>
           <div
             ng-show="loginForm.password.$touched && loginForm.password.$invalid"
