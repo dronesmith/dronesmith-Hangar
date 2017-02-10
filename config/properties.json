@@ -12,6 +12,13 @@
     "authy": {
       "key": "SecX8QnzIA3CgeEUN5JBwBFGTxa2M5Rv"
     },
+    "errorMessages":{
+      "password": "Invalid password",
+      "noUser": "The email you entered does not belong to any account.",
+      "emailTaken": "Email already in use",
+      "invalidResetLink": "Sorry, that reset link has expired.",
+      "error": "Error. Contact us at support@dronesmith.io."
+    },
     "mailer": {
       "key": "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",
       "templates": {
