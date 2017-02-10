@@ -3,7 +3,7 @@
 
   <form ng-hide="signupSubmitted" class="panel-body" name="signUpForm"
   novalidate>
-  
+
   <div class="row" ng-show="error">
     <div class="col-xs-12 ">
       <div  class="alert alert-danger" role="alert" style="">
@@ -92,7 +92,7 @@
             class="form-control input-lg"
             ng-model="user.password"
             ng-model-options="{ updateOn: 'default blur', debounce: { 'default': 200, 'blur': 0 }}"
-            ng-pattern="/^([a-zA-Z0-9@*?=.]{8,20})$/"
+            ng-pattern="/^([ -~]{8,20})$/"
             required>
           <div
             ng-show="signUpForm.password.$touched && signUpForm.password.$invalid"
