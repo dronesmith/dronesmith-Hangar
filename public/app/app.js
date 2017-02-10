@@ -153,8 +153,7 @@ angular
     ;
 
     $locationProvider
-      .hashPrefix('!')
-      .html5Mode(false)
+      .html5Mode(true)
     ;
   })
 
