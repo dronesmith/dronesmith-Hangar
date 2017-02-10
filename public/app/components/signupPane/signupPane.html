@@ -74,6 +74,7 @@
             class="form-control input-lg"
             ng-model="user.email"
             ng-model-options="{ updateOn: 'default blur', debounce: { 'default': 200, 'blur': 0 }}"
+            ng-pattern="/[\w-]+@([\w-]+\.)+[\w-]+/"
             required>
           <div
             ng-show="signUpForm.email.$touched && signUpForm.email.$invalid"
