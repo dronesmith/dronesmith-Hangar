@@ -42,6 +42,9 @@ module.exports = function(app, route) {
         // Create new user in API & get API key
         .post   ('/index/session/newuser',        session.signUp)
 
+        // Validate email
+        .post   ('/index/session/email/validate',  session.validateEmail)
+
         // Email password reset link
         .post   ('/index/session/forgot',         session.forgotPassword)
 

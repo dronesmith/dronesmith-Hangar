@@ -96,6 +96,18 @@ angular
         }
       })
 
+      // Validate email state
+      .state('validatEmail', {
+        url: '^/validate/{id}',
+        templateUrl: 'app/components/validateEmailPane/validateEmailPane.html',
+        controller: 'ValidateEmailPaneCtrl',
+        parent: 'loginView',
+        params: {
+          error: null,
+          id: null
+        }
+      })
+
      // Whenever the user wishes to reset their password.
      .state('forgotPassword', {
        url: '^/forgot',

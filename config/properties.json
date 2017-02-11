@@ -17,6 +17,7 @@
       "noUser": "The email you entered does not belong to any account.",
       "emailTaken": "Email already in use",
       "invalidResetLink": "Sorry, that reset link has expired.",
+      "alreadyVerified": "Your email has already been verified",
       "error": "Error. Contact us at support@dronesmith.io."
     },
     "mailer": {
