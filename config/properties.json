@@ -25,7 +25,8 @@
       "templates": {
         "welcome": "f7c9db63-6d20-4594-acfc-4bc7776da437",
         "reset_password": "99eb2813-aba2-4b59-aa51-f66d5e173bcd",
-        "password_changed": "afdec0fa-1d9f-4f9d-89e4-49c490090f4e"
+        "password_changed": "afdec0fa-1d9f-4f9d-89e4-49c490090f4e",
+        "verify_email": "7f61e46e-d04a-482f-aa0d-535bf4ebc1d4"
       },
       "email": "support@dronesmith.io"
     },

@@ -98,7 +98,7 @@ angular
 
       // Validate email state
       .state('validatEmail', {
-        url: '^/validate/{id}',
+        url: '^/confirm/{id}',
         templateUrl: 'app/components/validateEmailPane/validateEmailPane.html',
         controller: 'ValidateEmailPaneCtrl',
         parent: 'loginView',

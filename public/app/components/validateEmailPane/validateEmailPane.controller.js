@@ -10,7 +10,7 @@ angular
     Session
       .validateEmail.send($stateParams)
       .$promise.then(function(data) {
-        $scope.message = "Your email has been successfully verified";
+        $scope.message = "Your email has been confirmed";
       }, function(data) {
         $scope.error = data.data.error;
         //$state.go('forgotPassword', {error: $scope.error});
