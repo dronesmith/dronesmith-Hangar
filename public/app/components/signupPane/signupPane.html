@@ -115,8 +115,8 @@
             ng-pattern="/^([ -~]{8,20})$/"
             required>
           <div
-            ng-show="signUpForm.confirmPassword.$touched && signUpForm.confirmPassword.$invalid"
-            class="text-danger form-alert">Password must be at least 8 characters</div>
+            ng-show="signUpForm.confirmPassword.$touched && user.password != user.confirmPassword"
+            class="text-danger form-alert">Passwords do not match</div>
         </fieldset>
       </div>
     </div>
