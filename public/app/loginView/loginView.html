@@ -1,29 +1,56 @@
 <section id="loginView" style="
     position: absolute;
     width: 100%;
-    height: auto;
+    height: 100%;
+    min-height: 100%;  /* Fallback for vh unit */
+    min-height: 100vh;
     top: 0px;
     left: 0px;
-    background: url('assets/img/iot.png') no-repeat center center fixed;
-    min-height: 100%;
-  ">
-  <div class="spacer"></div>
-  <article class="container">
+    background: url('assets/img/dronesmith_cityscape.svg') no-repeat center center fixed;
+    background-size: cover;
+    overflow: hidden;
+
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-direction: row;
+    flex-direction: row;
+    -webkit-align-items: center;
+    align-items: center;
+    -webkit-justify-content: center;
+    justify-content: center;
+  "
+  >
+
+  <div class="container-fluid" style="-webkit-flex: 1 1 auto; flex: 1 1 auto;">
+
     <div class="row">
-      <div class="col-sm-3"></div>
-      <div class="col-sm-6">
-        <div class="panel panel-default" style="box-shadow: 0px 0px 20px #555;">
-          <div>
-              <hgroup class="text-center">
-                <img class="center-block img-responsive" width="60%" height="60%" src="assets/img/logo.png">
-                <h1>Dronesmith Hangar</h1>
-              </hgroup>
+      <div class="col-xs-12">
+        <div class="panel" style="
+          box-shadow: 0px 0px 20px #555;
+          margin: auto;
+          max-width: 450px;
+          padding: 15px;">
+
+          <div class="row" style="">
+            <div class="col-xs-12">
+              <img height="70px"
+              src="assets/img/dronesmith_hangar_logo.svg"
+              style="margin: 0 0 15px 3px;">
+            </div>
           </div>
-          <div class="panel-body" ui-view>
-            <login-pane></login-pane>
+
+          <hr style="margin:0;">
+
+          <div class="row" >
+            <div class="col-xs-12">
+              <div ui-view></div>
+            </div>
           </div>
+
         </div>
       </div>
     </div>
-  </article>
+
+  </div>
+
 </section>

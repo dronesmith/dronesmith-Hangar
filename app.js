@@ -48,6 +48,8 @@ var serveSession = session({
   genid: function(req) {
     return uuid.v4();
   },
+
+  cookie: { maxAge: 3600000 },
   secret: 'CLx2wWpEJ94KV8Fw4ewVhRzU',
   resave: false,
   saveUninitialized: false
@@ -87,12 +89,25 @@ app.use('/index/', function(req, res, next) {
   } else if (req.path == '/user' && req.method == 'POST') {
     next(); // open up registration
     // res.status(400).json({error: "Sorry, Forge Cloud is currently invite only."});
+  } else if (req.path == '/session/newuser' && req.method == 'POST') {
+    next();
+  } else if (req.path == '/session/forgot' && req.method == 'POST') {
+    next();
+  } else if (req.path == '/session/reset' && req.method == 'POST') {
+    next();
+  } else if (req.path == '/session/temp' && req.method == 'POST') {
+    next();
+  } else if (req.path == '/session/reset/validate' && req.method == 'POST') {
+    next();
+  } else if (req.path == '/session/email/validate' && req.method == 'POST') {
+    next();
   } else if (!req.session.email || !req.session.key) {
-    res.status(400).json({error: "Not logged in."});
+  res.status(400).json({error: "Not logged in."});
   } else {
     next();
   }
 });
+
 
 app.use('/', router);
 

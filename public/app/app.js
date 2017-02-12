@@ -22,7 +22,9 @@ angular
     'ui.router',
     'ui.bootstrap',
     'nemLogging',
-    'ui-leaflet'
+    'ui-leaflet',
+    'ngAnimate',
+    'progressSpinner'
   ])
 
   // Global configuration here
@@ -66,11 +68,96 @@ angular
 
       // Login state. The app should always redirect to this state whenever the
       // session returned is null.
-      .state('login', {
-        url: '/login',
+      .state('loginView', {
+        abstract:true ,
         templateUrl: 'app/loginView/loginView.html',
         controller: 'LoginViewCtrl'
+
       })
+      // Login state. The app should always redirect to this state whenever the
+      // session returned is null.
+      .state('login', {
+        url: '/login',
+        templateUrl: 'app/components/loginPane/loginPane.html',
+        parent: 'loginView',
+        controller: 'LoginPaneCtrl',
+        params: {
+          error: null
+        }
+      })
+      // Signup state.
+      .state('signup', {
+        url: '^/signup',
+        templateUrl: 'app/components/signupPane/signupPane.html',
+        controller: 'SignupPaneCtrl',
+        parent: 'loginView',
+        params: {
+          error: null
+        }
+      })
+
+      // Validate email state
+      .state('validatEmail', {
+        url: '^/confirm/{id}',
+        templateUrl: 'app/components/validateEmailPane/validateEmailPane.html',
+        controller: 'ValidateEmailPaneCtrl',
+        parent: 'loginView',
+        params: {
+          error: null,
+          id: null
+        }
+      })
+
+     // Whenever the user wishes to reset their password.
+     .state('forgotPassword', {
+       url: '^/forgot',
+       templateUrl: 'app/components/forgotPasswordPane/forgotPasswordPane.html',
+       controller: 'ForgotPasswordPaneCtrl',
+       parent: 'loginView',
+       params: {
+         error: null
+       }
+     })
+
+     .state('sentResetPassword', {
+       url: '^/forgot/sent',
+       templateUrl: 'app/components/sentResetPasswordPane/sentResetPasswordPane.html',
+       controller: 'SentResetPasswordPaneCtrl',
+       parent: 'loginView',
+       params: {
+        email: null
+       }
+     })
+     .state('resetPassword', {
+       url: '^/reset/{token}',
+       templateUrl: 'app/components/resetPasswordPane/resetPasswordPane.html',
+       controller: 'ResetPasswordPaneCtrl',
+       parent: 'loginView',
+       params: {
+        error: null,
+        token: null
+       }
+     })
+     .state('resetPasswordSuccess', {
+       url: '^/resetSuccess',
+       templateUrl: 'app/components/resetPasswordSuccessPane/resetPasswordSuccessPane.html',
+       controller: 'ResetPasswordSuccessPaneCtrl',
+       parent: 'loginView',
+       params: {
+        error: null
+       }
+     })
+
+     // Signup success state.
+     .state('signupSuccess', {
+       url: '/success',
+       templateUrl: 'app/signupSuccessView/signupSuccessView.html',
+       controller: 'SignupSuccessViewCtrl',
+       params: {
+        email: null
+       }
+     })
+     //
     ;
 
     $urlRouterProvider
@@ -78,8 +165,8 @@ angular
     ;
 
     $locationProvider
-      .hashPrefix('!')
       .html5Mode(false)
     ;
   })
+
 ;

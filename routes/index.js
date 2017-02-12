@@ -39,6 +39,27 @@ module.exports = function(app, route) {
         // Get user session
         .get    ('/index/session',                session.poll)
 
+        // Create new user in API & get API key
+        .post   ('/index/session/newuser',        session.signUp)
+
+        // Validate email
+        .post   ('/index/session/email/validate',  session.validateEmail)
+
+        // Email password reset link
+        .post   ('/index/session/forgot',         session.forgotPassword)
+
+        // Validate token in reset link
+        .post   ('/index/session/reset/validate', session.validateToken)
+
+        // Reset password
+        .post   ('/index/session/reset',          session.resetPassword)
+
+        // Send SMS text with authentication code to verify phone
+        .post   ('/index/session/sms/send',       session.sendSMSVerification)
+
+        // Verify authentication code
+        .post   ('/index/session/sms/verify',     session.verifyPhone)
+
         // Get use info
         .get    ('/index/user',                   api.getUser)
 

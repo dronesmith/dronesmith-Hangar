@@ -14,16 +14,25 @@
 
 angular
   .module('ForgeApp')
-  .factory('Error', function($state, $uibModal) {
+  .factory('Error', function($state, $uibModal, $rootScope) {
 
     var ModalOpened = false;
+    var APIoff = true;
+
+    $rootScope.$on('api:disable', function() {
+      APIoff = true;
+    });
+
+    $rootScope.$on('api:enable', function() {
+      APIoff = false;
+    });
 
     return function(error, kind) {
       switch (kind) {
         case 'session:null': $state.go('login'); break;
         default:
           // error modal
-          if (!ModalOpened) {
+          if (!ModalOpened && !APIoff) {
             ModalOpened = true;
             var instance = $uibModal.open({
               animation: true,

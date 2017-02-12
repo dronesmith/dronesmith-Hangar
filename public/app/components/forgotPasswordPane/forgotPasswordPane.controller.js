@@ -14,23 +14,34 @@
 
 angular
   .module('ForgeApp')
-  .controller('SignupPaneCtrl', function ($scope, $state, $stateParams, Session, progressSpinner, Error) {
+  .controller('ForgotPasswordPaneCtrl', function ($scope, $state, $stateParams, Session, progressSpinner) {
     $scope.error =  $stateParams.error;
+
+    $scope.gotoLogin = function() {
+      $state.go('login');
+    }
 
     $scope.update = function(user) {
       progressSpinner.start();
+
       Session
-        .signup.send(user)
+        .forgotPassword.send(user)
         .$promise
         .then(function(data) {
+
           progressSpinner.complete();
-          $state.go('signupSuccess', {email: user.email});
+          $state.go('sentResetPassword', {email: user.email});
+
         }, function(data) {
+
           progressSpinner.complete();
           $scope.error = data.data.error;
           $state.go('.', {error: $scope.error}, {reload: true});
+
         })
       ;
     };
+
+
   })
 ;

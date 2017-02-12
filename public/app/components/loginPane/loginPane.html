@@ -1,52 +1,110 @@
 <section id="loginPane">
-  <h3 class="text-center">Enter your Dronesmith API email</h3>
-    <form class="panel-body" name="loginForm" novalidate>
-      <fieldset
-        class="form-group"
-        ng-class="{
-          'has-error': loginForm.email.$dirty && loginForm.email.$invalid,
-          'has-success': loginForm.email.$dirty && loginForm.email.$valid
-        }">
-        <label for="email">Email Address</label>
-        <input
-          type="email"
-          class="form-control"
-          id="email"
-          name="email"
-          placeholder="Email"
-          ng-model="user.email"
-          ng-model-options="{ updateOn: 'default blur', debounce: { 'default': 500, 'blur': 0 }}"
-          required>
-          <span ng-show="loginForm.email.$error.email" class="text-danger">Please enter a valid email.</span>
-      </fieldset>
-      <!-- <fieldset
-        class="form-group"
-        ng-class="{
-          'has-error': loginForm.password.$dirty && loginForm.password.$invalid,
-          'has-success': loginForm.password.$dirty && loginForm.password.$valid
-        }">
-        <label for="password">Password</label>
-        <input
-          type="password"
-          class="form-control"
-          id="password"
-          name="password"
-          placeholder="Password"
-          ng-model="user.password"
-          ng-model-options="{ updateOn: 'default blur', debounce: { 'default': 500, 'blur': 0 }}"
-          ng-pattern="/^(?=.*[a-z]).{8,20}$/"
-          required>
-          <span ng-show="loginForm.password.$dirty && loginForm.password.$error.pattern" class="text-danger">Please enter a valid password.</span>
-      </fieldset> -->
-      <button
-        type="submit"
-        class="btn btn-primary"
-        ng-disabled="!loginForm.$valid"
-        ng-click="update(user)"
-        value="LogIn">Get Started</button>
-        <button class="btn btn-default pull-right" href="">Signup for Early Access</button>
-      <!-- <a href="">Forgot Password?</a> -->
-    </form>
-    <!-- <hr> -->
+  <form ng-hide="signupSubmitted" class="panel-body" name="loginForm"
+  novalidate>
+
+    <div class="row" ng-show="error" style="">
+      <div class="col-xs-12 ">
+        <div class="alert alert-danger" role="alert">
+          <p ng-model="error" style="font-size: 13px;" class="" >{{error}}</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-xs-12" style="padding: 15px 15px 30px 15px;">
+        <div style="display: block; float: left;
+          font-size: 22px;
+          line-height: 1;
+          font-weight: normal">Log in</div>
+        <div style="display: block;float: right;
+          margin-top: 7px;
+          line-height: 1;
+          font-weight: normal">
+          or
+          <a ng-click="gotoSignup()" href="">create an account</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-xs-12">
+        <fieldset class="form-group">
+          <label for="email">Email</label>
+          <input
+            type="email"
+            name="email"
+            class="form-control input-lg"
+            ng-model="user.email"
+            ng-model-options="{ updateOn: 'default blur', debounce: {'default': 200, 'blur': 0 }}"
+            ng-pattern="/[\w-]+@([\w-]+\.)+[\w-]+/"
+            required>
+          <div
+            ng-show="loginForm.email.$touched && loginForm.email.$invalid"
+            class="text-danger form-alert">Invalid email</div>
+        </fieldset>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-xs-12">
+        <fieldset class="form-group">
+          <label for="password">Password</label>
+          <input
+            type="password"
+            name="password"
+            class="form-control input-lg"
+            ng-model="user.password"
+            ng-model-options="{ updateOn: 'default blur', debounce: { 'default':200, 'blur': 0 }}"
+            ng-pattern="/^([ -~]{8,20})$/"
+            required>
+          <div
+            ng-show="loginForm.password.$touched && loginForm.password.$invalid"
+            class="text-danger form-alert">Password must be atleast 8 characters</div>
+        </fieldset>
+      </div>
+
+    </div>
+
+
+
+    <div class="row">
+      <div class="col-xs-12">
+        <fieldset ng-hide="user.kind!='other'"
+          class="form-group"
+          ng-class="{
+          'has-error': loginForm.Otherkind.$dirty && loginForm.Otherkind.$invalid
+          }">
+
+            <input type="text" id="Otherkind" name="Otherkind"
+              class="form-control input-lg"
+              placeholder="What do you do?"
+              ng-maxlength="25"
+              ng-model="user.other"
+              ng-required="user.kind=='other'">
+
+        </fieldset>
+      </div>
+    </div>
+
+
+      </div>
+    </div>
+
+  <div class="row" style="margin-top:15px;">
+    <div class="col-xs-6 col-xs-offset-3">
+        <button
+          type="submit"
+          class="btn btn-default btn-block"
+          ng-disabled="!loginForm.$valid"
+          ng-click="update(user)">Log in</button>
+    </div>
+  </div>
+    <div class="row" style="margin-top:15px;">
+      <div class="col-xs-12 text-center">
+        <a class="" ui-sref="forgotPassword">Forgot password?</a>
+      </div>
+    </div>
+
+  </form>
 
 </section>

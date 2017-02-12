@@ -33,7 +33,7 @@ angular
 
         $scope.logout = function() {
           Session
-            .authenticate({
+            .account.authenticate({
               email: $scope.userInfo.email,
               deauth: true
             })

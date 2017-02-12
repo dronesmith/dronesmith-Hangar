@@ -89,7 +89,7 @@ angular
           method: 'GET',
           url: '/api/drone'
         }).then(function successCallback(response) {
-          logAPICall('GET', '/api/drone/', {}, response.data);
+          //logAPICall('GET', '/api/drone/', {}, response.data);
           if (cb) {
             cb(response.data.data.drones);
           } else {
@@ -199,6 +199,7 @@ angular
 
       var enableUpdates = function() {
         updatesEnabled = true;
+        $rootScope.$broadcast('api:enable');
         // checkOnline();
         getDrones(function(drones) {
           checkOnline(drones);
@@ -207,6 +208,8 @@ angular
 
       var disableUpdates = function() {
         updatesEnabled = false;
+
+        $rootScope.$broadcast('api:disable');
       }
 
       var checkOnline = function(localdrones) {

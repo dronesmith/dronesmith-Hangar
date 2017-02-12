@@ -72,16 +72,13 @@ module.exports = function(grunt) {
 			},
 		}
 	},
-	less: {
-  		development: {
-    		options: {
-      			paths: ["public/lib/bootstrap/less"]
-    		},
-    		files: {
-      			"public/lib/bootstrap/dist/css/bootstrap-theme.css": "public/lib/bootstrap/less/bootstrap.less"
-    		}
-  		}
-  	},
+  less: {
+    build: {
+      files: {
+        'public/app/test.css': 'public/app/test.less'
+      }
+    }
+  },
 	watch: {
 		server: {
 			files: [

@@ -14,18 +14,59 @@
 
 angular
   .module('ForgeApp')
-  .factory('Session', function(
-    $resource) {
+  .factory('Session', function($resource) {
 
-    return $resource('/index/session', {
+      return {
 
-    }, {
-      sync: {
-        method: 'PUT'
-      },
-      authenticate: {
-        method: 'POST'
-      }
-    })
-  })
-;
+        account: $resource('/index/session', {
+
+        }, {
+          sync: {
+            method: 'PUT'
+          },
+          authenticate: {
+            method: 'POST'
+          },
+
+        }),
+        temp: $resource('/index/session/temp', {
+        },{
+          send: {
+            method: 'POST'
+          }
+        }),
+        signup: $resource('/index/session/newuser', {
+        },{
+          send: {
+            method: 'POST'
+          }
+        }),
+        validateEmail: $resource('/index/session/email/validate', {
+        },{
+          send: {
+            method: 'POST'
+          }
+        }),
+        forgotPassword: $resource('/index/session/forgot', {
+        },{
+          send: {
+            method: 'POST'
+          }
+        }),
+        validateToken: $resource('/index/session/reset/validate', {
+        },{
+          send: {
+            method: 'POST'
+          }
+        }),
+        resetPassword: $resource('/index/session/reset', {
+        },{
+          send: {
+            method: 'POST'
+          }
+        }),
+        sendsms: $resource('/index/session/sms/send'),
+        verifysms: $resource('/index/session/sms/verify')
+
+    };
+  });

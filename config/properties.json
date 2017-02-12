@@ -9,6 +9,28 @@
         "path": "log/",
         "filename": "dss.log"
     },
+    "authy": {
+      "key": "SecX8QnzIA3CgeEUN5JBwBFGTxa2M5Rv"
+    },
+    "errorMessages":{
+      "password": "Invalid password",
+      "noUser": "The email you entered does not belong to any account.",
+      "emailTaken": "Email already in use",
+      "invalidResetLink": "Sorry, that reset link has expired.",
+      "alreadyVerified": "Your email has already been verified",
+      "error": "Error. Contact us at support@dronesmith.io."
+    },
+    "mailer": {
+      "key": "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",
+      "templates": {
+        "welcome": "f7c9db63-6d20-4594-acfc-4bc7776da437",
+        "reset_password": "99eb2813-aba2-4b59-aa51-f66d5e173bcd",
+        "password_changed": "afdec0fa-1d9f-4f9d-89e4-49c490090f4e",
+        "verify_email": "7f61e46e-d04a-482f-aa0d-535bf4ebc1d4"
+      },
+      "email": "support@dronesmith.io"
+    },
     "api": "http://104.196.255.180",
+    "resetURL": "http://localhost:4000",
     "adminKey": "ca93abe8-6f81-4bad-ab04-60a43d73e877"
 }
