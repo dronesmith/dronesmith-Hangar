@@ -13,7 +13,7 @@
       "key": "SecX8QnzIA3CgeEUN5JBwBFGTxa2M5Rv"
     },
     "errorMessages":{
-      "password": "Invalid password",
+      "login": "Not a known email/password combination.",
       "noUser": "The email you entered does not belong to any account.",
       "emailTaken": "Email already in use",
       "invalidResetLink": "Sorry, that reset link has expired.",
