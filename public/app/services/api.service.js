@@ -199,6 +199,7 @@ angular
 
       var enableUpdates = function() {
         updatesEnabled = true;
+        $rootScope.$broadcast('api:enable');
         // checkOnline();
         getDrones(function(drones) {
           checkOnline(drones);
@@ -207,6 +208,8 @@ angular
 
       var disableUpdates = function() {
         updatesEnabled = false;
+
+        $rootScope.$broadcast('api:disable');
       }
 
       var checkOnline = function(localdrones) {
