@@ -10,7 +10,7 @@ angular
     Session
       .validateEmail.send($stateParams)
       .$promise.then(function(data) {
-        $scope.message = "Your email has been confirmed";
+        $scope.message = "Your email has been confirmed. We sent you an email containing your API key.";
       }, function(data) {
         $scope.error = data.data.error;
         //$state.go('forgotPassword', {error: $scope.error});
