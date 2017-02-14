@@ -45,6 +45,9 @@ module.exports = function(app, route) {
         // Validate email
         .post   ('/index/session/email/validate',  session.validateEmail)
 
+        // Resend email confirmation link
+        .post   ('/index/session/email/validate/resend', session.resendEmailConfirmation)
+
         // Email password reset link
         .post   ('/index/session/forgot',         session.forgotPassword)
 
