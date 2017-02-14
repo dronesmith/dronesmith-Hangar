@@ -15,9 +15,10 @@
     "errorMessages":{
       "login": "Not a known email/password combination.",
       "noUser": "The email you entered does not belong to any account.",
-      "emailTaken": "Email already in use",
+      "emailTaken": "Email already in use.",
+      "passwords": "Passwords do not match.",
       "invalidResetLink": "Sorry, that reset link has expired.",
-      "alreadyVerified": "Your email has already been verified",
+      "alreadyVerified": "Your email has already been verified.",
       "error": "Error. Contact us at support@dronesmith.io."
     },
     "mailer": {
