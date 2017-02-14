@@ -30,6 +30,9 @@
       },
       "email": "support@dronesmith.io"
     },
+    "session": {
+      "maxAgeMinutes": 108
+    },
     "api": "http://104.196.255.180",
     "resetURL": "http://localhost:4000",
     "adminKey": "ca93abe8-6f81-4bad-ab04-60a43d73e877"
