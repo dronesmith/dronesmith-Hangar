@@ -49,7 +49,7 @@ var serveSession = session({
     return uuid.v4();
   },
 
-  cookie: { maxAge: 3600000 },
+  cookie: { maxAge: config.session.maxAgeMinutes * 60 * 1000 },
   secret: 'CLx2wWpEJ94KV8Fw4ewVhRzU',
   resave: false,
   saveUninitialized: false

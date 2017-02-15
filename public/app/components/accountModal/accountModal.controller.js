@@ -21,7 +21,7 @@ angular
       Session,
       Error,
       userAccount) {
-
+        $scope.emailSent = false;
         // always poll session since it may have been updated.
         Session.account.get({}, function(data) {
           $scope.userAccount = data.userData;
@@ -35,6 +35,15 @@ angular
 
     $scope.cancel = function() {
       $uibModalInstance.dismiss('cancel');
+    };
+
+    $scope.resendEmail = function() {
+      Session
+        .resendEmailValidate.send({})
+        .$promise
+        .then(function functionName(data) {
+          $scope.emailSent = true;
+        }, Error);
     };
   })
 ;

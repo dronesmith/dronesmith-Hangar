@@ -100,21 +100,33 @@
             class="text-danger form-alert">Password must be at least 8 characters</div>
         </fieldset>
       </div>
-
     </div>
 
-    <label for="kind">I am a . . .</label>
+    <div class="row">
+      <div class="col-xs-12">
+        <fieldset class="form-group">
+          <label for="confirmPassword">Confirm password</label>
+          <input
+            type="password"
+            name="confirmPassword"
+            class="form-control input-lg"
+            ng-model="user.confirmPassword"
+            ng-model-options="{ updateOn: 'default blur', debounce: { 'default': 200, 'blur': 0 }}"
+            ng-pattern="/^([ -~]{8,20})$/"
+            required>
+          <div
+            ng-show="signUpForm.confirmPassword.$touched && user.password != user.confirmPassword"
+            class="text-danger form-alert">Passwords do not match</div>
+        </fieldset>
+      </div>
+    </div>
+
+    <!-- <label for="kind">I am a . . .</label>
     <div class="row">
       <div class="col-xs-4">
         <fieldset class="radio ">
           <label for="kind">
             <input type="radio" ng-model="user.kind" name="kind" value="developer" required>Developer</label>
-        </fieldset>
-      </div>
-      <div class="col-xs-4">
-        <fieldset class="radio">
-          <label for="kind">
-            <input type="radio" ng-model="user.kind" name="kind" value="enthusiast" required>Enthusiast</label>
         </fieldset>
       </div>
       <div class="col-xs-4">
@@ -161,13 +173,13 @@
                 class="text-danger form-alert">Invalid entry</div>
         </fieldset>
       </div>
-    </div>
+    </div> -->
 
     <div class="row "  style="margin-top:15px;">
       <div class="col-xs-6 col-xs-offset-3">
         <button type="submit"
           class="btn btn-default btn-block"
-          ng-disabled="!signUpForm.$valid"
+          ng-disabled="!signUpForm.$valid || user.password != user.confirmPassword"
           ng-click="update(user)"
           value="Signup">Create an account</button>
       </div>

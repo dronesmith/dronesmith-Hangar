@@ -41,6 +41,12 @@ angular
             method: 'POST'
           }
         }),
+        resendEmailValidate: $resource('/index/session/email/validate/resend', {
+        },{
+          send: {
+            method: 'POST'
+          }
+        }),
         validateEmail: $resource('/index/session/email/validate', {
         },{
           send: {

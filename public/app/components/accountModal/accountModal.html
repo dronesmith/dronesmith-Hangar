@@ -7,6 +7,11 @@
     <h5 class="text-center">API Key: {{userAccount.key}}</h5>
     <p>{{}}</p>
     <p ng-show="status">{{status}}</p>
+    <p class="text-center text-danger" ng-show="userAccount.key == ' '">Please confirm your email to get your API key.</p>
+    <p class="text-center" ng-show="userAccount.key == ' '">
+      <a ng-click="resendEmail(userAccount)" style="text-decoration: underline;" href="">Resend email confirmation link</a>
+      <span ng-show="emailSent" class="fa text-success"> &#xf058;</span>
+    </p>
   </div>
   <div class="modal-footer">
     <button class="btn btn-info" type="button" ng-click="cancel()">Close</button>

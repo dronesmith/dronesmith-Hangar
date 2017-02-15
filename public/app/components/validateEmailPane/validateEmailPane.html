@@ -9,9 +9,10 @@
       </div>
     </div>
 
-    <div class="row">
+    <div class="row" ng-show="!error">
       <div class="col-xs-12">
-        <h3>{{message}}</h3>
+        <h1 class="text-center" style="font-weight: 700; margin-top: 15px; margin-bottom: 25px;">{{messageHeader}}</h1>
+        <p>{{message}}</p>
       </div>
     </div>
 

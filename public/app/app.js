@@ -151,8 +151,9 @@ angular
      // Signup success state.
      .state('signupSuccess', {
        url: '/success',
-       templateUrl: 'app/signupSuccessView/signupSuccessView.html',
-       controller: 'SignupSuccessViewCtrl',
+       templateUrl: 'app/components/signupSuccessPane/signupSuccessPane.html',
+       controller: 'SignupSuccessPaneCtrl',
+       parent: 'loginView',
        params: {
         email: null
        }
