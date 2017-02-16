@@ -455,16 +455,12 @@ angular
         } else {
 
           MQ.geocode().search(address).on('success', function(ev) {
-            debugger;
             var best = ev.result.best;
             var latlng = best.latlng;
-            debugger;
             modalAlert("Set home at this location?", "Latitude: " + latlng.lat + ", Longitude: " + latlng.lng, function(good) {
              if (good) {
-               debugger;
                API.droneCmd('home',
                  {lat: latlng.lat, lon: latlng.lng}, function(res) {
-                     debugger;
                    $timeout(function () {
                      $scope.updateHome($scope.currentDrone);
                    }, 2000);
@@ -520,7 +516,6 @@ angular
           });
 
           API.getHome(function(res) {
-            debugger;
             if (!$scope.droneGeo[drone.name].homeMarker) {
               $scope.droneGeo[drone.name].homeMarker = L.marker([res.data.Latitude, res.data.Longitude],
                 {
@@ -544,7 +539,6 @@ angular
         $scope.currentDrone = angular.copy(drone) || null;
 
         $scope.updateHome(drone);
-debugger;
         // Pan to drone location.
         leafletData.getMap('groundcontrol').then(function(map) {
           if ($scope.currentDrone.position) {
