@@ -29,7 +29,7 @@ angular
 
     return function(error, kind) {
       switch (kind) {
-        case 'session:null': $state.go('login'); break;
+        case 'session:null': $state.go('hangar'); break;
         default:
           // error modal
           if (!ModalOpened && !APIoff) {

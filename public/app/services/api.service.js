@@ -54,32 +54,43 @@ angular
       // Update loop
       $interval(function () {
         if (updatesEnabled) {
-          getDrones(function(d) {
-            checkOnline(d);
-          });
+          //getDrones(function(d) {
+
+            checkOnline();
+          //});
 
           // Don't want to overload telem
           $rootScope.$broadcast('drones:update', drones);
         }
       }, 1000);
 
-      var getTelem = function(drone, name, cb) {
+      var getTelem = function(drone, cb) {
         $http({
           method: 'GET',
-          url: '/api/drone/'+drone+'/'+name
+          url: '/api/drone/'+drone
         }).then(function successCallback(response) {
-          logAPICall('GET', '/api/drone/'+drone+'/'+name, {}, response.data);
+          logAPICall('GET', '/api/drone', {}, response.data);
           cb(response.data);
         }, Error);
       };
 
-      var droneCmd = function(droneName, cmd, body, cb) {
+      var getHome = function(cb) {
+        $http({
+          method: 'GET',
+          url: '/api/drone/home'
+        }).then(function successCallback(response) {
+          logAPICall('GET', '/api/drone', {}, response.data);
+          cb(response.data);
+        }, Error);
+      };
+
+      var droneCmd = function(cmd, body, cb) {
         $http({
           method: 'POST',
-          url: '/api/drone/'+droneName+'/'+cmd,
+          url: '/api/drone/'+cmd,
           data: body
         }).then(function successCallback(response) {
-          logAPICall('POST', '/api/drone/'+droneName+'/'+cmd, body, response.data);
+          logAPICall('POST', '/api/drone/'+cmd, body, response.data);
           cb(response.data);
         }, Error);
       }
@@ -89,6 +100,7 @@ angular
           method: 'GET',
           url: '/api/drone'
         }).then(function successCallback(response) {
+
           //logAPICall('GET', '/api/drone/', {}, response.data);
           if (cb) {
             cb(response.data.data.drones);
@@ -144,7 +156,7 @@ angular
           url: '/api/drone/'+name+action,
           data: obj
         }).then(function successCallback(response) {
-          logAPICall('POST', '/api/drone/'+name+action, obj, response.data);
+          logAPICall('POST', '/api/drone/'+action, obj, response.data);
           // getDrones();
         }, Error);
       }
@@ -201,9 +213,9 @@ angular
         updatesEnabled = true;
         $rootScope.$broadcast('api:enable');
         // checkOnline();
-        getDrones(function(drones) {
-          checkOnline(drones);
-        }); // force reload
+        //getDrones(function(drones) {
+          checkOnline({});
+        //}); // force reload
       }
 
       var disableUpdates = function() {
@@ -212,20 +224,24 @@ angular
         $rootScope.$broadcast('api:disable');
       }
 
-      var checkOnline = function(localdrones) {
+      var checkOnline = function() {
+
         $http({
           method: 'GET',
           url: '/index/online'
         }).then(function successCallback(response) {
           telem = response.data.drones;
 
+          var  localdrones = [{"name": "Local Drone"}];
+
           for (var i = 0; i < localdrones.length; ++i) {
             var drone = localdrones[i];
 
-            if (telem[drone.name]) {
-              var telemItem = telem[drone.name];
+            if (telem["Local Drone"]) {
+              var telemItem = telem["Local Drone"];
 
               var props = Object.keys(telemItem);
+              console.log(props);
               for (var k = 0; k < props.length; ++k) {
                 var prop = props[k];
                 drone[prop.toLowerCase()] = telemItem[prop];
@@ -239,9 +255,8 @@ angular
             } else {
               drone['online'] = false;
             }
-          }
 
-          // console.log(localdrones, telem);
+          }
 
           drones = localdrones;
 
@@ -284,6 +299,7 @@ angular
         enableUpdates:      enableUpdates,
         disableUpdates:     disableUpdates,
         droneCmd:           droneCmd,
+        getHome:            getHome,
         checkOnline:        checkOnline,
         getLog:             getLog,
         selectDrone:        selectDrone,

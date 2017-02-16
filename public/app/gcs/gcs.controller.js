@@ -398,14 +398,14 @@ angular
 
       // change drone flight mode
       $scope.setMode = function(drone, mode) {
-        API.droneCmd(drone, 'mode', {'mode': mode}, cmdResponseHandler);
+        API.droneCmd('mode', {'mode': mode}, cmdResponseHandler);
 
         // Also, cancel the route if there is one.
         API.cancelRoute(drone);
       }
 
       $scope.routeHome = function(drone) {
-        API.getTelem(drone.name, 'home', function(data) {
+        API.getTelem('home', function(data) {
           leafletData.getMap('groundcontrol').then(function(map) {
             performRoute(map, drone, ''+data.data.Latitude+', '+  ''+data.data.Longitude, false);
           });
@@ -443,7 +443,7 @@ angular
             what3words(address, function(lat, lng) {
               modalAlert("Set home at this location?", "Latitude: " + lat + ", Longitude: " + lng, function(good) {
                 if (good) {
-                 API.droneCmd($scope.currentDrone.name, 'home',
+                 API.droneCmd('home',
                    {lat: lat, lon: lng}, function() {
                      $timeout(function () {
                        $scope.updateHome($scope.currentDrone);
@@ -453,13 +453,18 @@ angular
                });
             });
         } else {
+
           MQ.geocode().search(address).on('success', function(ev) {
+            debugger;
             var best = ev.result.best;
             var latlng = best.latlng;
+            debugger;
             modalAlert("Set home at this location?", "Latitude: " + latlng.lat + ", Longitude: " + latlng.lng, function(good) {
              if (good) {
-               API.droneCmd($scope.currentDrone.name, 'home',
-                 {lat: latlng.lat, lon: latlng.lng}, function() {
+               debugger;
+               API.droneCmd('home',
+                 {lat: latlng.lat, lon: latlng.lng}, function(res) {
+                     debugger;
                    $timeout(function () {
                      $scope.updateHome($scope.currentDrone);
                    }, 2000);
@@ -514,7 +519,8 @@ angular
             }
           });
 
-          API.getTelem(drone.name, 'home', function(res) {
+          API.getHome(function(res) {
+            debugger;
             if (!$scope.droneGeo[drone.name].homeMarker) {
               $scope.droneGeo[drone.name].homeMarker = L.marker([res.data.Latitude, res.data.Longitude],
                 {
@@ -534,10 +540,11 @@ angular
 
       // Select a drone.
       $scope.selectDrone = function(drone) {
+
         $scope.currentDrone = angular.copy(drone) || null;
 
         $scope.updateHome(drone);
-
+debugger;
         // Pan to drone location.
         leafletData.getMap('groundcontrol').then(function(map) {
           if ($scope.currentDrone.position) {

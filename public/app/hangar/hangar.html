@@ -5,10 +5,10 @@
           <div class="col-md-12">
             <div class="page-header">
               <h1 style="color: #0279b3">Fleet Manager
-                <small ng-show="drones">{{drones.length == 0 ? "Get started by selecting New Drone" : drones.length + " in hangar"}}</small>
+                <!-- <small ng-show="drones">{{drones.length == 0 ? "Get started by selecting New Drone" : drones.length + " in hangar"}}</small>
                 <small ng-hide="drones">Loading...</small>
 
-                <button class="btn btn-md btn-primary pull-right" ng-click="newDrone()"><span class="glyphicon glyphicon-plus"></span> New Drone</button>
+                <button class="btn btn-md btn-primary pull-right" ng-click="newDrone()"><span class="glyphicon glyphicon-plus"></span> New Drone</button> -->
               </h1>
 
               <hr>
@@ -50,8 +50,7 @@
                 </form>
               </div>
               <p>
-                <strong>Created On:</strong> {{drone.created | date:'medium'}} <br>
-                <strong>Last Update:</strong> {{drone.updated | date:'medium'}} <br>
+
                 <strong>Virtual Drone:</strong> {{!!(drone.type == "Virtual Drone")}} <br>
 
                 <strong ng-show="drone.info">Type:</strong> {{drone.info.Type}} <br>
@@ -64,7 +63,7 @@
             <img ng-hide="drone.online" class="img-responsive" src="assets/img/lucismall.png">
                 <!-- <pre>{{drone.position | json}}</pre> -->
             <p ng-show="drone.online">
-              In <strong>{{drone.status.State}}</strong>  mode. <br>
+              In <strong>{{drone.mode}}</strong>  mode. <br>
               <strong>Power:</strong> {{drone.status.Power}}% <br>
               <strong>Armed:</strong> {{drone.status.Armed}} <br>
               <strong>Flying:</strong> {{drone.status.InAir}} <br>
@@ -81,9 +80,6 @@
           <div class="col-sm-4">
             <div ng-hide="liveDroneData[drone._id].status == 'offline'" class="well well-sm">
               <h4 class="text-center">Actions</h4>
-                <a href="" class="btn btn-info btn-block" ng-click="initDrone(drone.online, drone.name, StartLoc)">{{drone.online ? "Shut down drone" : "Start Drone"}}</a>
-                <p ng-hide="drone.online" style="margin: 5px 0px 5px 0px;">Or, enter a custom starting location for your drone.</p>
-                <input ng-hide="drone.online" style="margin: 5px 0px 5px 0px;" type="text" class="form-control" placeholder="Madison Square Park, NYC" ng-model="StartLoc">
                 <a ng-show="drone.online" style="margin: 5px 0px 5px 0px;"  href="" class="btn btn-default btn-block" ui-sref="gcs">Open in Ground Control</a>
             </div>
           </div>

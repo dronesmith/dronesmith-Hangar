@@ -17,7 +17,7 @@
       <div class="panel panel-default" ng-repeat="drone in drones track by $index" ng-show="drone.online">
           <div class="panel-body">
             <a href="" ng-click="selectDrone(drone)">
-              <strong>{{drone.name}}</strong> | <strong>{{drone.status.State}}</strong>
+              <strong>{{drone.name}}</strong> 
               <br>In <strong>{{drone.mode}}</strong> flight mode <br>
               <em>{{drone.status.Armed ? "Armed" : "Disarmed"}}</em> and
               <em>{{drone.status.InAir ? "Airborne" : "Grounded"}}</em>
