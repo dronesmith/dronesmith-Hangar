@@ -222,6 +222,10 @@ angular
           for (var i = 0; i < localdrones.length; ++i) {
             var drone = localdrones[i];
 
+            if (!drone.name) {
+              drone.name = drone.id;
+            }
+
             if (telem[drone.name]) {
               var telemItem = telem[drone.name];
 
