@@ -57,12 +57,6 @@ module.exports = function(app, route) {
         // Reset password
         .post   ('/index/session/reset',          session.resetPassword)
 
-        // Send SMS text with authentication code to verify phone
-        .post   ('/index/session/sms/send',       session.sendSMSVerification)
-
-        // Verify authentication code
-        .post   ('/index/session/sms/verify',     session.verifyPhone)
-
         // Get use info
         .get    ('/index/user',                   api.getUser)
 
