@@ -269,7 +269,7 @@ angular
 
       // Command drone to takeoff
       $scope.takeoff = function(drone, alt) {
-        API.droneCmd(drone, 'takeoff', {altitude: alt}, cmdResponseHandler);
+        API.droneCmd('takeoff', {altitude: alt}, cmdResponseHandler);
 
         // Also, cancel the route if there is one.
         API.cancelRoute(drone);
@@ -277,7 +277,7 @@ angular
 
       // Command drone to land
       $scope.land = function(drone) {
-        API.droneCmd(drone, 'land', {}, cmdResponseHandler);
+        API.droneCmd('land', {}, cmdResponseHandler);
 
         // Also, cancel the route if there is one.
         API.cancelRoute(drone);
@@ -306,7 +306,7 @@ angular
 
         modalAlert("Are you sure?", armingStr, function(doAction) {
             if (doAction) {
-              API.droneCmd(drone, arm ? 'arm' : 'disarm', {}, cmdResponseHandler);
+              API.droneCmd(arm ? 'arm' : 'disarm', {}, cmdResponseHandler);
 
               // Also, cancel the route if there is one.
               API.cancelRoute(drone);
@@ -376,7 +376,7 @@ angular
                   }
                 });
 
-                API.getTelem(drone.name, 'home', function(data) {
+                API.getTelem('home', function(data) {
                   if (drone && drone.position) {
                     var pos = drone.position;
                     if (pos) {
@@ -427,7 +427,7 @@ angular
         what3words(address, function(lat, lng) {
           modalAlert("Fly directly to this location?", "Latitude: " + lat + ", Longitude: " + lng, function(good) {
             if (good) {
-              API.droneCmd($scope.currentDrone.name, 'goto',
+              API.droneCmd('goto',
                 {lat: lat, lon: lng}, cmdResponseHandler);
               API.cancelRoute($scope.currentDrone.name);
             }
@@ -515,7 +515,7 @@ angular
             }
           });
 
-          API.getHome(function(res) {
+          API.getTelem('home', function(res) {
             if (!$scope.droneGeo[drone.name].homeMarker) {
               $scope.droneGeo[drone.name].homeMarker = L.marker([res.data.Latitude, res.data.Longitude],
                 {
