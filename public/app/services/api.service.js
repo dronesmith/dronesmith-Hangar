@@ -107,30 +107,22 @@ angular
         $rootScope.$broadcast('drones:update', drones);
       });
 
-      var getTelem = function(drone, cb) {
+      var getTelem = function(telem, cb) {
         $http({
           method: 'GET',
-          url: '/api/drone/'+drone
+          url: '/api/drone/' + telem
         }).then(function successCallback(response) {
-          logAPICall('GET', '/api/drone', {}, response.data);
+          logAPICall('GET', '/api/drone/' + telem, {}, response.data);
           cb(response.data);
         }, Error);
       };
 
-      var getHome = function(cb) {
-        $http({
-          method: 'GET',
-          url: '/api/drone/home'
-        }).then(function successCallback(response) {
-          logAPICall('GET', '/api/drone', {}, response.data);
-          cb(response.data);
-        }, Error);
-      };
+
 
       var droneCmd = function(cmd, body, cb) {
         $http({
           method: 'POST',
-          url: '/api/drone/'+cmd,
+          url: '/api/drone/' + cmd,
           data: body
         }).then(function successCallback(response) {
           logAPICall('POST', '/api/drone/'+cmd, body, response.data);
@@ -342,7 +334,6 @@ angular
         enableUpdates:      enableUpdates,
         disableUpdates:     disableUpdates,
         droneCmd:           droneCmd,
-        getHome:            getHome,
         checkOnline:        checkOnline,
         getLog:             getLog,
         selectDrone:        selectDrone,
