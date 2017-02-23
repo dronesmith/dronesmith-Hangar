@@ -538,7 +538,7 @@ angular
 
         $scope.currentDrone = angular.copy(drone) || null;
 
-        $scope.updateHome(drone);
+        // $scope.updateHome(drone);
         // Pan to drone location.
         leafletData.getMap('groundcontrol').then(function(map) {
           if ($scope.currentDrone.position) {
@@ -655,6 +655,7 @@ angular
       // EVENT LISTENER (UPDATE LOOP)
       // =======================================================================
 
+
       // Get updates from API.
       $rootScope.$on('drones:update', function(ev, data) {
 
@@ -670,7 +671,7 @@ angular
 
                  var flightRoll = $scope.currentDrone.attitude.Roll;
                  var flightPitch = $scope.currentDrone.attitude.Pitch;
-                 attitude.setRoll(flightRoll); // Sets the roll
+                 attitude.setRoll(-flightRoll); // Sets the roll
                  attitude.setPitch(flightPitch);//Sets pitch
 
                  var flightHeading = $scope.currentDrone.attitude.Yaw
@@ -688,6 +689,7 @@ angular
                   $scope.droneGeo[drone.name].marker.setLatLng(newLatLng);
                   $scope.droneGeo[drone.name].nameMarker.setLatLng(newLatLng);
                   $scope.droneGeo[drone.name].marker.setRotationAngle(pos.Heading);
+                  console.log($scope.droneGeo);
                 }
               } else {
                 $scope.droneGeo[drone.name] = {};
@@ -707,35 +709,35 @@ angular
         });
 
         // Remove any geo data if a drones object doesn't exist
-        angular.forEach($scope.droneGeo, function(drone, key) {
-          var found = false;
-          for (var i = 0; i < $scope.drones.length; ++i) {
-            if ($scope.drones[i].name == key && $scope.drones[i].online) {
-              found = true;
-              break;
-            }
-          }
+        // angular.forEach($scope.droneGeo, function(drone, key) {
+        //   var found = false;
+        //   for (var i = 0; i < $scope.drones.length; ++i) {
+        //     if ($scope.drones[i].name == key && $scope.drones[i].online) {
+        //       found = true;
+        //       break;
+        //     }
+        //   }
+        //
+        //   if (!found) {
+        //     // remove geodata
+        //     leafletData.getMap('groundcontrol').then(function(map) {
+        //       if (drone.marker) {
+        //         drone.marker.removeFrom(map);
+        //       }
+        //
+        //       if (drone.nameMarker) {
+        //         drone.nameMarker.removeFrom(map);
+        //       }
+        //
+        //       if (drone.homeMarker) {
+        //         drone.homeMarker.removeFrom(map);
+        //       }
+        //     });
+        //   }
+        // });
 
-          if (!found) {
-            // remove geodata
-            leafletData.getMap('groundcontrol').then(function(map) {
-              if (drone.marker) {
-                drone.marker.removeFrom(map);
-              }
 
-              if (drone.nameMarker) {
-                drone.nameMarker.removeFrom(map);
-              }
-
-              if (drone.homeMarker) {
-                drone.homeMarker.removeFrom(map);
-              }
-            });
-          }
-        });
-
-
-        updateRoutes();
+        // updateRoutes();
       });
     }
   )

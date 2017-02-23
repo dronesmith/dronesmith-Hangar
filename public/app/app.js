@@ -24,7 +24,8 @@ angular
     'nemLogging',
     'ui-leaflet',
     'ngAnimate',
-    'progressSpinner'
+    'progressSpinner',
+    'btford.socket-io'
   ])
 
   // Global configuration here

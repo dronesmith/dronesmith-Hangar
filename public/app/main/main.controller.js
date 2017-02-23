@@ -24,28 +24,28 @@ angular
     //
     // Get session
     //
-    Session
-      .account.get(
-        {},
-        function(data) {
-
-          $scope.userInfo = data.userData || null;
-
-        if (!data.userData) {
-          Error(null, 'session:null');
-          if ($state.current.name == 'downloads') {
-            $state.go('downloads');
-          }
-        } else {
-          ga('set', '&uid', data.userData.id);
-
-          $scope.$broadcast("session:update", data.userData);
-
-          if ($state.current.name == 'forge') {
-            $state.go('hangar');
-          }
-        }
-      }, Error)
-    ;
+    // Session
+    //   .account.get(
+    //     {},
+    //     function(data) {
+    //
+    //       $scope.userInfo = data.userData || null;
+    //
+    //     if (!data.userData) {
+    //       Error(null, 'session:null');
+    //       if ($state.current.name == 'downloads') {
+    //         $state.go('downloads');
+    //       }
+    //     } else {
+    //       ga('set', '&uid', data.userData.id);
+    //
+    //       $scope.$broadcast("session:update", data.userData);
+    //
+    //       if ($state.current.name == 'forge') {
+    //         $state.go('hangar');
+    //       }
+    //     }
+    //   }, Error)
+    // ;
   })
 ;

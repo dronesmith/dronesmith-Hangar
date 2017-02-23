@@ -15,7 +15,26 @@
 angular
   .module('ForgeApp')
   .factory('API', function(
-    $http, $interval, $rootScope, Error) {
+    $http, $interval, $rootScope, Error, socketFactory) {
+
+      var mainConnection = io.connect();
+      var connected = true; // connection is true unless session check fails
+
+      var Stream = socketFactory({
+       ioSocket: mainConnection
+      });
+
+      Stream.on('disconnect', function() {
+       connected = false;
+      });
+
+      setInterval(function() {
+       if (connected == false) {
+         console.log("Attempting reconnect...");
+         Stream.connect();
+         connected = true;
+       }
+      }, 5000);
 
       // Mxa API log size
       var LOG_SIZE = 100;
@@ -52,17 +71,41 @@ angular
       }
 
       // Update loop
-      $interval(function () {
-        if (updatesEnabled) {
-          //getDrones(function(d) {
+      // $interval(function () {
+      //   if (updatesEnabled) {
+      //     //getDrones(function(d) {
+      //
+      //       checkOnline();
+      //     //});
+      //
+      //     // Don't want to overload telem
+      //     $rootScope.$broadcast('drones:update', drones);
+      //   }
+      // }, 1000);
 
-            checkOnline();
-          //});
+      function keysToLowerCase(obj) {
+        Object.keys(obj).forEach(function (key) {
+          var k = key.toLowerCase();
 
-          // Don't want to overload telem
-          $rootScope.$broadcast('drones:update', drones);
-        }
-      }, 1000);
+          if (k !== key) {
+            obj[k] = obj[key];
+            delete obj[key];
+          }
+        });
+
+        return (obj);
+      }
+
+      Stream.on('telem', function(data) {
+        // console.log(data);
+
+        drones = data;
+
+        drones['dssprint5'] = keysToLowerCase(drones['dssprint5']);
+        // debugger;
+
+        $rootScope.$broadcast('drones:update', drones);
+      });
 
       var getTelem = function(drone, cb) {
         $http({
@@ -214,7 +257,7 @@ angular
         $rootScope.$broadcast('api:enable');
         // checkOnline();
         //getDrones(function(drones) {
-          checkOnline({});
+          // checkOnline({});
         //}); // force reload
       }
 

@@ -34,7 +34,14 @@
     "session": {
       "maxAgeMinutes": 108
     },
-    "api": "http://192.168.1.142",
+    "endpoints": [
+      "dssprint0.local",
+      "dssprint1.local",
+      "dssprint2.local",
+      "dssprint3.local",
+      "dssprint4.local",
+      "dssprint5.local"
+    ],
     "resetURL": "http://localhost:4000",
     "adminKey": "ca93abe8-6f81-4bad-ab04-60a43d73e877"
 }

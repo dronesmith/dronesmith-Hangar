@@ -33,8 +33,8 @@
     "angular-ui-uploader": "~1.1.2",
     "angular-nvd3": "~1.0.3",
     "ng-csv": "~0.3.6",
-    "angular-socket-io": "~0.7.0",
-    "socket.io-client": "~1.3.7",
+    "angular-socket-io": "^0.7.0",
+    "socket.io-client": "^1.7.2",
     "three.js": "~0.73.0",
     "angular-ui-map": "~0.5.0",
     "angular-ui-event": "~1.0.0",
@@ -46,6 +46,7 @@
     "angular-animate": "^1.6.2"
   },
   "resolutions": {
-    "angular": ">=1.6.0"
+    "angular": ">=1.6.0",
+    "socket.io-client": "^1.7.2"
   }
 }

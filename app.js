@@ -156,5 +156,8 @@ if (cluster.isMaster
 
       log.info('[WORKER] Server listening on', app.get('port'));
       log.info('[WORKER] Running in', app.get('env').toUpperCase(), 'mode');
+
+      var clientLink = require('./lib/clientlink.js')(server);
+      // console.log(clientLink);
     });
 }
