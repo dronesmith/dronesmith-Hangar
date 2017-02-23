@@ -276,7 +276,7 @@ angular
               var telemItem = telem["Local Drone"];
 
               var props = Object.keys(telemItem);
-              console.log(props);
+              // console.log(props);
               for (var k = 0; k < props.length; ++k) {
                 var prop = props[k];
                 drone[prop.toLowerCase()] = telemItem[prop];

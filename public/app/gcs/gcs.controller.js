@@ -689,7 +689,7 @@ angular
                   $scope.droneGeo[drone.name].marker.setLatLng(newLatLng);
                   $scope.droneGeo[drone.name].nameMarker.setLatLng(newLatLng);
                   $scope.droneGeo[drone.name].marker.setRotationAngle(pos.Heading);
-                  console.log($scope.droneGeo);
+                  // console.log($scope.droneGeo);
                 }
               } else {
                 $scope.droneGeo[drone.name] = {};
