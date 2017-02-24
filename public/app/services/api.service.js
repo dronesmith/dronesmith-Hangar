@@ -97,12 +97,13 @@ angular
       }
 
       Stream.on('telem', function(data) {
-        // console.log(data);
-
         drones = data;
 
-        drones['dssprint5'] = keysToLowerCase(drones['dssprint5']);
-        // debugger;
+        for (var k in drones) {
+          if (drones[k]) {
+            drones[k] = keysToLowerCase(drones[k]);
+          }
+        }
 
         $rootScope.$broadcast('drones:update', drones);
       });
