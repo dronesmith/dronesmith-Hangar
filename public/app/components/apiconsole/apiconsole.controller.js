@@ -62,6 +62,8 @@ angular
       // Clear Response text
       $scope.response = null;
 
+      console.log($scope.request);
+
       // Determine if entered url contains {drone} and replace
       // with current selected drone
       if (/({drone})/.test(urlportion)) {

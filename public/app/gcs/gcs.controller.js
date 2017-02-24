@@ -269,7 +269,7 @@ angular
 
       // Command drone to takeoff
       $scope.takeoff = function(drone, alt) {
-        API.droneCmd('takeoff', {altitude: alt}, cmdResponseHandler);
+        API.droneCmd($scope.currentDrone.name, 'takeoff', {altitude: alt}, cmdResponseHandler);
 
         // Also, cancel the route if there is one.
         API.cancelRoute(drone);
@@ -277,7 +277,7 @@ angular
 
       // Command drone to land
       $scope.land = function(drone) {
-        API.droneCmd('land', {}, cmdResponseHandler);
+        API.droneCmd($scope.currentDrone.name, 'land', {}, cmdResponseHandler);
 
         // Also, cancel the route if there is one.
         API.cancelRoute(drone);
@@ -306,7 +306,7 @@ angular
 
         modalAlert("Are you sure?", armingStr, function(doAction) {
             if (doAction) {
-              API.droneCmd(arm ? 'arm' : 'disarm', {}, cmdResponseHandler);
+              API.droneCmd($scope.currentDrone.name, arm ? 'arm' : 'disarm', {}, cmdResponseHandler);
 
               // Also, cancel the route if there is one.
               API.cancelRoute(drone);
@@ -398,7 +398,7 @@ angular
 
       // change drone flight mode
       $scope.setMode = function(drone, mode) {
-        API.droneCmd('mode', {'mode': mode}, cmdResponseHandler);
+        API.droneCmd($scope.currentDrone.name, 'mode', {'mode': mode}, cmdResponseHandler);
 
         // Also, cancel the route if there is one.
         API.cancelRoute(drone);
@@ -427,7 +427,7 @@ angular
         what3words(address, function(lat, lng) {
           modalAlert("Fly directly to this location?", "Latitude: " + lat + ", Longitude: " + lng, function(good) {
             if (good) {
-              API.droneCmd('goto',
+              API.droneCmd($scope.currentDrone.name, 'goto',
                 {lat: lat, lon: lng}, cmdResponseHandler);
               API.cancelRoute($scope.currentDrone.name);
             }
@@ -443,11 +443,8 @@ angular
             what3words(address, function(lat, lng) {
               modalAlert("Set home at this location?", "Latitude: " + lat + ", Longitude: " + lng, function(good) {
                 if (good) {
-                 API.droneCmd('home',
+                 API.droneCmd($scope.currentDrone.name, 'home',
                    {lat: lat, lon: lng}, function() {
-                     $timeout(function () {
-                       $scope.updateHome($scope.currentDrone);
-                     }, 2000);
                    });
                  }
                });
@@ -459,7 +456,7 @@ angular
             var latlng = best.latlng;
             modalAlert("Set home at this location?", "Latitude: " + latlng.lat + ", Longitude: " + latlng.lng, function(good) {
              if (good) {
-               API.droneCmd('home',
+               API.droneCmd($scope.currentDrone.name, 'home',
                  {lat: latlng.lat, lon: latlng.lng}, function(res) {
                    $timeout(function () {
                      $scope.updateHome($scope.currentDrone);
@@ -705,38 +702,58 @@ angular
                 });
               }
             }
+
+            if (drone.home) {
+              var lat = drone.home.Latitude;
+              var lon = drone.home.Longitude;
+              if (!$scope.droneGeo[drone.name].homeMarker) {
+                $scope.droneGeo[drone.name].homeMarker = L.marker([lat, lon],
+                  {
+                    icon: L.divIcon({
+                      'className': 'mapview-marker-icon',
+                      html: '<div><span style="color: #003B71; font-size: 2em;" class="glyphicon glyphicon-home"></span></div><p class="text-warning" style="font-weight: bold; position: relative; bottom: 2px;">'+drone.name+' home</p>'
+                    })
+                  });
+                leafletData.getMap('groundcontrol').then(function(map) {
+                  $scope.droneGeo[drone.name].homeMarker.addTo(map);
+                });
+              } else {
+                var newLatLng = new L.LatLng(lat, lon);
+                $scope.droneGeo[drone.name].homeMarker.setLatLng(newLatLng);
+              }
+            }
           }
         });
 
         // Remove any geo data if a drones object doesn't exist
-        // angular.forEach($scope.droneGeo, function(drone, key) {
-        //   var found = false;
-        //   for (var i = 0; i < $scope.drones.length; ++i) {
-        //     if ($scope.drones[i].name == key && $scope.drones[i].online) {
-        //       found = true;
-        //       break;
-        //     }
-        //   }
-        //
-        //   if (!found) {
-        //     // remove geodata
-        //     leafletData.getMap('groundcontrol').then(function(map) {
-        //       if (drone.marker) {
-        //         drone.marker.removeFrom(map);
-        //       }
-        //
-        //       if (drone.nameMarker) {
-        //         drone.nameMarker.removeFrom(map);
-        //       }
-        //
-        //       if (drone.homeMarker) {
-        //         drone.homeMarker.removeFrom(map);
-        //       }
-        //     });
-        //   }
-        // });
+        angular.forEach($scope.droneGeo, function(drone, key) {
+          var found = false;
+          for (var i in $scope.drones) {
+            if ($scope.drones[i].name == key && $scope.drones[i].online) {
+              found = true;
+              break;
+            }
+          }
 
+          if (!found) {
+            // remove geodata
+            leafletData.getMap('groundcontrol').then(function(map) {
+              if (drone.marker) {
+                drone.marker.removeFrom(map);
+              }
 
+              if (drone.nameMarker) {
+                drone.nameMarker.removeFrom(map);
+              }
+
+              if (drone.homeMarker) {
+                drone.homeMarker.removeFrom(map);
+              }
+            });
+          }
+        });
+
+        // NOTE not worrying about missions right now
         // updateRoutes();
       });
     }

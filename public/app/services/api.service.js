@@ -120,10 +120,10 @@ angular
 
 
 
-      var droneCmd = function(cmd, body, cb) {
+      var droneCmd = function(droneName, cmd, body, cb) {
         $http({
           method: 'POST',
-          url: '/api/drone/' + cmd,
+          url: '/api/drone/' + droneName + '/' + cmd,
           data: body
         }).then(function successCallback(response) {
           logAPICall('POST', '/api/drone/'+cmd, body, response.data);
