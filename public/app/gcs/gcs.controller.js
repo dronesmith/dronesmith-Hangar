@@ -245,7 +245,7 @@ angular
               if (good) {
                 API.droneCmd($scope.currentDrone.name, 'goto',
                   {lat: ev.latlng.lat, lon: ev.latlng.lng}, cmdResponseHandler);
-                API.cancelRoute($scope.currentDrone.name);
+                // API.cancelRoute($scope.currentDrone.name);
               }
             });
           } else if ($scope.selectedTool == 'home') {
@@ -272,7 +272,7 @@ angular
         API.droneCmd($scope.currentDrone.name, 'takeoff', {altitude: alt}, cmdResponseHandler);
 
         // Also, cancel the route if there is one.
-        API.cancelRoute(drone);
+        // API.cancelRoute(drone);
       }
 
       // Command drone to land
@@ -280,7 +280,7 @@ angular
         API.droneCmd($scope.currentDrone.name, 'land', {}, cmdResponseHandler);
 
         // Also, cancel the route if there is one.
-        API.cancelRoute(drone);
+        // API.cancelRoute(drone);
       }
 
       // Get number of drones online
@@ -292,6 +292,46 @@ angular
           }
         });
         return cnt;
+      }
+
+      $scope.performPattern = function(name, alt) {
+        var wpIndex = 0;
+        var wps = [
+          {lat: 35.89236 + 0.0002, lon: -114.928925 + 0},
+          {lat: 35.89236 + 0.00000, lon: -114.928925 + 0.0002},
+          {lat: 35.89236 + -0.0002, lon: -114.928925 + 0},
+          {lat: 35.89236 + 0.00000, lon: -114.928925 + -0.0002},
+          {lat: 35.89236 + 0.0002, lon: -114.928925 + 0}
+        ];
+
+        API.droneCmd($scope.currentDrone.name, 'goto', {
+          "lat": wps[wpIndex].lat, "lon": wps[wpIndex].lon,
+          "alt": 516 + 10,
+          "relativealt": false,
+          "relativepos": false
+        }, cmdResponseHandler);
+
+        var mission = setInterval(function () {
+          var loc = $scope.drones[name].position;
+          console.log(loc);
+
+          if (wpIndex > 4) {
+            console.log("Done: ", wpIndex);
+            clearInterval(mission);
+            return;
+          }
+
+          if ((loc.Latitude - wps[wpIndex].lat) < 0.00005 && (loc.Longitude - wps[wpIndex].lon) < 0.00005) {
+            wpIndex++;
+            console.log("Next mission: ", wpIndex);
+            API.droneCmd($scope.currentDrone.name, 'goto', {
+              "lat": wps[wpIndex].lat, "lon": wps[wpIndex].lon,
+              "alt": 516 + 10,
+              "relativealt": false,
+              "relativepos": false
+            }, cmdResponseHandler);
+          }
+        }, 5000);
       }
 
       // Arm/disarm drone
@@ -307,10 +347,35 @@ angular
         modalAlert("Are you sure?", armingStr, function(doAction) {
             if (doAction) {
               API.droneCmd($scope.currentDrone.name, arm ? 'arm' : 'disarm', {}, cmdResponseHandler);
-
-              // Also, cancel the route if there is one.
-              API.cancelRoute(drone);
             }
+        });
+      }
+
+      $scope.setArmingAll = function(arm) {
+        var armingStr = '';
+        if (arm) {
+          armingStr = "Arming your fleet will enable its motors, and could have adverse side effects.";
+        } else {
+          armingStr =  "Disarming fleet will stop its motors from functioning, and could have adverse side effects.";
+        }
+        modalAlert("Are you sure?", armingStr, function(doAction) {
+          if (doAction) {
+            angular.forEach($scope.drones, function(drone) {
+              API.droneCmd(drone.name, arm ? 'arm' : 'disarm', {}, cmdResponseHandler);
+            });
+          }
+        });
+      }
+
+      $scope.takeoffAll = function(alt) {
+        angular.forEach($scope.drones, function(drone) {
+          API.droneCmd(drone.name, 'takeoff', {altitude: alt}, cmdResponseHandler);
+        });
+      }
+
+      $scope.landAll = function() {
+        angular.forEach($scope.drones, function(drone) {
+          API.droneCmd(drone.name, 'land', {}, cmdResponseHandler);
         });
       }
 
@@ -401,7 +466,7 @@ angular
         API.droneCmd($scope.currentDrone.name, 'mode', {'mode': mode}, cmdResponseHandler);
 
         // Also, cancel the route if there is one.
-        API.cancelRoute(drone);
+        // API.cancelRoute(drone);
       }
 
       $scope.routeHome = function(drone) {
@@ -429,7 +494,7 @@ angular
             if (good) {
               API.droneCmd($scope.currentDrone.name, 'goto',
                 {lat: lat, lon: lng}, cmdResponseHandler);
-              API.cancelRoute($scope.currentDrone.name);
+              // API.cancelRoute($scope.currentDrone.name);
             }
           });
         });
@@ -512,21 +577,21 @@ angular
             }
           });
 
-          API.getTelem('home', function(res) {
-            if (!$scope.droneGeo[drone.name].homeMarker) {
-              $scope.droneGeo[drone.name].homeMarker = L.marker([res.data.Latitude, res.data.Longitude],
-                {
-                  icon: L.divIcon({
-                    'className': 'mapview-marker-icon',
-                    html: '<div><span style="color: #003B71; font-size: 2em;" class="glyphicon glyphicon-home"></span></div><p class="text-warning" style="font-weight: bold; position: relative; bottom: 2px;">'+drone.name+' home</p>'
-                  })
-                });
-              $scope.droneGeo[drone.name].homeMarker.addTo(map);
-            } else {
-              var newLatLng = new L.LatLng(res.data.Latitude, res.data.Longitude);
-              $scope.droneGeo[drone.name].homeMarker.setLatLng(newLatLng);
-            }
-          });
+          // API.getTelem('home', function(res) {
+          //   if (!$scope.droneGeo[drone.name].homeMarker) {
+          //     $scope.droneGeo[drone.name].homeMarker = L.marker([res.data.Latitude, res.data.Longitude],
+          //       {
+          //         icon: L.divIcon({
+          //           'className': 'mapview-marker-icon',
+          //           html: '<div><span style="color: #003B71; font-size: 2em;" class="glyphicon glyphicon-home"></span></div><p class="text-warning" style="font-weight: bold; position: relative; bottom: 2px;">'+drone.name+' home</p>'
+          //         })
+          //       });
+          //     $scope.droneGeo[drone.name].homeMarker.addTo(map);
+          //   } else {
+          //     var newLatLng = new L.LatLng(res.data.Latitude, res.data.Longitude);
+          //     $scope.droneGeo[drone.name].homeMarker.setLatLng(newLatLng);
+          //   }
+          // });
         });
       }
 

@@ -17,7 +17,7 @@
       <div class="panel panel-default" ng-repeat="drone in drones track by $index" ng-show="drone.online">
           <div class="panel-body">
             <a href="" ng-click="selectDrone(drone)">
-              <strong>{{drone.name}}</strong>
+              <strong>{{drone.name}}</strong> <strong>{{drone.status.Power}}%</strong>
               <br>In <strong>{{drone.mode}}</strong> flight mode <br>
               <em>{{drone.status.Armed ? "Armed" : "Disarmed"}}</em> and
               <em>{{drone.status.InAir ? "Airborne" : "Grounded"}}</em>
@@ -25,6 +25,7 @@
 
             <div ng-show="drone.name == currentDrone.name" ng-init="toggleMode=false; ModeSelect = 'Manual'">
               <hr>
+              <button style="margin: 5px 0px 5px 0px;" ng-click="performPattern(drone.name, 20, 5)" class="btn btn-block btn-sm btn-success">Perform Pattern</button>
               <button ng-hide="drone.status.InAir" style="margin: 5px 0px 5px 0px;" ng-click="takeoff(drone.name, 30)" class="btn btn-block btn-sm btn-success">Takeoff</button>
               <button ng-show="drone.status.InAir" style="margin: 5px 0px 5px 0px;" ng-click="land(drone.name)" class="btn btn-sm btn-block btn-danger">Land</button>
               <button ng-hide="drone.status.Armed" style="margin: 5px 0px 5px 0px;" ng-click="setArming(drone.name, true)" class="btn btn-sm btn-block btn-primary">Arm</button>
@@ -50,6 +51,11 @@
       </div>
 
       <!-- <button ng-show="getOnlineCnt() > 0" class="btn btn-block btn-danger" ng-click="sendFleetHome()">Send Fleet Home</button> -->
+
+      <button ng-click="takeoffAll(10)" class="btn btn-sm btn-block btn-info">Takeoff Fleet</button>
+      <button ng-click="landAll()" class="btn btn-sm btn-block btn-info">Land Fleet</button>
+      <button ng-click="setArmingAll(true)" class="btn btn-sm btn-block btn-success">Arm Fleet</button>
+      <button ng-click="setArmingAll(false)" class="btn btn-sm btn-block btn-danger">Disarm Fleet</button>
     </div>
 
   </div>
